@@ -1,13 +1,14 @@
+import "./App.css";
+import Home from "./pages/Home/Home";
+import NotFound from "./pages/NotFound/NotFound";
+import Auth from "./pages/Auth/Auth";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Recycle from "./pages/Recycle/Recycle";
+import MarketPlace from "./pages/MarketPlace/MarketPlace";
+import Profile from "./pages/Profile/Profile";
 
-import './App.css';
-
-const App = () =>{
-  return (
-    <section>
-      <h1 className="text-sky-500 text-5xl capitalize">hello world</h1>
-    </section>
-  )
-}
-
+const App = () => {
+  return <section></section>;
+};
 
 export default App;
