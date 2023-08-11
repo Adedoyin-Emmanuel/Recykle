@@ -4,6 +4,7 @@ import ArrowIcon from "./../../assets/arrow.svg";
 import TrashCan from "./../../assets/trash.svg";
 import MoneyBag from "./../../assets/money.svg";
 import Finger from "./../../assets/finger.svg";
+import Button from "../../components/Button/Button";
 
 const Home: React.FC = (): JSX.Element => {
   return (
@@ -22,9 +23,9 @@ const Home: React.FC = (): JSX.Element => {
               </p>
 
               <section className="action-button flex my-8">
-                <button className="w-2/4 h-14 text-center bg-green-300 text-white rounded-sm capitalize p-2">
+                <Button outline className="w-2/4">
                   get started
-                </button>
+                </Button>
               </section>
             </div>
 
@@ -50,10 +51,10 @@ const Home: React.FC = (): JSX.Element => {
                 sustainable future while enjoying tangible benefits for your
                 commitment to recycling."
               </p>
-              <section className="action-button flex my-10">
-                <button className="w-2/4 h-14 text-center bg-green-300 text-white rounded-sm capitalize p-2">
+              <section className="action-button flex my-10  hover:border-green-300">
+                <Button outline={false} className="w-2/4">
                   get started
-                </button>
+                </Button>
               </section>
               <img
                 src={ArrowIcon}
