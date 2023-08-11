@@ -20,36 +20,24 @@ const Navbar: React.FC = (): JSX.Element => {
   };
 
   return (
-    <nav className="w-screen flex items-center md:justify-start justify-between md:flex-row flex-col  py-5">
-      <h2 className="font-extrabold text-2xl text-slate-200 mx-5 md:block hidden cursor-pointer hover:text-sky-300 transition-all duration-75 ease-in-linear">
-        <Link to="/">Tailwind</Link>
+    <nav className="w-screen flex items-center md:justify-center justify-between md:flex-row flex-col  py-5 overflow-x-hidden z-10">
+      <h2 className="font-extrabold text-4xl text-green-300  mx-5 md:block hidden cursor-pointer hover: transition-all duration-75 ease-in-linear">
+        <Link to="/">Recykle</Link>
       </h2>
 
-      <section className="hidden md:flex items-center justify-between w-60">
+      <section className="hidden md:flex items-end justify-end w-4/6 overflow-x-hidden">
         <Link
           to="/"
-          className="capitalize inline-block text-slate-100 border-transparent border-solid border-b-2 p-2 hover:border-sky-300 transition-all duration-100 ease-in-out"
+          className="capitalize inline-block text-center border-transparent border-solid mx-5 p-3 bg-green-300 text-white w-40 rounded"
         >
-          home
-        </Link>
-        <Link
-          to="about"
-          className="capitalize inline-block text-slate-100 border-transparent border-solid border-b-2 p-2 hover:border-sky-300 transition-all duration-100 ease-in-out"
-        >
-          about
-        </Link>
-        <Link
-          to="contact"
-          className="capitalize inline-block text-slate-100 border-transparent border-solid border-b-2 p-2 hover:border-sky-300 transition-all duration-100 ease-in-out"
-        >
-          contact
+          get started
         </Link>
       </section>
 
       <section className="md:hidden flex w-full flex-col">
         <section className="header flex w-full items-center justify-between">
-          <h2 className="font-extrabold text-2xl text-slate-200 mx-5">
-            <Link to="/">Tailwind</Link>
+          <h2 className="font-extrabold text-green-300 text-2xl  mx-5">
+            <Link to="/">Recykle</Link>
           </h2>
 
           <section
@@ -63,7 +51,7 @@ const Navbar: React.FC = (): JSX.Element => {
               fill="currentColor"
               strokeWidth="0"
               viewBox="0 0 24 24"
-              className="text-slate-100 font-bold"
+              className="font-bold"
               height="35"
               width="35"
               xmlns="http://www.w3.org/2000/svg"
@@ -77,13 +65,13 @@ const Navbar: React.FC = (): JSX.Element => {
           ref={mobileLinksRef}
           className="mx-5 my-11 overflow-hidden transition-max-h duration-500 ease-in-out"
         >
-          <Link to="/" className="capitalize block text-slate-100 my-6">
+          <Link to="/" className="capitalize block  my-6">
             home
           </Link>
-          <Link to="about" className="capitalize block text-slate-100 my-6">
+          <Link to="about" className="capitalize block  my-6">
             about
           </Link>
-          <Link to="contact" className="capitalize block text-slate-100 my-6">
+          <Link to="contact" className="capitalize block  my-6">
             contact
           </Link>
         </section>

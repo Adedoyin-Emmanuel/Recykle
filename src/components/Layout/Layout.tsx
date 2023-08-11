@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "../Navbar/Navbar";
 
 interface LayoutProps {
   className?: string;
@@ -8,9 +9,10 @@ interface LayoutProps {
 const Layout = ({ className, children, others }: LayoutProps): JSX.Element => {
   return (
     <section
-      className={`w-full md:mx-auto md:my-12 flex flex-col  ${className}`}
+      className={`w-full md:my-12 md:items-start flex flex-col  overflow-x-hidden ${className}`}
       {...others}
     >
+      <Navbar />
       {children}
     </section>
   );

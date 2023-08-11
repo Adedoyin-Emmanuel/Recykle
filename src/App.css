@@ -3,11 +3,11 @@
   src: url("./assets/fonts/poppins.ttf");
 }
 
-@font-face {
+/* @font-face {
   font-family: Poppins;
   src: url("./assets/fonts/poppins_bold.ttf");
   font-weight: bold;
-}
+} */
 
 * {
   font-family: Poppins !important;
@@ -18,6 +18,6 @@ html {
 }
 
 body {
-  width: 100vw;
-  height: 100vh;
+  overflow-x: hidden !important;
 }
+
