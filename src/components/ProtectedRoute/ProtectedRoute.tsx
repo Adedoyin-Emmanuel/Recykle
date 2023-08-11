@@ -1,18 +1,15 @@
-
 import React from "react";
+import { Navigate } from "react-router-dom";
 
-interface ProtectedRouteProps {
-    
-}
 
-const ProtectedRoute:React.FC = (): JSX.Element => {
+type ProtectedRouteProps = {
+  children: React.ReactNode;
+};
 
-    return (
-        <React.Fragment>
-            <h1>ProtectedRoute works!</h1>
-        </React.Fragment>
-    );  
-}
+const ProtectedRoute = ({ children, }: ProtectedRouteProps) => {
+  const isAuthenticated = false;
+
+  return <>{isAuthenticated ? children : <Navigate to={"/auth"} />}</>;
+};
 
 export default ProtectedRoute;
-    

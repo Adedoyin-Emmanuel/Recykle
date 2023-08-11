@@ -1,18 +1,19 @@
-
 import React from "react";
 
 interface LayoutProps {
-    
+  className?: string;
+  children?: JSX.Element | JSX.Element[] | string;
+  others?: React.Attributes;
 }
-
-const Layout:React.FC = (): JSX.Element => {
-
-    return (
-        <React.Fragment>
-            <h1>Layout works!</h1>
-        </React.Fragment>
-    );  
-}
+const Layout = ({ className, children, others }: LayoutProps): JSX.Element => {
+  return (
+    <section
+      className={`w-full md:mx-auto md:my-12 flex flex-col  ${className}`}
+      {...others}
+    >
+      {children}
+    </section>
+  );
+};
 
 export default Layout;
-    
