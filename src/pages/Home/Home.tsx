@@ -23,7 +23,7 @@ const Home: React.FC = (): JSX.Element => {
               </p>
 
               <section className="action-button flex my-8">
-                <Button outline className="w-2/4">
+                <Button outline={false} className="w-2/4">
                   get started
                 </Button>
               </section>
@@ -52,7 +52,7 @@ const Home: React.FC = (): JSX.Element => {
                 commitment to recycling."
               </p>
               <section className="action-button flex my-10  hover:border-green-300">
-                <Button outline={false} className="w-2/4">
+                <Button outline className="w-2/4">
                   get started
                 </Button>
               </section>
