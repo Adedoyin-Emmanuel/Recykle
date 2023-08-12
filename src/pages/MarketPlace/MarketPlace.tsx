@@ -1,19 +1,14 @@
-
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import Dashboard from "../Dashboard/Dashboard";
 
-interface MarketPlaceProps {
-    
-}
-
-const MarketPlace:React.FC = (): JSX.Element => {
-    const navigateTo = useNavigate();
-    return (
-        <React.Fragment>
-            <h1>MarketPlace works!</h1>
-        </React.Fragment>
-    );  
-}
+const MarketPlace: React.FC = (): JSX.Element => {
+  return (
+    <Dashboard onMarketPlacePage>
+      <h1 className="font-bold text-green-300 text-4xl capitalize">
+        hello market place page
+      </h1>
+    </Dashboard>
+  );
+};
 
 export default MarketPlace;
-    

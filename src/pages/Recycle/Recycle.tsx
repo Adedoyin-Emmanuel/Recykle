@@ -1,19 +1,14 @@
-
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import Dashboard from "../Dashboard/Dashboard";
 
-interface RecycleProps {
-    
-}
-
-const Recycle:React.FC = (): JSX.Element => {
-    const navigateTo = useNavigate();
-    return (
-        <React.Fragment>
-            <h1>Recycle works!</h1>
-        </React.Fragment>
-    );  
-}
+const Recycle: React.FC = (): JSX.Element => {
+  return (
+    <Dashboard onRecyklePage>
+      <h1 className="font-bold text-green-300 text-4xl capitalize">
+        hello recykle page
+      </h1>
+    </Dashboard>
+  );
+};
 
 export default Recycle;
-    

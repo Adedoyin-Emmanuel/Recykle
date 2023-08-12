@@ -6,6 +6,13 @@ export default {
     extend:{
       colors:{
         green:{
+          "1":"#EFFBF5",
+          "5":"#DEF7EB",
+          "10":"#CEF3E1",
+          "20":"#BEEFD7",
+          "30":"#ADEBCD",
+          "40":"#9DE7C3",
+          "50":"#8DE2B9",
           "100" : "#4BD291",
           "200" : "#3BCE87",
           "300" : "#2EB875",

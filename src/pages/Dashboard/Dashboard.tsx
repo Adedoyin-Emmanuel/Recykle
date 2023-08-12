@@ -1,14 +1,32 @@
 import React from "react";
-import Container from "../../components/Container/Container";
-import Layout from "../../components/Layout/Layout";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
-//interface DashboardProps {}
+interface DashboardProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
+  children?: React.ReactNode;
+  onProfilePage?: boolean;
+  onRecyklePage?: boolean;
+  onMarketPlacePage?: boolean;
+  others?: React.Attributes;
+}
 
-const Dashboard: React.FC = (): JSX.Element => {
+const Dashboard = ({
+  className,
+  children,
+  onProfilePage,
+  onRecyklePage,
+  onMarketPlacePage,
+  ...others
+}: DashboardProps): JSX.Element => {
   return (
-    <Sidebar>
-    
+    <Sidebar
+      onProfilePage={onProfilePage}
+      onRecyklePage={onRecyklePage}
+      onMarketPlacePage={onMarketPlacePage}
+    >
+      <section className={`${className}`} {...others}>
+        {children}
+      </section>
     </Sidebar>
   );
 };

@@ -1,21 +1,52 @@
 import React from "react";
 import MobileNav from "../MobileNav/MobileNav";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faTrash,
+  faShoppingBag,
+} from "@fortawesome/free-solid-svg-icons";
 
+import { useNavigate } from "react-router-dom";
+import {
+  navigateToMarketPlace,
+  navigateToProfile,
+  navigateToRecycling,
+} from "../../utils/navigate";
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   children: React.ReactNode;
+  onProfilePage?: boolean;
+  onRecyklePage?: boolean;
+  onMarketPlacePage?: boolean;
   others?: React.Attributes;
 }
 
 const Sidebar = ({
   className,
   children,
+  onProfilePage,
+  onRecyklePage,
+  onMarketPlacePage,
   ...others
 }: SidebarProps): JSX.Element => {
+  const navigateTo = useNavigate();
+
+  const handleMarketPlaceClick = () => {
+    navigateToMarketPlace(navigateTo);
+  };
+
+  const handleProfileClick = () => {
+    navigateToProfile(navigateTo);
+  };
+
+  const handleRecykleClick = () => {
+    navigateToRecycling(navigateTo);
+  };
   return (
-    <section className="parent bg-green-500 h-screen ">
+    <section className="parent h-screen w-screen flex">
       <section
-        className={`sidenav bg-slate-100 h-screen hidden md:flex  md:w-3/12  lg:w-2/12 items-center justify-start flex-col ${className} p-0 `}
+        className={`sidenav bg-green-5 h-screen hidden md:flex  md:w-3/12  lg:w-2/12 items-center justify-start flex-col ${className} p-0 `}
         {...others}
       >
         <section className="header-section w-full flex items-center justify-start my-5 flex-col">
@@ -32,19 +63,43 @@ const Sidebar = ({
           </section>
         </section>
 
-        <section className="recycle bg-green-400 rounded p-3 w-3/4 flex items-center justify-center capitalize text-white my-16">
+        <section
+          onClick={handleRecykleClick}
+          className={`rounded p-3 w-3/4 flex flex-col items-center justify-around gap-4 capitalize   hover:bg-green-200 hover:text-white cursor-pointer my-16 ${
+            onRecyklePage && "bg-green-200 text-white"
+          }`}
+        >
+          <FontAwesomeIcon icon={faTrash} size={"lg"} className="" />
           recykle
         </section>
-        <section className="recycle bg-green-400 rounded p-3 w-3/4 flex items-center justify-center capitalize text-white my-16">
+
+        <section
+          onClick={handleProfileClick}
+          className={`rounded p-3 w-3/4 flex flex-col items-center justify-around gap-4 capitalize   hover:bg-green-200 hover:text-white cursor-pointer my-16 ${
+            onProfilePage && "bg-green-200 text-white"
+          }`}
+        >
+          <FontAwesomeIcon icon={faUser} size={"lg"} className="" />
           profile
         </section>
-        <section className="recycle bg-green-400 rounded p-3 w-3/4 flex items-center justify-center capitalize text-white my-16">
+
+        <section
+          onClick={handleMarketPlaceClick}
+          className={`rounded p-3 w-3/4 flex flex-col items-center justify-around gap-4 capitalize   hover:bg-green-200 hover:text-white cursor-pointer my-16 ${
+            onMarketPlacePage && "bg-green-200 text-white"
+          }`}
+        >
+          <FontAwesomeIcon icon={faShoppingBag} size={"lg"} className="" />
           marketplace
         </section>
-
-        {children}
       </section>
-      <MobileNav />
+      <section className="w-screen other-content m-5">{children}</section>
+
+      <MobileNav
+        onProfilePage={onProfilePage}
+        onRecyklePage={onRecyklePage}
+        onMarketPlacePage={onMarketPlacePage}
+      />
     </section>
   );
 };
