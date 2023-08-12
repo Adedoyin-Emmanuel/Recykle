@@ -1,38 +1,30 @@
 import React from "react";
 
-interface ButtonProps {
-  className?: string;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   outline: boolean;
-  children: JSX.Element | JSX.Element[] | string;
-  others?: React.Attributes;
-  onClick: () => void;
+  children: React.ReactNode;
 }
 
-const Button = ({
-  className,
+const Button: React.FC<ButtonProps> = ({
   outline,
   children,
-  others,
-  onClick,
-}: ButtonProps): JSX.Element => {
-  const button = outline ? (
-    <button
-      className={`h-14 text-center rounded-sm capitalize text-black  p-2 cursor-pointer hover:bg-green-300 hover:text-white border-2 border-spacing-3 border-green-300 transition-all duration-150 ${className}`}
-      {...others}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  ) : (
-    <button
-      className={`h-14 text-center bg-green-300 text-white rounded-smcursor-pointer  capitalize border-2 border-spacing-3 border-transparent p-2  hover:bg-transparent hover:border-green-300 hover:text-black transition-all duration-150 ${className}`}
-      {...others}
-      onClick={onClick}
-    >
+  className,
+  ...rest
+}: ButtonProps) => {
+  const baseClassNames =
+    "h-14 text-center rounded-sm cursor-pointer capitalize p-2 border-2 border-spacing-3 transition-all duration-150";
+
+  const outlineClass = `${baseClassNames} ${
+    outline
+      ? "text-black  hover:bg-green-300 hover:text-white border-green-300"
+      : "text-white bg-green-300 text-white hover:bg-green-200 border-transparent"
+  } ${className}`;
+
+  return (
+    <button className={outlineClass} {...rest} >
       {children}
     </button>
   );
-  return button;
 };
 
 export default Button;

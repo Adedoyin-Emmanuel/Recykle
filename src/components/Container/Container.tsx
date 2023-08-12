@@ -8,7 +8,10 @@ interface ContainerProps {
 
 const Container = ({ children, className, others }: ContainerProps) => {
   return (
-    <section className={`container ${className}`} {...others}>
+    <section
+      className={`h-screen w-full flex  justify-center items-center ${className}`}
+      {...others}
+    >
       {children}
     </section>
   );

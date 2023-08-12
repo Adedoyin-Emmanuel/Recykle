@@ -5,6 +5,7 @@ import TrashCan from "./../../assets/trash.svg";
 import MoneyBag from "./../../assets/money.svg";
 import Finger from "./../../assets/finger.svg";
 import Button from "../../components/Button/Button";
+import Navbar from "../../components/Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { navigateToAuth } from "../../utils/navigate";
 
@@ -18,6 +19,7 @@ const Home: React.FC = (): JSX.Element => {
   return (
     <section>
       <Layout>
+        <Navbar />
         <section className="m-auto w-full">
           <div className="container mx-auto py-16 px-4  lg:flex lg:items-start overflow-x-hidden">
             <div className="lg:w-1/2 lg:ml-12 mt-8 lg:mt-28">
@@ -46,7 +48,7 @@ const Home: React.FC = (): JSX.Element => {
         </section>
 
         <section className="m-auto w-full">
-          <div className="container mx-auto py-16 px-4 flex flex-col-reverse  lg:flex-row lg:items-start">
+          <div className="container mx-auto py-16 px-4 flex flex-col-reverse  lg:flex-row lg:items-start ">
             <div className="lg:w-1/2 transform lg:translate-y-[-20%]">
               <img src={MoneyBag} alt="Hero" className="w-full h-auto" />
             </div>
@@ -63,7 +65,7 @@ const Home: React.FC = (): JSX.Element => {
               </p>
               <Button
                 outline
-                className="w-2/4 my-10"
+                className="w-2/4 my-10 "
                 onClick={handleActionButtonClick}
               >
                 get started
@@ -71,9 +73,8 @@ const Home: React.FC = (): JSX.Element => {
               <img
                 src={ArrowIcon}
                 alt="Hero"
-                className="w-full h-64 ransform scale-x-[-1] rotate-[380deg] arrow-icon md:block hidden"
+                className="w-64 h-64 ransform scale-x-[-1] rotate-[380deg] arrow-icon md:block hidden z-0"
               />
-
               <img
                 src={Finger}
                 alt="Hero"
