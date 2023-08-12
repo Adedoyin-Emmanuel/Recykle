@@ -21,14 +21,14 @@ const Navbar: React.FC = (): JSX.Element => {
 
   return (
     <nav className="w-screen flex items-center md:justify-center justify-between md:flex-row flex-col  py-5 overflow-x-hidden z-10">
-      <h2 className="font-extrabold text-4xl text-green-300  mx-5 md:block hidden cursor-pointer hover: transition-all duration-75 ease-in-linear">
+      <h2 className="font-extrabold text-4xl text-green-300  mx-5 md:block hidden cursor-pointer">
         <Link to="/">Recykle</Link>
       </h2>
 
       <section className="hidden md:flex items-end justify-end w-4/6 overflow-x-hidden">
         <Link
-          to="/"
-          className="capitalize inline-block text-center border-transparent border-solid mx-5 p-3 bg-green-300 text-white w-40 rounded"
+          to="/auth"
+          className="capitalize inline-block text-center border-transparent border-solid border-2 border-spacing-3  mx-5 p-3 bg-green-300 text-white w-40 rounded-sm hover:bg-transparent hover:border-green-300 hover:text-black transition-all duration-150 ease-in-out"
         >
           get started
         </Link>

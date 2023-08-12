@@ -5,7 +5,7 @@ interface ButtonProps {
   outline: boolean;
   children: JSX.Element | JSX.Element[] | string;
   others?: React.Attributes;
-  onClick?: () => void;
+  onClick: () => void;
 }
 
 const Button = ({

@@ -1,19 +1,18 @@
-
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import Container from "../../components/Container/Container";
 
-interface AuthProps {
-    
-}
+//interface AuthProps {}
 
-const Auth:React.FC = (): JSX.Element => {
-    const navigateTo = useNavigate();
+const Auth: React.FC = (): JSX.Element => {
+  
     return (
-        <React.Fragment>
-            <h1>Auth works!</h1>
-        </React.Fragment>
-    );  
-}
+        <Container>
+            <h3 className="text-green-300 font-bold text-3xl">
+            authenticate
+            </h3>
+        </Container>
+    )
+  
+};
 
 export default Auth;
-    

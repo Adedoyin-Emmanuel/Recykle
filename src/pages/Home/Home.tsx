@@ -5,8 +5,16 @@ import TrashCan from "./../../assets/trash.svg";
 import MoneyBag from "./../../assets/money.svg";
 import Finger from "./../../assets/finger.svg";
 import Button from "../../components/Button/Button";
+import { useNavigate } from "react-router-dom";
+import { navigateToAuth } from "../../utils/navigate";
 
 const Home: React.FC = (): JSX.Element => {
+  const navigateTo = useNavigate();
+
+  const handleActionButtonClick = () => {
+    navigateToAuth(navigateTo);
+  };
+
   return (
     <section>
       <Layout>
@@ -22,11 +30,13 @@ const Home: React.FC = (): JSX.Element => {
                 partnerships.
               </p>
 
-              <section className="action-button flex my-8">
-                <Button outline={false} className="w-2/4">
-                  get started
-                </Button>
-              </section>
+              <Button
+                outline={false}
+                className="w-2/4 my-8"
+                onClick={handleActionButtonClick}
+              >
+                get started
+              </Button>
             </div>
 
             <div className="lg:w-1/2 transform lg:translate-y-[-20%]">
@@ -51,11 +61,13 @@ const Home: React.FC = (): JSX.Element => {
                 sustainable future while enjoying tangible benefits for your
                 commitment to recycling."
               </p>
-              <section className="action-button flex my-10  hover:border-green-300">
-                <Button outline className="w-2/4">
-                  get started
-                </Button>
-              </section>
+              <Button
+                outline
+                className="w-2/4 my-10"
+                onClick={handleActionButtonClick}
+              >
+                get started
+              </Button>
               <img
                 src={ArrowIcon}
                 alt="Hero"

@@ -8,10 +8,7 @@ interface ContainerProps {
 
 const Container = ({ children, className, others }: ContainerProps) => {
   return (
-    <section
-      className={`w-full flex flex-col justify-center ${className}`}
-      {...others}
-    >
+    <section className={`container ${className}`} {...others}>
       {children}
     </section>
   );
