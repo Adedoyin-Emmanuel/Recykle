@@ -4,7 +4,6 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Home from "./pages/Home/Home";
 import NotFound from "./pages/NotFound/NotFound";
 import Auth from "./pages/Auth/Auth";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import Recycle from "./pages/Recycle/Recycle";
 import MarketPlace from "./pages/MarketPlace/MarketPlace";
 import Profile from "./pages/Profile/Profile";
@@ -14,9 +13,6 @@ const App = () => {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<Home/>}> </Route>
-          <Route path="/dashboard" element={
-          <ProtectedRoute children={<Dashboard/>}/>
-          }></Route>
           <Route path="/auth" element={<Auth/>}> </Route>
           <Route path="/recycle" element={
           <ProtectedRoute children={<Recycle/>}/>

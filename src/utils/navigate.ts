@@ -5,7 +5,7 @@ export const navigateToAuth = (navigator: NavigateFunction) => {
 };
 
 export const navigateToDashboard = (navigator: NavigateFunction) => {
-  navigator("/dashboard");
+  navigator("/recycle");
 };
 
 export const navigateToRecycling = (navigator: NavigateFunction) => {
