@@ -4,7 +4,8 @@ import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
-
+import { navigateToDashboard } from "../../utils/navigate";
+import { useNavigate } from "react-router-dom";
 //interface AuthProps {}
 
 const Header = (): JSX.Element => {
@@ -19,6 +20,12 @@ const Header = (): JSX.Element => {
 };
 
 const Auth: React.FC = (): JSX.Element => {
+  const navigateTo = useNavigate();
+
+  const handleAuthButtonClick = () => {
+    navigateToDashboard(navigateTo);
+  };
+
   const Login = (): JSX.Element => {
     return (
       <form className="login-section my-10 lg:w-1/4 w-11/12">
@@ -37,7 +44,11 @@ const Auth: React.FC = (): JSX.Element => {
           <Input placeholder="Enter your username" type="text" />
         </div>
 
-        <Button outline={false} className="w-full my-4">
+        <Button
+          outline={false}
+          className="w-full my-4"
+          onClick={handleAuthButtonClick}
+        >
           login
         </Button>
 
@@ -84,7 +95,11 @@ const Auth: React.FC = (): JSX.Element => {
           <Input placeholder="Enter your username" type="text" />
         </div>
 
-        <Button outline={false} className="w-full my-4">
+        <Button
+          outline={false}
+          className="w-full my-4"
+          onClick={handleAuthButtonClick}
+        >
           sign up
         </Button>
 
@@ -115,6 +130,7 @@ const Auth: React.FC = (): JSX.Element => {
   const handleCreateAccountTextClick = () => {
     setAuthType(<SignUp />);
   };
+
   return (
     <Layout>
       <Container>{authType}</Container>

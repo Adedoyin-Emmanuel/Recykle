@@ -1,19 +1,16 @@
-
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import Container from "../../components/Container/Container";
+import Layout from "../../components/Layout/Layout";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
-interface DashboardProps {
+//interface DashboardProps {}
+
+const Dashboard: React.FC = (): JSX.Element => {
+  return (
+    <Sidebar>
     
-}
-
-const Dashboard:React.FC = (): JSX.Element => {
-    const navigateTo = useNavigate();
-    return (
-        <React.Fragment>
-            <h1>Dashboard works!</h1>
-        </React.Fragment>
-    );  
-}
+    </Sidebar>
+  );
+};
 
 export default Dashboard;
-    
