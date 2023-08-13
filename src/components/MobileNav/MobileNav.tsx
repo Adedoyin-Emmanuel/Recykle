@@ -49,10 +49,8 @@ const MobileNav = ({
 
       <section className="mobile-items m-8" onClick={handleRecykleClick}>
         <svg
-          width="24"
-          height="24"
           viewBox="0 0 24 24"
-          className="h-8 w-8"
+          className="h-5 w-5"
           fill={recyklePageIcon}
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -80,10 +78,8 @@ const MobileNav = ({
       </section>
       <section className="mobile-items m-8" onClick={handleMarketPlaceClick}>
         <svg
-          width="24"
-          height="24"
           viewBox="0 0 24 24"
-          className="w-8 h-8 text-green-300"
+          className="w-5 h-5"
           fill={marketPlaceIconColor}
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -103,10 +99,8 @@ const MobileNav = ({
       </section>
       <section className="mobile-items m-8" onClick={handleProfileClick}>
         <svg
-          width="24"
-          height="24"
           viewBox="0 0 24 24"
-          className="w-8 h-8"
+          className="w-5 h-5"
           fill={profilePageIconColor}
           xmlns="http://www.w3.org/2000/svg"
         >

@@ -46,9 +46,9 @@ const Sidebar = ({
     navigateToRecycling(navigateTo);
   };
   return (
-    <section className="parent h-screen w-screen flex">
+    <section className="parent h-screen w-screen flex justify-between">
       <section
-        className={`sidenav bg-green-5 h-screen hidden md:flex  md:w-3/12  lg:w-2/12 items-center justify-start flex-col ${className} p-0 `}
+        className={`sidenav bg-green-5 h-screen hidden md:flex  md:w-3/12  lg:w-2/12 items-center justify-start flex-col ${className} p-0  fixed `}
         {...others}
       >
         <section className="header-section w-full flex items-center justify-start my-5 flex-col">
@@ -109,7 +109,9 @@ const Sidebar = ({
           marketplace
         </section>
       </section>
-      <section className="w-screen other-content m-5">{children}</section>
+      <section className="md:w-3/4 lg:w-5/6 md:p-8 p-2 pl-1/4 overflow-y-auto ml-auto">
+        {children}
+      </section>
 
       <MobileNav
         onProfilePage={onProfilePage}
