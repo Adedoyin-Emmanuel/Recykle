@@ -4,7 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
-import { navigateToDashboard } from "../../utils/navigate";
+import { navigateToDetails } from "../../utils/navigate";
 import { useNavigate } from "react-router-dom";
 //interface AuthProps {}
 
@@ -23,7 +23,7 @@ const Auth: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
 
   const handleAuthButtonClick = () => {
-    navigateToDashboard(navigateTo);
+    navigateToDetails(navigateTo);
   };
 
   const Login = (): JSX.Element => {

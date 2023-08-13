@@ -5,7 +5,11 @@ export const navigateToAuth = (navigator: NavigateFunction) => {
 };
 
 export const navigateToDashboard = (navigator: NavigateFunction) => {
-  navigator("/recycle");
+  navigator("/details");
+};
+
+export const navigateToDetails = (navigator: NavigateFunction) => {
+  navigator("/details");
 };
 
 export const navigateToRecycling = (navigator: NavigateFunction) => {
