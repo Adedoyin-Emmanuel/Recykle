@@ -42,7 +42,7 @@ const MobileNav = ({
   };
   return (
     <section
-      className={`mobile-nav w-screen flex items-center justify-between absolute right-0 left-0 bottom-0 md:hidden ${className}`}
+      className={`mobile-nav w-screen flex items-center justify-between fixed bottom-0 left-0 md:hidden ${className}`}
       {...others}
     >
       {children}
