@@ -73,13 +73,11 @@ const Recycle: React.FC = (): JSX.Element => {
   };
 
   const handleModalClose = () => {
-    console.log("Modal was closed");
     setShowItemsContainer(false);
   };
 
   const handleScanItemPick = () => {
     setShowItemsContainer(true);
-    console.log("i was clicked");
   };
   return (
     <Dashboard onRecyklePage className="flex flex-col items-center">
