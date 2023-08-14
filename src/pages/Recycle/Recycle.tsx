@@ -5,6 +5,7 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Container from "../../components/Container/Container";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import RecycingCompanyCard from "../../components/RecycingCompanyCard/RecycingCompanyCard";
+import ScanItem from "../../components/ScanItem/ScanItem";
 
 const Recycle: React.FC = (): JSX.Element => {
   const recylingData = [
@@ -79,6 +80,7 @@ const Recycle: React.FC = (): JSX.Element => {
         </section>
       </section>
 
+      <ScanItem />
       <Container>
         <section>
           <FontAwesomeIcon
