@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Dashboard from "../Dashboard/Dashboard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,9 @@ import ScanItem from "../../components/ScanItem/ScanItem";
 import ScanItemContainer from "../../components/ScanItemContainer/ScanItemContainer";
 
 const Recycle: React.FC = (): JSX.Element => {
+  const [showScanItemsContainer, setShowItemsContainer] =
+    useState<boolean>(false);
+
   const recylingData = [
     {
       name: "Recykle Ltd",
@@ -70,7 +73,13 @@ const Recycle: React.FC = (): JSX.Element => {
   };
 
   const handleModalClose = () => {
-    console.log("hello world");
+    console.log("Modal was closed");
+    setShowItemsContainer(false);
+  };
+
+  const handleScanItemPick = () => {
+    setShowItemsContainer(true);
+    console.log("i was clicked");
   };
   return (
     <Dashboard onRecyklePage className="flex flex-col items-center">
@@ -84,11 +93,10 @@ const Recycle: React.FC = (): JSX.Element => {
           <RecyingCompanies />
         </section>
       </section>
-
-      <ScanItem />
+      <ScanItem onClick={handleScanItemPick} />
       <ScanItemContainer
         blur={true}
-        showScanItemContainer={true}
+        showScanItemContainer={showScanItemsContainer}
         onClose={handleModalClose}
       />
       <Container>
