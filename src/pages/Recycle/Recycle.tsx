@@ -6,6 +6,7 @@ import Container from "../../components/Container/Container";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import RecycingCompanyCard from "../../components/RecycingCompanyCard/RecycingCompanyCard";
 import ScanItem from "../../components/ScanItem/ScanItem";
+import ScanItemContainer from "../../components/ScanItemContainer/ScanItemContainer";
 
 const Recycle: React.FC = (): JSX.Element => {
   const recylingData = [
@@ -67,6 +68,10 @@ const Recycle: React.FC = (): JSX.Element => {
       );
     });
   };
+
+  const handleModalClose = () => {
+    console.log("hello world");
+  };
   return (
     <Dashboard onRecyklePage className="flex flex-col items-center">
       <SearchBar className="my-5" />
@@ -81,6 +86,11 @@ const Recycle: React.FC = (): JSX.Element => {
       </section>
 
       <ScanItem />
+      <ScanItemContainer
+        blur={true}
+        showScanItemContainer={true}
+        onClose={handleModalClose}
+      />
       <Container>
         <section>
           <FontAwesomeIcon
