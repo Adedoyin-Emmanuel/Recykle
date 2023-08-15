@@ -5,8 +5,7 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
 import { navigateToDetails } from "../../utils/navigate";
-import { useNavigate } from "react-router-dom";
-//interface AuthProps {}
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = (): JSX.Element => {
   return (
@@ -21,6 +20,9 @@ const Header = (): JSX.Element => {
 
 const Auth: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const loginParam = queryParams.get("login");
 
   const handleAuthButtonClick = () => {
     navigateToDetails(navigateTo);
@@ -121,7 +123,9 @@ const Auth: React.FC = (): JSX.Element => {
       </form>
     );
   };
-  const [authType, setAuthType] = useState<JSX.Element>(<Login />);
+  const [authType, setAuthType] = useState<JSX.Element>(
+    loginParam === "true" ? <Login /> : <SignUp />
+  );
 
   const handleLoginTextClick = () => {
     setAuthType(<Login />);

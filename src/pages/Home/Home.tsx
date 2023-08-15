@@ -7,13 +7,17 @@ import Finger from "./../../assets/finger.svg";
 import Button from "../../components/Button/Button";
 import Navbar from "../../components/Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
-import { navigateToAuth } from "../../utils/navigate";
+import { navigateToAuth, navigateToCompanyAuth } from "../../utils/navigate";
 
 const Home: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
 
   const handleActionButtonClick = () => {
     navigateToAuth(navigateTo);
+  };
+
+  const handleRecyclingBusinessBtnClick = () => {
+    navigateToCompanyAuth(navigateTo);
   };
 
   return (
@@ -32,13 +36,23 @@ const Home: React.FC = (): JSX.Element => {
                 partnerships.
               </p>
 
-              <Button
-                outline={false}
-                className="w-2/4 my-8"
-                onClick={handleActionButtonClick}
-              >
-                get started
-              </Button>
+              <section className="button-section w-full flex items-center justify-around md:justify-start">
+                <Button
+                  outline={false}
+                  className="w-3/12 my-8 mr-3"
+                  onClick={handleActionButtonClick}
+                >
+                  sign up
+                </Button>
+
+                <Button
+                  outline={true}
+                  className="w-9/12 my-8 md:w-3/4 lg:w-2/4"
+                  onClick={handleRecyclingBusinessBtnClick}
+                >
+                  join as a recycling business
+                </Button>
+              </section>
             </div>
 
             <div className="lg:w-1/2 transform lg:translate-y-[-20%]">
@@ -70,6 +84,7 @@ const Home: React.FC = (): JSX.Element => {
               >
                 get started
               </Button>
+
               <img
                 src={ArrowIcon}
                 alt="Hero"

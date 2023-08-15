@@ -11,15 +11,12 @@ import {
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
-
-// import {
-//   navigateToSettings,
-//   navigateToProfileEdit,
-// } from "../../utils/navigate";
-
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { navigateToCompanyAuth } from "../../utils/navigate";
 
 const Settings: React.FC = (): JSX.Element => {
+  const navigateTo = useNavigate();
+
   const allSettings = [
     {
       name: "Account",
@@ -62,7 +59,7 @@ const Settings: React.FC = (): JSX.Element => {
       subText: "Register your recycling company with Recykle",
       icon: faRecycle,
       onClick: () => {
-        console.log(` settings clicked`);
+        navigateToCompanyAuth(navigateTo);
       },
     },
   ];

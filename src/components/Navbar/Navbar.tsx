@@ -27,10 +27,10 @@ const Navbar: React.FC = (): JSX.Element => {
 
       <section className="hidden md:flex items-end justify-end w-4/6 overflow-x-hidden">
         <Link
-          to="/auth"
+          to="/auth?login=true"
           className="capitalize inline-block text-center border-transparent border-solid border-2 border-spacing-3  mx-5 p-3 bg-green-300 text-white w-40 rounded-sm hover:bg-transparent hover:border-green-300 hover:text-black transition-all duration-150 ease-in-out"
         >
-          get started
+          login
         </Link>
       </section>
 

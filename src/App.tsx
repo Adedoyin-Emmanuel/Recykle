@@ -26,37 +26,42 @@ const App = () => {
       <Routes>
         {/* Users Routes */}
         <Route path="/" element={<Home />}></Route>
+
         <Route path="/auth" element={<Auth />}></Route>
+        <Route
+          path="/auth/details"
+          element={<ProtectedRoute children={<Details />} />}
+        ></Route>
+
         <Route
           path="/dashboard"
           element={<ProtectedRoute children={<Dashboard />} />}
         ></Route>
         <Route
-          path="/recycle"
+          path="/dashboard/recycle"
           element={<ProtectedRoute children={<Recycle />} />}
         ></Route>
+
         <Route
-          path="/details"
-          element={<ProtectedRoute children={<Details />} />}
-        ></Route>
-        <Route
-          path="/marketplace"
+          path="/dashboard/marketplace"
           element={<ProtectedRoute children={<MarketPlace />} />}
         ></Route>
         <Route
-          path="/profile"
+          path="/dashboard/profile"
           element={<ProtectedRoute children={<Profile />} />}
         ></Route>
         <Route
-          path="/settings"
+          path="/dashboard/settings"
           element={<ProtectedRoute children={<Settings />} />}
         ></Route>
         <Route
-          path="/settings/profile-edit"
+          path="/dashboard/settings/profile-edit"
           element={<ProtectedRoute children={<ProfileEdit />} />}
         ></Route>
 
         {/* Recycling Companies routes */}
+        <Route path="/company" element={<Home />}></Route>
+
         <Route path="/company/auth" element={<CompanyAuth />}></Route>
 
         <Route
