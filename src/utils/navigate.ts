@@ -23,3 +23,11 @@ export const navigateToProfile = (navigator: NavigateFunction) => {
 export const navigateToMarketPlace = (navigator: NavigateFunction) => {
   navigator("/marketplace");
 };
+
+export const navigateToSettings = (navigator: NavigateFunction) => {
+  navigator("/settings");
+};
+
+export const navigateToProfileEdit = (navigator: NavigateFunction) => {
+  navigator("/settings/profile-edit");
+};
