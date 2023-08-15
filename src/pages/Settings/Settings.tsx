@@ -2,7 +2,7 @@ import React from "react";
 import Dashboard from "../Dashboard/Dashboard";
 import Memoji from "./../../assets/memoji.png";
 
-import { faKey, faLock, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faKey, faLock, faUsers, faRecycle } from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
@@ -47,6 +47,15 @@ const Settings: React.FC = (): JSX.Element => {
       name: "Invite",
       subText: "invite your friends to Recykle",
       icon: faUsers,
+      onClick: () => {
+        console.log(` settings clicked`);
+      },
+    },
+
+    {
+      name: "Register Recycling Company",
+      subText: "Register your recycling company with Recykle",
+      icon: faRecycle,
       onClick: () => {
         console.log(` settings clicked`);
       },
