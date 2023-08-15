@@ -3,7 +3,6 @@ import Container from "../../components/Container/Container";
 import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
-import GoogleIcon from "./../../assets/google.svg";
 import { navigateToCompanyDetails } from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -64,12 +63,7 @@ const CompanyAuth = (): JSX.Element => {
           login
         </Button>
 
-        <section className="google-auth flex w-full items-center justify-start">
-          <Button outline className="w-36 flex items-center justify-around">
-            <img src={GoogleIcon} alt="sign up google" className="" />
-            <p className="capitalize px-3">login</p>
-          </Button>
-        </section>
+        <section className="google-auth flex w-full items-center justify-start"></section>
         <p className="account-details my-2">
           Don't have an account ?
           <span
@@ -118,12 +112,7 @@ const CompanyAuth = (): JSX.Element => {
           sign up
         </Button>
 
-        <section className="google-auth flex w-full items-center justify-start">
-          <Button outline className="w-36 flex items-center justify-around">
-            <img src={GoogleIcon} alt="sign up google" className="" />
-            <p className="capitalize px-3">sign up</p>
-          </Button>
-        </section>
+        <section className="google-auth flex w-full items-center justify-start"></section>
         <p className="account-details my-2">
           Have an account ?
           <span
