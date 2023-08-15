@@ -1,10 +1,105 @@
 import React from "react";
 import Dashboard from "../Dashboard/Dashboard";
+import Input from "../../components/Input/Input";
+import Memoji from "./../../assets/memoji.png";
+import Button from "../../components/Button/Button";
+import VerifiedLogo from "./../../assets/verify.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLocationDot,
+  faCalendar,
+  faRecycle,
+  faKey,
+  faLock,
+  faUsers,
+  faGear,
+} from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 
 const Profile: React.FC = (): JSX.Element => {
   return (
     <Dashboard onProfilePage>
-     
+      <section className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3">
+        <section className="flex items-center justify-center w-full">
+          <img src={Memoji} alt="profile picture" className="h-64 w-52" />
+        </section>
+        <section className="action-buttons w-full flex items-center justify-end">
+          <Button
+            className="rounded-[30px] capitalize w-[120px] h-10  md:w-32 md:h-10 lg:w-28 text-sm m-3 flex items-center justify-around"
+            outline
+          >
+            <FontAwesomeIcon icon={faGear} />
+            settings
+          </Button>
+        </section>
+        <section className="profile-details my-5 mx-3">
+          <h3 className="profile-name font-bold capitalize text-[1.3rem] flex items-center justify-start gap-x-3">
+            adedoyin emmanuel
+            <p>
+              <img src={VerifiedLogo} alt="verified logo" />
+            </p>
+          </h3>
+          <p className="profile-username text-slate-500">@doyin</p>
+
+          <p className="profile-description my-2 capitalize">
+            Software Engineer, chronic christ addict
+          </p>
+
+          <p className="profile-location flex items-center justify-start gap-x-2 mb-1">
+            <FontAwesomeIcon icon={faLocationDot} />
+            123, Alakuko road
+          </p>
+
+          <p className="profile-join-date flex items-center justify-start gap-x-2 mb-1">
+            <FontAwesomeIcon icon={faCalendar} />
+            Joined march 2022
+          </p>
+
+          <p className="profile-join-date flex items-center justify-start gap-x-2 mb-1">
+            <FontAwesomeIcon icon={faRecycle} />
+            Recycled 120 items
+          </p>
+        </section>
+        {/* <hr />
+        
+        <section className="action-buttons">
+          <section className="account-details">
+            <FontAwesomeIcon icon={faKey} />
+
+            <section className="account-info">
+              <h4 className="font-bold capitalize">account info</h4>
+              <p className="text-sm">security notifications, change number</p>
+            </section>
+          </section>
+
+          <section className="privacy-settings">
+            <FontAwesomeIcon icon={faLock} />
+
+            <section className="p">
+              <h4 className="font-bold capitalize">privacy</h4>
+              <p className="text-sm">block contacts, disappearing messages</p>
+            </section>
+          </section>
+
+          <section className="help-info">
+            <FontAwesomeIcon icon={faQuestionCircle} />
+
+            <section className="p">
+              <h4 className="font-bold capitalize">privacy</h4>
+              <p className="text-sm">block contacts, disappearing messages</p>
+            </section>
+          </section>
+
+          <section className="invite">
+            <FontAwesomeIcon icon={faUsers} />
+
+            <section className="p">
+              <h4 className="font-bold capitalize">invite a friend</h4>
+              <p className="text-sm">invite a friend to recykle</p>
+            </section>
+          </section>
+        </section> */}
+      </section>
     </Dashboard>
   );
 };
