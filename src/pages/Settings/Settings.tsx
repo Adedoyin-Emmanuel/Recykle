@@ -1,8 +1,13 @@
 import React from "react";
-import Dashboard from "../Dashboard/Dashboard";
+import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 import Memoji from "./../../assets/memoji.png";
 
-import { faKey, faLock, faUsers, faRecycle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faKey,
+  faLock,
+  faUsers,
+  faRecycle,
+} from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
@@ -77,7 +82,7 @@ const Settings: React.FC = (): JSX.Element => {
   });
 
   return (
-    <Dashboard onProfilePage>
+    <DashboardComponent onProfilePage>
       <section className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3">
         <UserProfileCard
           profileImage={Memoji}
@@ -91,7 +96,7 @@ const Settings: React.FC = (): JSX.Element => {
         {mapSettingsTags}
         <section className="action-buttons"></section>
       </section>
-    </Dashboard>
+    </DashboardComponent>
   );
 };
 

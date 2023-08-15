@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "../Dashboard/Dashboard";
+import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 import Memoji from "./../../assets/memoji.png";
 import VerifiedLogo from "./../../assets/verify.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,13 +27,13 @@ const Profile: React.FC = (): JSX.Element => {
     navigateToProfileEdit(navigateTo);
   };
   return (
-    <Dashboard onProfilePage>
+    <DashboardComponent onProfilePage>
       <section className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3">
         <section className="flex items-center justify-center w-full">
           <img src={Memoji} alt="profile picture" className="h-64 w-52" />
           <FontAwesomeIcon
             icon={faPen}
-          className="hover:bg-slate-100 bg-green-100 text-white transform-gpu duration-100 ease-in-out -translate-x-20 translate-y-20 rounded-full p-3 hover:text-green-300 cursor-pointer"
+            className="hover:bg-slate-100 bg-green-100 text-white transform-gpu duration-100 ease-in-out -translate-x-20 translate-y-20 rounded-full p-3 hover:text-green-300 cursor-pointer"
             size={"lg"}
             title="Edit profile"
             onClick={handleProfileEditIconClick}
@@ -77,7 +77,7 @@ const Profile: React.FC = (): JSX.Element => {
           </p>
         </section>
       </section>
-    </Dashboard>
+    </DashboardComponent>
   );
 };
 

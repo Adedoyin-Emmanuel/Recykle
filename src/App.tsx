@@ -50,8 +50,45 @@ const App = () => {
           path="/settings/profile-edit"
           element={<ProtectedRoute children={<ProfileEdit />} />}
         ></Route>
+
         {/* Recycling Companies routes */}
-      <Route path="/company/auth"></Route>
+        <Route path="/company/auth" element={<CompanyAuth />}></Route>
+
+        <Route
+          path="/company/auth/details"
+          element={<ProtectedRoute children={<CompanyDetails />} />}
+        ></Route>
+
+        <Route
+          path="/company/dashboard"
+          element={<ProtectedRoute children={<CompanyDashboard />} />}
+        ></Route>
+
+        <Route
+          path="/company/dashboard/manage-materials"
+          element={<ProtectedRoute children={<CompanyMaterials />} />}
+        ></Route>
+
+        <Route
+          path="/company/dashboard/submissions"
+          element={<ProtectedRoute children={<CompanySubmissions />} />}
+        ></Route>
+
+        <Route
+          path="/company/dashboard/settings"
+          element={<ProtectedRoute children={<CompanySettings />} />}
+        ></Route>
+
+        <Route
+          path="/company/dashboard/profile"
+          element={<ProtectedRoute children={<CompanyProfile />} />}
+        ></Route>
+
+        <Route
+          path="/company/dashboard/profile/edit"
+          element={<ProtectedRoute children={<CompanyProfileEdit />} />}
+        ></Route>
+
         {/* Super Admin Routes */}
         <Route path="*" element={<NotFound />}></Route>
       </Routes>

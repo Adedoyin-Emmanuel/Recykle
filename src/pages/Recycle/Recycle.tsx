@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Dashboard from "../Dashboard/Dashboard";
+import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Container from "../../components/Container/Container";
@@ -80,7 +80,7 @@ const Recycle: React.FC = (): JSX.Element => {
     setShowItemsContainer(true);
   };
   return (
-    <Dashboard onRecyklePage className="flex flex-col items-center">
+    <DashboardComponent onRecyklePage className="flex flex-col items-center">
       <SearchBar className="my-5" />
 
       <section className="companies-area w-full flex-col flex items-center my-5   ">
@@ -106,7 +106,7 @@ const Recycle: React.FC = (): JSX.Element => {
           />
         </section>
       </Container>
-    </Dashboard>
+    </DashboardComponent>
   );
 };
 

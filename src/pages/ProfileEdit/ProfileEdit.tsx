@@ -1,6 +1,6 @@
 import React from "react";
 import Input from "../../components/Input/Input";
-import Dashboard from "../Dashboard/Dashboard";
+import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 import Memoji from "./../../assets/memoji.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +9,7 @@ import Button from "../../components/Button/Button";
 
 const ProfileEdit: React.FC = (): JSX.Element => {
   return (
-    <Dashboard onProfilePage>
+    <DashboardComponent onProfilePage>
       <form className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3 my-8">
         <section className="profile-image flex items-center justify-center w-full">
           <img src={Memoji} alt="user-image-real" className="h-30 w-40" />
@@ -68,7 +68,7 @@ const ProfileEdit: React.FC = (): JSX.Element => {
           </section>
         </section>
       </form>
-    </Dashboard>
+    </DashboardComponent>
   );
 };
 

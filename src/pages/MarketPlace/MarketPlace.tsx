@@ -1,13 +1,13 @@
 import React from "react";
-import Dashboard from "../Dashboard/Dashboard";
+import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 
 const MarketPlace: React.FC = (): JSX.Element => {
   return (
-    <Dashboard onMarketPlacePage>
+    <DashboardComponent onMarketPlacePage>
       <h1 className="font-bold text-green-300 text-4xl capitalize">
         hello market place page
       </h1>
-    </Dashboard>
+    </DashboardComponent>
   );
 };
 
