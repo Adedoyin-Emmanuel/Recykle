@@ -6,26 +6,15 @@ import { faKey, faLock, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
-import SettingsCardProps from "../../components/SettingsCard/SettingsCard";
 
-import {
-  navigateToSettings,
-  navigateToProfileEdit,
-} from "../../utils/navigate";
+// import {
+//   navigateToSettings,
+//   navigateToProfileEdit,
+// } from "../../utils/navigate";
 
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 const Settings: React.FC = (): JSX.Element => {
-  const navigateTo = useNavigate();
-
-  const handleSettingsButtonClick = () => {
-    navigateToSettings(navigateTo);
-  };
-
-  const handleProfileEditIconClick = () => {
-    navigateToProfileEdit(navigateTo);
-  };
-
   const allSettings = [
     {
       name: "Account",
@@ -64,21 +53,19 @@ const Settings: React.FC = (): JSX.Element => {
     },
   ];
 
-  const mapSettingsTags = allSettings.map(
-    (element: SettingsCardProps, index: number) => {
-      const { name, subText, icon, onClick } = element;
+  const mapSettingsTags = allSettings.map((element, index: number) => {
+    const { name, subText, icon, onClick } = element;
 
-      return (
-        <SettingsCard
-          key={index}
-          settingsCardHeaderText={name}
-          settingsCardSubText={subText}
-          settingsCardIcon={icon}
-          onClick={onClick}
-        />
-      );
-    }
-  );
+    return (
+      <SettingsCard
+        key={index}
+        settingsCardHeaderText={name}
+        settingsCardSubText={subText}
+        settingsCardIcon={icon}
+        onClick={onClick}
+      />
+    );
+  });
 
   return (
     <Dashboard onProfilePage>
