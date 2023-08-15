@@ -18,6 +18,7 @@ import CompanyProfileEdit from "./pages/CompanyProfileEdit/CompanyProfileEdit";
 import CompanySettings from "./pages/CompanySettings/CompanySettings";
 import CompanySubmissions from "./pages/CompanySubmissions/CompanySubmissions";
 import CompanyMaterials from "./pages/CompanyMaterials/CompanyMaterials";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 const App = () => {
   return (
@@ -26,6 +27,10 @@ const App = () => {
         {/* Users Routes */}
         <Route path="/" element={<Home />}></Route>
         <Route path="/auth" element={<Auth />}></Route>
+        <Route
+          path="/dashboard"
+          element={<ProtectedRoute children={<Dashboard />} />}
+        ></Route>
         <Route
           path="/recycle"
           element={<ProtectedRoute children={<Recycle />} />}
