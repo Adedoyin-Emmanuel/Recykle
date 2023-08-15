@@ -48,12 +48,12 @@ const UserProfileCard = ({
             />
           </p>
         </h4>
-        <p className="text-sm text-slate-5 mb-1">@{profileUsername}</p>
+        <p className="text-sm text-slate-500 mb-1">@{profileUsername}</p>
       </>
     ) : (
       <>
         <h4 className="recycling-company-name font-bold">{profileName}</h4>
-        <p className="text-sm text-slate-5 mb-1">@{profileUsername}</p>
+        <p className="text-sm text-slate-500 mb-1">@{profileUsername}</p>
       </>
     );
   };

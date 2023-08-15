@@ -76,6 +76,7 @@ const Settings: React.FC = (): JSX.Element => {
           profileName="Adedoyin Emmanuel"
           profileUsername="doyin"
           profileDescription="Busy, text y'all later 🫵"
+          className="md:mt-0"
         />
         <hr />
         {mapSettingsTags}
