@@ -33,7 +33,7 @@ const Profile: React.FC = (): JSX.Element => {
           <img src={Memoji} alt="profile picture" className="h-64 w-52" />
           <FontAwesomeIcon
             icon={faPen}
-            className="hover:bg-slate-100 transform-gpu duration-100 ease-in-out -translate-x-10 translate-y-16 rounded-full p-4 hover:text-green-300 cursor-pointer"
+          className="hover:bg-slate-100 bg-green-100 text-white transform-gpu duration-100 ease-in-out -translate-x-20 translate-y-20 rounded-full p-3 hover:text-green-300 cursor-pointer"
             size={"lg"}
             title="Edit profile"
             onClick={handleProfileEditIconClick}
@@ -76,45 +76,6 @@ const Profile: React.FC = (): JSX.Element => {
             Recycled 120 items
           </p>
         </section>
-        {/* <hr />
-        
-        <section className="action-buttons">
-          <section className="account-details">
-            <FontAwesomeIcon icon={faKey} />
-
-            <section className="account-info">
-              <h4 className="font-bold capitalize">account info</h4>
-              <p className="text-sm">security notifications, change number</p>
-            </section>
-          </section>
-
-          <section className="privacy-settings">
-            <FontAwesomeIcon icon={faLock} />
-
-            <section className="p">
-              <h4 className="font-bold capitalize">privacy</h4>
-              <p className="text-sm">block contacts, disappearing messages</p>
-            </section>
-          </section>
-
-          <section className="help-info">
-            <FontAwesomeIcon icon={faQuestionCircle} />
-
-            <section className="p">
-              <h4 className="font-bold capitalize">privacy</h4>
-              <p className="text-sm">block contacts, disappearing messages</p>
-            </section>
-          </section>
-
-          <section className="invite">
-            <FontAwesomeIcon icon={faUsers} />
-
-            <section className="p">
-              <h4 className="font-bold capitalize">invite a friend</h4>
-              <p className="text-sm">invite a friend to recykle</p>
-            </section>
-          </section>
-        </section> */}
       </section>
     </Dashboard>
   );

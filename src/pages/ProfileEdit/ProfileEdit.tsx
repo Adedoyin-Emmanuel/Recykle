@@ -16,7 +16,7 @@ const ProfileEdit: React.FC = (): JSX.Element => {
           <FontAwesomeIcon
             icon={faCamera}
             size={"lg"}
-            className="bg-green-100 p-3 rounded-full text-2xl text-white transform-gpu -translate-x-16 translate-y-12 hover:bg-slate-100 hover:text-black cursor-pointer transition-colors duration-150"
+            className="bg-green-100 p-3 rounded-full  text-white transform-gpu -translate-x-16 translate-y-12 hover:bg-slate-100 hover:text-green-300 cursor-pointer transition-colors duration-150"
           />
         </section>
 
