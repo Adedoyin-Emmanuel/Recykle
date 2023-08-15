@@ -8,6 +8,8 @@ import Recycle from "./pages/Recycle/Recycle";
 import MarketPlace from "./pages/MarketPlace/MarketPlace";
 import Profile from "./pages/Profile/Profile";
 import Details from "./pages/Details/Details";
+import Settings from "./pages/Settings/Settings";
+import ProfileEdit from "./pages/ProfileEdit/ProfileEdit";
 
 const App = () => {
   return (
@@ -31,6 +33,16 @@ const App = () => {
           path="/profile"
           element={<ProtectedRoute children={<Profile />} />}
         ></Route>
+        <Route
+          path="/settings"
+          element={<ProtectedRoute children={<Settings />} />}
+        ></Route>
+
+        <Route
+          path="/settings/profile-edit"
+          element={<ProtectedRoute children={<ProfileEdit />} />}
+        ></Route>
+
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
