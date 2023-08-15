@@ -4,8 +4,8 @@ import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
-import { navigateToDetails } from "../../utils/navigate";
-import { useNavigate } from "react-router-dom";
+import { navigateToCompanyDetails } from "../../utils/navigate";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface HeaderProps {
   headerText?: string;
@@ -27,9 +27,12 @@ const Header = ({ headerText, subHeaderText }: HeaderProps): JSX.Element => {
 
 const CompanyAuth = (): JSX.Element => {
   const navigateTo = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const loginParam = queryParams.get("login");
 
   const handleAuthButtonClick = () => {
-    navigateToDetails(navigateTo);
+    navigateToCompanyDetails(navigateTo);
   };
 
   const CompanyLogin = (): JSX.Element => {
@@ -133,7 +136,9 @@ const CompanyAuth = (): JSX.Element => {
       </form>
     );
   };
-  const [authType, setAuthType] = useState<JSX.Element>(<CompanyLogin />);
+  const [authType, setAuthType] = useState<JSX.Element>(
+    loginParam === "true" ? <CompanyLogin /> : <CompanySignup />
+  );
 
   const handleLoginTextClick = () => {
     setAuthType(<CompanyLogin />);
