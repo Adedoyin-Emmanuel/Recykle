@@ -10,11 +10,20 @@ import Profile from "./pages/Profile/Profile";
 import Details from "./pages/Details/Details";
 import Settings from "./pages/Settings/Settings";
 import ProfileEdit from "./pages/ProfileEdit/ProfileEdit";
+import CompanyAuth from "./pages/CompanyAuth/CompanyAuth";
+import CompanyDashboard from "./pages/CompanyDashboard/CompanyDashboard";
+import CompanyDetails from "./pages/CompanyDetails/CompanyDetails";
+import CompanyProfile from "./pages/CompanyProfile/CompanyProfile";
+import CompanyProfileEdit from "./pages/CompanyProfileEdit/CompanyProfileEdit";
+import CompanySettings from "./pages/CompanySettings/CompanySettings";
+import CompanySubmissions from "./pages/CompanySubmissions/CompanySubmissions";
+import CompanyMaterials from "./pages/CompanyMaterials/CompanyMaterials";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Users Routes */}
         <Route path="/" element={<Home />}></Route>
         <Route path="/auth" element={<Auth />}></Route>
         <Route
@@ -37,12 +46,13 @@ const App = () => {
           path="/settings"
           element={<ProtectedRoute children={<Settings />} />}
         ></Route>
-
         <Route
           path="/settings/profile-edit"
           element={<ProtectedRoute children={<ProfileEdit />} />}
         ></Route>
-
+        {/* Recycling Companies routes */}
+      <Route path="/company/auth"></Route>
+        {/* Super Admin Routes */}
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
