@@ -1,6 +1,5 @@
 import React from "react";
 import Dashboard from "../Dashboard/Dashboard";
-import Input from "../../components/Input/Input";
 import Memoji from "./../../assets/memoji.png";
 import VerifiedLogo from "./../../assets/verify.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,12 +7,8 @@ import {
   faLocationDot,
   faCalendar,
   faRecycle,
-  faKey,
-  faLock,
-  faUsers,
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
-import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import {
   navigateToSettings,
