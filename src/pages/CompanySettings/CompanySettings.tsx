@@ -1,19 +1,14 @@
-
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import CompanyDashboardComponent from "../../components/CompanyDashboardComponent/CompanyDashboardComponent";
 
-interface CompanySettingsProps {
-    
-}
-
-const CompanySettings:React.FC = (): JSX.Element => {
-    const navigateTo = useNavigate();
-    return (
-        <React.Fragment>
-            <h1>CompanySettings works!</h1>
-        </React.Fragment>
-    );  
-}
+const CompanySettings: React.FC = (): JSX.Element => {
+  return (
+    <CompanyDashboardComponent onSettingsPage>
+      <h3 className="text-green-300 font-bold text-2xl capitalize">
+        welcome to settings page
+      </h3>
+    </CompanyDashboardComponent>
+  );
+};
 
 export default CompanySettings;
-    

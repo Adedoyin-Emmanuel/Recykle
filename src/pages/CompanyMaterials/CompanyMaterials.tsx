@@ -1,19 +1,14 @@
-
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import CompanyDashboardComponent from "../../components/CompanyDashboardComponent/CompanyDashboardComponent";
 
-interface CompanyMaterialsProps {
-    
-}
-
-const CompanyMaterials:React.FC = (): JSX.Element => {
-    const navigateTo = useNavigate();
-    return (
-        <React.Fragment>
-            <h1>CompanyMaterials works!</h1>
-        </React.Fragment>
-    );  
-}
+const CompanyMaterials: React.FC = (): JSX.Element => {
+  return (
+    <CompanyDashboardComponent onServicePage>
+      <h3 className="text-green-300 font-bold text-2xl capitalize">
+        welcome to service page
+      </h3>
+    </CompanyDashboardComponent>
+  );
+};
 
 export default CompanyMaterials;
-    

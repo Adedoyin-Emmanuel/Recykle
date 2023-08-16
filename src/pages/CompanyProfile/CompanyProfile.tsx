@@ -1,19 +1,14 @@
-
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import CompanyDashboardComponent from "../../components/CompanyDashboardComponent/CompanyDashboardComponent";
 
-interface CompanyProfileProps {
-    
-}
-
-const CompanyProfile:React.FC = (): JSX.Element => {
-    const navigateTo = useNavigate();
-    return (
-        <React.Fragment>
-            <h1>CompanyProfile works!</h1>
-        </React.Fragment>
-    );  
-}
+const CompanyProfile: React.FC = (): JSX.Element => {
+  return (
+    <CompanyDashboardComponent onProfilePage>
+      <h3 className="text-green-300 font-bold text-2xl capitalize">
+        welcome to profile page
+      </h3>
+    </CompanyDashboardComponent>
+  );
+};
 
 export default CompanyProfile;
-    

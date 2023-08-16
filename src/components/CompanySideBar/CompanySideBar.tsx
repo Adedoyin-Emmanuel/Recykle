@@ -126,10 +126,10 @@ const CompanySideBar = ({
             settings
           </section>
         </section>
+      </section>
 
-        <section className="w-full md:w-3/4 lg:w-5/6 md:p-8 p-2 pl-1/4 overflow-y-auto ml-auto">
-          {children}
-        </section>
+      <section className="w-full md:w-3/4 lg:w-5/6 md:p-8 p-2 pl-1/4 overflow-y-auto ml-auto">
+        {children}
       </section>
 
       <CompanyMobileNav
