@@ -13,15 +13,24 @@ const ProfileEdit: React.FC = (): JSX.Element => {
       <form className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3 my-8">
         <section className="profile-image flex items-center justify-center w-full">
           <img src={Memoji} alt="user-image-real" className="h-30 w-40" />
-          <FontAwesomeIcon
-            icon={faCamera}
-            size={"lg"}
-            className="bg-green-100 p-3 rounded-full  text-white transform-gpu -translate-x-16 translate-y-12 hover:bg-slate-100 hover:text-green-300 cursor-pointer transition-colors duration-150"
-          />
+          <label htmlFor="fileUpload">
+            <FontAwesomeIcon
+              icon={faCamera}
+              size={"lg"}
+              className="bg-green-100 p-3 rounded-full  text-white transform-gpu -translate-x-16 translate-y-12 hover:bg-slate-100 hover:text-green-300 cursor-pointer transition-colors duration-150"
+            />
+            <input
+              type="file"
+              name="user-profile-picture"
+              id="fileUpload"
+              hidden
+              accept=".png, .jpg, .jpeg"
+            />
+          </label>
         </section>
 
         <section className="user-details-section w-full p-4">
-          <section className="form-group flex gap-x-3 items-center md:gap-x-8">
+          <section className="form-group mb-4 flex gap-x-3 items-center md:gap-x-8">
             <section className="input-section w-full">
               <label htmlFor="fullname" className="text-sm capitalize my-2">
                 fullname
@@ -34,7 +43,7 @@ const ProfileEdit: React.FC = (): JSX.Element => {
             </section>
           </section>
 
-          <section className="form-group flex gap-x-3 items-center md:gap-x-8">
+          <section className="form-group mb-4 flex gap-x-3 items-center md:gap-x-8">
             <section className="input-section w-full">
               <label htmlFor="fullname" className="text-sm capitalize my-2">
                 about
@@ -47,14 +56,14 @@ const ProfileEdit: React.FC = (): JSX.Element => {
             </section>
           </section>
 
-          <section className="form-group flex gap-x-3 items-center md:gap-x-8">
+          <section className="form-group mb-4 flex gap-x-3 items-center md:gap-x-8">
             <section className="input-section w-full">
               <label htmlFor="fullname" className="text-sm capitalize my-2">
                 Phone
               </label>
               <Input
                 placeholder="Enter your phone number"
-                type="number"
+                type="tel"
                 value={"07061620301"}
                 required
               />

@@ -13,7 +13,6 @@ import CompanyProfileCard from "../../components/CompanyProfileCard/CompanyProfi
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
 import { useNavigate } from "react-router-dom";
 import { navigateToCompanyAuth } from "../../utils/navigate";
-import Recycle from "../Recycle/Recycle";
 
 const CompanySettings = (): JSX.Element => {
   const navigateTo = useNavigate();
@@ -88,7 +87,7 @@ const CompanySettings = (): JSX.Element => {
           companyProfileName="Recykle"
           companyProfileUsername="recykle"
           companyProfileDescription="Bridging the gap between recycling companies and consumers "
-          className="md:mt-0"
+          className="md:mt-0 m-2"
         />
         <hr />
         {mapSettingsTags}
