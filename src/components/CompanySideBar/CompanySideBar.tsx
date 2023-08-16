@@ -1,5 +1,5 @@
 import React from "react";
-import Memoji from "./../../assets/memoji-2.png";
+import RecycleLogo from "./../../assets/trash.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDashboard,
@@ -61,7 +61,7 @@ const CompanySideBar = ({
       >
         <section className="header-section w-full flex items-center justify-start my-5 flex-col">
           <section className="w-3/4 flex flex-col items-start mx-3">
-            <img src={Memoji} alt="" className="w-16 h-16" />
+            <img src={RecycleLogo} alt="" className="w-16 h-16 rounded-full" />
 
             <section className="profile-name mt-5">
               <h3 className="font-bold capitalize flex">
