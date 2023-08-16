@@ -10,7 +10,7 @@ export const navigateToDetails = (navigator: NavigateFunction) => {
 };
 
 export const navigateToDashboard = (navigator: NavigateFunction) => {
-  navigator("/dasboard");
+  navigator("/dashboard");
 };
 
 export const navigateToRecycling = (navigator: NavigateFunction) => {

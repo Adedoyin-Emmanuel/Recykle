@@ -5,6 +5,7 @@ import {
   faUser,
   faTrash,
   faShoppingBag,
+  faDashboard,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useNavigate } from "react-router-dom";
@@ -12,21 +13,23 @@ import {
   navigateToMarketPlace,
   navigateToProfile,
   navigateToRecycling,
+  navigateToDashboard,
 } from "../../utils/navigate";
 import Memoji from "./../../assets/memoji.png";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   children: React.ReactNode;
+  onDashboardPage?: boolean;
   onProfilePage?: boolean;
   onRecyklePage?: boolean;
   onMarketPlacePage?: boolean;
-  others?: React.Attributes;
 }
 
 const Sidebar = ({
   className,
   children,
+  onDashboardPage,
   onProfilePage,
   onRecyklePage,
   onMarketPlacePage,
@@ -44,6 +47,10 @@ const Sidebar = ({
 
   const handleRecykleClick = () => {
     navigateToRecycling(navigateTo);
+  };
+
+  const handleDashboardClick = () => {
+    navigateToDashboard(navigateTo);
   };
   return (
     <section className="parent h-screen w-screen flex justify-between">
@@ -80,6 +87,16 @@ const Sidebar = ({
         </section>
 
         <section
+          className={`rounded p-3 w-3/4 flex flex-col items-center justify-around gap-4 capitalize   hover:bg-green-200 hover:text-white cursor-pointer my-16 ${
+            onDashboardPage && "bg-green-200 text-white"
+          }`}
+          onClick={handleDashboardClick}
+        >
+          <FontAwesomeIcon icon={faDashboard} size={"lg"} className="" />
+          dashboard
+        </section>
+
+        <section
           onClick={handleRecykleClick}
           className={`rounded p-3 w-3/4 flex flex-col items-center justify-around gap-4 capitalize   hover:bg-green-200 hover:text-white cursor-pointer my-16 ${
             onRecyklePage && "bg-green-200 text-white"
@@ -109,11 +126,13 @@ const Sidebar = ({
           marketplace
         </section>
       </section>
+
       <section className="w-full md:w-3/4 lg:w-5/6 md:p-8 p-2 pl-1/4 overflow-y-auto ml-auto">
         {children}
       </section>
 
       <MobileNav
+        onDashboardPage={onDashboardPage}
         onProfilePage={onProfilePage}
         onRecyklePage={onRecyklePage}
         onMarketPlacePage={onMarketPlacePage}

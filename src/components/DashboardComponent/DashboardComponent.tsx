@@ -4,6 +4,7 @@ import Sidebar from "../Sidebar/Sidebar";
 interface DashboardComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   children?: React.ReactNode;
+  onDashboardPage?: boolean;
   onProfilePage?: boolean;
   onRecyklePage?: boolean;
   onMarketPlacePage?: boolean;
@@ -13,6 +14,7 @@ interface DashboardComponentProps extends React.HTMLAttributes<HTMLDivElement> {
 const DashboardComponent = ({
   className,
   children,
+  onDashboardPage,
   onProfilePage,
   onRecyklePage,
   onMarketPlacePage,
@@ -20,6 +22,7 @@ const DashboardComponent = ({
 }: DashboardComponentProps): JSX.Element => {
   return (
     <Sidebar
+      onDashboardPage={onDashboardPage}
       onProfilePage={onProfilePage}
       onRecyklePage={onRecyklePage}
       onMarketPlacePage={onMarketPlacePage}

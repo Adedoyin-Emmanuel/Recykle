@@ -1,18 +1,37 @@
-
 import React from "react";
+import CompanySideBar from "../CompanySideBar/CompanySideBar";
 
-interface CompanyDashboardComponentProps {
-    
+interface CompanyDashboardComponentProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
+  children?: React.ReactNode;
+  onProfilePage?: boolean;
+  onServicePage?: boolean;
+  onSettingsPage?: boolean;
+  onDashboardPage?: boolean;
 }
 
-const CompanyDashboardComponent:React.FC = (): JSX.Element => {
-
-    return (
-        <React.Fragment>
-            <h1>CompanyDashboardComponent works!</h1>
-        </React.Fragment>
-    );  
-}
+const CompanyDashboardComponent = ({
+  className,
+  children,
+  onProfilePage,
+  onServicePage,
+  onSettingsPage,
+  onDashboardPage,
+  ...others
+}: CompanyDashboardComponentProps): JSX.Element => {
+  return (
+    <CompanySideBar
+      onProfilePage={onProfilePage}
+      onServicePage={onServicePage}
+      onSettingsPage={onSettingsPage}
+      onDashboardPage={onDashboardPage}
+    >
+      <section className={`${className}`} {...others}>
+        {children}
+      </section>
+    </CompanySideBar>
+  );
+};
 
 export default CompanyDashboardComponent;
-    

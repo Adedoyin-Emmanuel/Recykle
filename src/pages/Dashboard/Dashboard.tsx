@@ -1,19 +1,12 @@
-
 import React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 
-interface DashboardProps {
-    
-}
-
-const Dashboard:React.FC = (): JSX.Element => {
-    const navigateTo = useNavigate();
-    return (
-        <React.Fragment>
-            <h1>Dashboard works!</h1>
-        </React.Fragment>
-    );  
-}
+const Dashboard = (): JSX.Element => {
+  return (
+    <DashboardComponent onDashboardPage>
+      <h3 className="text-green-300 capitalize font-bold text-2xl">welcome to dashboard</h3>
+    </DashboardComponent>
+  );
+};
 
 export default Dashboard;
-    
