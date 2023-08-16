@@ -69,7 +69,7 @@ const CompanyProfileCard = ({
         <img
           src={companyProfileImage}
           alt="user profile image"
-          className="h-24 w-20"
+          className="h-24 w-24 rounded-full"
         />
 
         <FontAwesomeIcon
