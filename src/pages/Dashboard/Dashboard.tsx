@@ -7,15 +7,16 @@ import Submitted from "./../../assets/clipboard-tick-2.svg";
 import TrashBin from "../../assets/recycle-icon.svg";
 import RecycleCard from "../../components/RecycleCard/RecycleCard";
 import SubmissionCard from "../../components/SubmissionCard/SubmissionCard";
+import { ChartTest } from "../../components/ChartTest/ChartTest";
 
 const Dashboard = (): JSX.Element => {
   return (
     <DashboardComponent onDashboardPage>
       <DashboardHeader />
 
-      <div className="w-full flex flex-col xl:flex-row gap-x-5">
-        <div className="first-section w-full xl:w-8/12">
-          <div className="grid p-3 lg:grid-cols-3 gap-10">
+      <div className="w-full flex flex-col xl:flex-row gap-x-5 ">
+        <div className="first-section w-full xl:w-8/12 flex flex-col items-center justify-center">
+          <div className="grid p-3 lg:grid-cols-3 gap-10 w-full">
             {/* we would create another container for the md, sm and mobile screens */}
             <UtilityBox>
               <img src={Dollar} alt="dollar-bill" className="h-10 w-10" />
@@ -43,36 +44,23 @@ const Dashboard = (): JSX.Element => {
             </UtilityBox>
           </div>
 
-          <section className="recycle-history my-5 ">
+          <section className="recycle-history mt-16 mb-2 w-full ">
+            <h4 className="capitalize font-bold text-[20px]">
+              recycling statistic
+            </h4>
+          </section>
+
+          <section className="recycling-transactions w-full lg:w-11/12">
+            <ChartTest />
+          </section>
+
+          <section className="recycle-history mt-20 w-full">
             <h4 className="capitalize font-bold text-[20px]">
               recycle history
             </h4>
           </section>
 
-          <section className="recycling-transactions mt-5 ">
-            <RecycleCard
-              recycleDate="September 14th 2023, at 11:30pm"
-              recyclingPointsEarned={10}
-            />
-
-            <RecycleCard
-              recycleDate="November 30th 2023, at 4:30pm"
-              recyclingPointsEarned={14}
-            />
-
-            <RecycleCard
-              recycleDate="September 20th 2023, at 4:30pm"
-              recyclingPointsEarned={50}
-            />
-          </section>
-
-          <section className="recycle-history mb-5 mt-16">
-            <h4 className="capitalize font-bold text-[20px]">
-              recycle statistic
-            </h4>
-          </section>
-
-          <section className="recycling-transactions mt-5 ">
+          <section className="recycling-transactions mt-5 w-full">
             <RecycleCard
               recycleDate="September 14th 2023, at 11:30pm"
               recyclingPointsEarned={10}
@@ -91,7 +79,7 @@ const Dashboard = (): JSX.Element => {
         </div>
 
         <div className="second-section w-full xl:w-4/12 mt-16 md:mt-0 grid grid-cols-1  items-center justify-center">
-          <section className="submission-cards   md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
+          <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
             <section className="header w-full flex">
               <h4 className="capitalize font-bold text-[20px] md:p-3">
                 recent submission

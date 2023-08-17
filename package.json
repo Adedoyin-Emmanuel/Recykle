@@ -15,9 +15,12 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@types/chart.js": "^2.9.37",
+    "@types/faker": "^6.6.9",
     "@vercel/analytics": "^1.0.2",
     "autoprefixer": "^10.4.14",
     "chart.js": "^4.3.3",
+    "faker": "^6.6.6",
     "firebase": "^10.1.0",
     "framer-motion": "^10.15.2",
     "postcss": "^8.4.27",
@@ -30,6 +33,7 @@
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
