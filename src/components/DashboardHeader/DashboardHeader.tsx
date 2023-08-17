@@ -26,7 +26,7 @@ const DashboardHeader: React.FC = ({
           <FontAwesomeIcon
             icon={faBell}
             size={"lg"}
-            className="transition-colors transform-gpu hover:bg-slate-100 p-3 rounded-full hover:text-green-300"
+            className="transition-colors transform-gpu hover:bg-slate-100 p-3 shadow-sm rounded-full hover:text-green-300"
           />
         </section>
 

@@ -21,19 +21,19 @@ const SubmissionCard = ({
     switch (status) {
       case "success":
         return (
-          <div className="bg-green-200 text-[12px] font-bold w-24 rounded-xl opacity-90 hover:opacity-100 capitalize p-1 text-center">
+          <div className="bg-green-200 text-[11px] font-bold w-20 rounded opacity-90 hover:opacity-100 capitalize p-1 text-center">
             success
           </div>
         );
       case "failed":
         return (
-          <div className="bg-red-500 text-[12px] font-bold w-24 text-white rounded-xl opacity-90 hover:opacity-100 capitalize p-1 text-center">
+          <div className="bg-red-500 text-[11px] font-bold w-20 text-white rounded opacity-90 hover:opacity-100 capitalize p-1 text-center">
             failed
           </div>
         );
       case "pending":
         return (
-          <div className="bg-yellow-300 text-[12px] w-24 font-bold rounded-xl opacity-90 hover:opacity-100 capitalize p-1 text-center">
+          <div className="bg-yellow-300 text-[11px] w-20 font-bold rounded opacity-90 hover:opacity-100 capitalize p-1 text-center">
             pending
           </div>
         );

@@ -13,9 +13,10 @@ const Dashboard = (): JSX.Element => {
     <DashboardComponent onDashboardPage>
       <DashboardHeader />
 
-      <div className="w-full flex flex-col lg:flex-row gap-x-5">
-        <div className="first-section w-full lg:w-8/12">
+      <div className="w-full flex flex-col xl:flex-row gap-x-5">
+        <div className="first-section w-full xl:w-8/12">
           <div className="grid p-3 lg:grid-cols-3 gap-10">
+            {/* we would create another container for the md, sm and mobile screens */}
             <UtilityBox>
               <img src={Dollar} alt="dollar-bill" className="h-10 w-10" />
               <p className="total-balance capitalize text-sm">reykle points</p>
@@ -66,11 +67,38 @@ const Dashboard = (): JSX.Element => {
           </section>
         </div>
 
-        <div className="second-section w-full lg:w-4/12 h-screen mt-16">
-          <h4 className="capitalize font-bold text-[20px] md:mx-5 md:p-3">
-            recent submission
-          </h4>
-          <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center mx-auto">
+        <div className="second-section w-full xl:w-4/12 mt-16 md:mt-0 grid grid-cols-1  items-center justify-center">
+          <section className="submission-cards   md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
+            <section className="header w-full flex">
+              <h4 className="capitalize font-bold text-[20px] md:p-3">
+                recent submission
+              </h4>
+            </section>
+            <SubmissionCard
+              status="pending"
+              submissionCompany="recykle"
+              submissionDate="September 14th 2023"
+            />
+
+            <SubmissionCard
+              status="success"
+              submissionCompany="scrapay"
+              submissionDate="December 20th 2023"
+            />
+
+            <SubmissionCard
+              status="failed"
+              submissionCompany="bulaba"
+              submissionDate="August 26th 2023"
+            />
+          </section>
+
+          <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
+            <section className="header w-full flex">
+              <h4 className="capitalize font-bold text-[20px] md:p-3">
+                your recyclables
+              </h4>
+            </section>
             <SubmissionCard
               status="pending"
               submissionCompany="recykle"
