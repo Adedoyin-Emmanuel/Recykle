@@ -1,4 +1,3 @@
-import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -22,7 +21,8 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const options: any | Chart.ChartOptions = {
   responsive: true,
   interaction: {
     mode: "index",
@@ -32,9 +32,9 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: "Recycling Points Earned", // Your chart title
+      text: "Recycling Points Earned",
       font: {
-        family: "Poppins", // Set the Poppins font for the title
+        family: "Poppins",
         size: 18,
         weight: "bold",
       },
@@ -43,7 +43,7 @@ export const options = {
       display: true,
       labels: {
         font: {
-          family: "Poppins", // Set the Poppins font for the legend labels
+          family: "Poppins",
           size: 14,
         },
       },
@@ -56,10 +56,10 @@ export const options = {
       position: "left",
       ticks: {
         font: {
-          family: "Poppins", // Set the Poppins font for the tick labels
+          family: "Poppins",
           size: 12,
         },
-        callback: function (value) {
+        callback: function (value: string) {
           return value.toLocaleString();
         },
       },
@@ -78,7 +78,7 @@ export const options = {
 
 const labels = ["January", "February", "March", "April", "May", "June", "July"];
 
-export const data = {
+const data = {
   labels,
   datasets: [
     {

@@ -1,7 +1,5 @@
 import React from "react";
 import Submitted from "./../../assets/clipboard-tick.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 interface SubmissionCardProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
