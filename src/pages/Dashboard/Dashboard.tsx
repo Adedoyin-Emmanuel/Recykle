@@ -65,6 +65,29 @@ const Dashboard = (): JSX.Element => {
               recyclingPointsEarned={50}
             />
           </section>
+
+          <section className="recycle-history mb-5 mt-16">
+            <h4 className="capitalize font-bold text-[20px]">
+              recycle statistic
+            </h4>
+          </section>
+
+          <section className="recycling-transactions mt-5 ">
+            <RecycleCard
+              recycleDate="September 14th 2023, at 11:30pm"
+              recyclingPointsEarned={10}
+            />
+
+            <RecycleCard
+              recycleDate="November 30th 2023, at 4:30pm"
+              recyclingPointsEarned={14}
+            />
+
+            <RecycleCard
+              recycleDate="September 20th 2023, at 4:30pm"
+              recyclingPointsEarned={50}
+            />
+          </section>
         </div>
 
         <div className="second-section w-full xl:w-4/12 mt-16 md:mt-0 grid grid-cols-1  items-center justify-center">
