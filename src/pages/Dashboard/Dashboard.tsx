@@ -8,8 +8,25 @@ import TrashBin from "../../assets/recycle-icon.svg";
 import RecycleCard from "../../components/RecycleCard/RecycleCard";
 import SubmissionCard from "../../components/SubmissionCard/SubmissionCard";
 import { ChartTest } from "../../components/ChartTest/ChartTest";
+import Collection from "../../components/Collection/Collection";
 
 const Dashboard = (): JSX.Element => {
+  const recyclables = [
+    {
+      name: "Cardboard Boxes",
+      category: "Paper and Cardboard",
+      dateAdded: "2023-06-10",
+    },
+    { name: "Plastic Bottles", category: "Plastics", dateAdded: "2023-06-08" },
+    { name: "Glass Jars", category: "Glass", dateAdded: "2023-06-09" },
+    { name: "Trees", category: "Organic Waste", dateAdded: "2023-06-09" },
+    {
+      name: "car batteries",
+      category: "Hazardous Waste",
+      dateAdded: "2023-06-11",
+    },
+  ];
+
   return (
     <DashboardComponent onDashboardPage>
       <DashboardHeader />
@@ -110,23 +127,9 @@ const Dashboard = (): JSX.Element => {
                 your recyclables
               </h4>
             </section>
-            <SubmissionCard
-              status="pending"
-              submissionCompany="recykle"
-              submissionDate="September 14th 2023"
-            />
-
-            <SubmissionCard
-              status="success"
-              submissionCompany="scrapay"
-              submissionDate="December 20th 2023"
-            />
-
-            <SubmissionCard
-              status="failed"
-              submissionCompany="bulaba"
-              submissionDate="August 26th 2023"
-            />
+            {recyclables.map((recyclable, index) => (
+              <Collection key={index} {...recyclable} />
+            ))}
           </section>
         </div>
       </div>
