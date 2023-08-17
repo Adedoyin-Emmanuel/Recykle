@@ -23,7 +23,7 @@ body {
 
 /* Hide default scrollbar */
 ::-webkit-scrollbar {
-  width: 0.5em;
+  width: 4px !important;
 }
 
 ::-webkit-scrollbar-track {
@@ -33,7 +33,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
-
 
 /* Customize scrollbar track */
 ::-webkit-scrollbar-track {
@@ -45,4 +44,3 @@ body {
   background-color: #8684848e; /* Change this color as needed */
   border-radius: 6px;
 }
-
