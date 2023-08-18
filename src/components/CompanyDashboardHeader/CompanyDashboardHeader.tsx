@@ -3,14 +3,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 
-interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CompanyDashboardHeaderProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-const DashboardHeader: React.FC = ({
+const CompanyDashboardHeader: React.FC = ({
   className,
   ...others
-}: DashboardHeaderProps): JSX.Element => {
+}: CompanyDashboardHeaderProps): JSX.Element => {
   const [isNotificationDropdownVisible, setIsNotificationDropdownVisible] =
     useState(false);
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
@@ -66,7 +67,7 @@ const DashboardHeader: React.FC = ({
   const notificationItems = [
     {
       id: 1,
-      text: "New message from admin",
+      text: "New message from henqsoft",
       onClick: (id: number) => {
         console.log(`Hello notification ${id}`);
       },
@@ -80,7 +81,7 @@ const DashboardHeader: React.FC = ({
     },
     {
       id: 3,
-      text: "Your submission has been approved",
+      text: "Recycling successful",
       onClick: (id: number) => {
         console.log(`Hello notification ${id}`);
       },
@@ -189,4 +190,4 @@ const DashboardHeader: React.FC = ({
   );
 };
 
-export default DashboardHeader;
+export default CompanyDashboardHeader;

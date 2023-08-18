@@ -105,19 +105,19 @@ const Dashboard = (): JSX.Element => {
             <SubmissionCard
               status="pending"
               submissionCompany="recykle"
-              submissionDate="September 14th 2023"
+              submissionDate="14/09/2023"
             />
 
             <SubmissionCard
               status="success"
               submissionCompany="scrapay"
-              submissionDate="December 20th 2023"
+              submissionDate="20/09/2023"
             />
 
             <SubmissionCard
               status="failed"
               submissionCompany="bulaba"
-              submissionDate="August 26th 2023"
+              submissionDate="26/08/2023"
             />
           </section>
 
