@@ -22,14 +22,28 @@ const DashboardHeader: React.FC = ({
   useEffect(() => {
     const closeDropdowns = (event: MouseEvent) => {
       if (
-        (isNotificationDropdownVisible &&
-          notificationRef.current &&
-          !notificationRef.current.contains(event.target as Node)) ||
-        (isProfileDropdownVisible &&
-          profileRef.current &&
-          !profileRef.current.contains(event.target as Node))
+        isNotificationDropdownVisible &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
       ) {
         setIsNotificationDropdownVisible(false);
+      }
+    };
+
+    window.addEventListener("click", closeDropdowns);
+
+    return () => {
+      window.removeEventListener("click", closeDropdowns);
+    };
+  }, [isNotificationDropdownVisible]);
+
+  useEffect(() => {
+    const closeDropdowns = (event: MouseEvent) => {
+      if (
+        isProfileDropdownVisible &&
+        profileRef.current &&
+        !profileRef.current.contains(event.target as Node)
+      ) {
         setIsProfileDropdownVisible(false);
       }
     };
@@ -39,7 +53,7 @@ const DashboardHeader: React.FC = ({
     return () => {
       window.removeEventListener("click", closeDropdowns);
     };
-  }, [isNotificationDropdownVisible, isProfileDropdownVisible]);
+  }, [isProfileDropdownVisible]);
 
   const toggleNotificationDropdown = () => {
     setIsNotificationDropdownVisible(!isNotificationDropdownVisible);
@@ -50,15 +64,51 @@ const DashboardHeader: React.FC = ({
   };
 
   const notificationItems = [
-    { id: 1, text: "New message from admin" },
-    { id: 2, text: "Reminder: Meeting at 3 PM" },
-    { id: 3, text: "Your submission has been approved" },
+    {
+      id: 1,
+      text: "New message from admin",
+      onClick: (id: number) => {
+        console.log(`Hello notification ${id}`);
+      },
+    },
+    {
+      id: 2,
+      text: "Reminder: Meeting at 3 PM",
+      onClick: (id: number) => {
+        console.log(`Hello notification ${id}`);
+      },
+    },
+    {
+      id: 3,
+      text: "Your submission has been approved",
+      onClick: (id: number) => {
+        console.log(`Hello notification ${id}`);
+      },
+    },
   ];
 
   const profileMenuItems = [
-    { id: 1, text: "Edit Profile" },
-    { id: 2, text: "Change Password" },
-    { id: 3, text: "Logout" },
+    {
+      id: 1,
+      text: "Edit Profile",
+      onClick: (id: number) => {
+        console.log(`Hello profile item  ${id}`);
+      },
+    },
+    {
+      id: 2,
+      text: "Change Password",
+      onClick: (id: number) => {
+        console.log(`Hello profile item  ${id}`);
+      },
+    },
+    {
+      id: 3,
+      text: "Logout",
+      onClick: (id: number) => {
+        console.log(`Hello profile item  ${id}`);
+      },
+    },
   ];
 
   return (
@@ -99,6 +149,7 @@ const DashboardHeader: React.FC = ({
                 <p
                   key={item.id}
                   className="text-sm p-2 hover:bg-green-10 rounded"
+                  onClick={() => item.onClick(item.id)}
                 >
                   {item.text}
                 </p>
@@ -114,23 +165,24 @@ const DashboardHeader: React.FC = ({
           <section
             className="bg-green-300 h-10 w-10 rounded-full"
             onClick={toggleProfileDropdown}
-          >
-            {isProfileDropdownVisible && (
-              <div className="profile-dropdown absolute  top-full w-72 right-0 bg-white z-[100] rounded-md shadow-md p-4">
-                <h4 className="mb-2 font-bold text-gray-800 capitalize">
-                  Profile Menu
-                </h4>
-                {profileMenuItems.map((item) => (
-                  <p
-                    key={item.id}
-                    className="text-sm p-2 hover:bg-green-10 rounded"
-                  >
-                    {item.text}
-                  </p>
-                ))}
-              </div>
-            )}
-          </section>
+          ></section>
+
+          {isProfileDropdownVisible && (
+            <div className="profile-dropdown absolute  top-full w-72 right-0 bg-white z-[100] rounded-md shadow-md p-4">
+              <h4 className="mb-2 font-bold text-gray-800 capitalize">
+                Profile Menu
+              </h4>
+              {profileMenuItems.map((item) => (
+                <p
+                  key={item.id}
+                  className="text-sm p-2 hover:bg-green-10 rounded"
+                  onClick={() => item.onClick(item.id)}
+                >
+                  {item.text}
+                </p>
+              ))}
+            </div>
+          )}
         </section>
       </section>
     </section>
