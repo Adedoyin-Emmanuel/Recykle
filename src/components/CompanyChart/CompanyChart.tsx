@@ -32,7 +32,6 @@ const options: any | Chart.ChartOptions = {
   plugins: {
     title: {
       display: true,
-      text: "Recycling Points Earned",
       font: {
         family: "Poppins",
         size: 18,
@@ -82,7 +81,7 @@ const data = {
   labels,
   datasets: [
     {
-      label: "Recycling Points Earned",
+      label: "Users",
       data: labels.map(() => faker.datatype.number({ min: 100, max: 1000 })),
       fill: true,
       backgroundColor: "rgba(137, 226, 185, 0.4)",
@@ -93,6 +92,6 @@ const data = {
   ],
 };
 
-export function ChartTest() {
+export default function CompanyChart() {
   return <Line options={options} data={data} />;
 }

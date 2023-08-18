@@ -7,7 +7,7 @@ import Submitted from "./../../assets/clipboard-tick-2.svg";
 import TrashBin from "../../assets/recycle-icon.svg";
 import RecycleCard from "../../components/RecycleCard/RecycleCard";
 import SubmissionCard from "../../components/SubmissionCard/SubmissionCard";
-import { ChartTest } from "../../components/ChartTest/ChartTest";
+import Chart from "../../components/Chart/Chart";
 import Collection from "../../components/Collection/Collection";
 
 const Dashboard = (): JSX.Element => {
@@ -68,7 +68,7 @@ const Dashboard = (): JSX.Element => {
           </section>
 
           <section className="recycling-transactions w-full lg:w-11/12">
-            <ChartTest />
+            <Chart />
           </section>
 
           <section className="recycle-history mt-20 w-full">
@@ -124,7 +124,7 @@ const Dashboard = (): JSX.Element => {
           <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
             <section className="header w-full flex">
               <h4 className="capitalize font-bold text-[20px] md:p-3">
-                your recyclables
+                your collections
               </h4>
             </section>
             {recyclables.map((recyclable, index) => (
