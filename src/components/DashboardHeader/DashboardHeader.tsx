@@ -107,26 +107,30 @@ const DashboardHeader: React.FC = ({
           )}
         </section>
 
-        <section className="profile-image cursor-pointer relative">
+        <section
+          className="profile-image cursor-pointer relative"
+          ref={profileRef}
+        >
           <section
             className="bg-green-300 h-10 w-10 rounded-full"
             onClick={toggleProfileDropdown}
-          ></section>
-          {isProfileDropdownVisible && (
-            <div className="notification-dropdown absolute  top-full w-72 right-0 bg-white z-[100] rounded-md shadow-md p-4">
-              <h4 className="mb-2 font-bold text-gray-800 capitalize">
-                Profile Menu
-              </h4>
-              {profileMenuItems.map((item) => (
-                <p
-                  key={item.id}
-                  className="text-sm p-2 hover:bg-green-10 rounded"
-                >
-                  {item.text}
-                </p>
-              ))}
-            </div>
-          )}
+          >
+            {isProfileDropdownVisible && (
+              <div className="profile-dropdown absolute  top-full w-72 right-0 bg-white z-[100] rounded-md shadow-md p-4">
+                <h4 className="mb-2 font-bold text-gray-800 capitalize">
+                  Profile Menu
+                </h4>
+                {profileMenuItems.map((item) => (
+                  <p
+                    key={item.id}
+                    className="text-sm p-2 hover:bg-green-10 rounded"
+                  >
+                    {item.text}
+                  </p>
+                ))}
+              </div>
+            )}
+          </section>
         </section>
       </section>
     </section>
