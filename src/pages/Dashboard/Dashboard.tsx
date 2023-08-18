@@ -33,8 +33,8 @@ const Dashboard = (): JSX.Element => {
 
   const [eyeIcon, setEyeIcon] = useState(faEye);
   const [toggler, setToggler] = useState(true);
-  const totalPoints = "1.5k";
-  const [money, setMoney] = useState(totalPoints);
+  const totalPoints = "209k";
+  const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
 
   const handleIconClick = () => {
     setToggler(!toggler);
@@ -42,7 +42,7 @@ const Dashboard = (): JSX.Element => {
 
   useEffect(() => {
     setEyeIcon(toggler ? faEye : faEyeSlash);
-    setMoney(toggler ? totalPoints : "****");
+    setRecyclingPoints(toggler ? totalPoints : "****");
   }, [toggler]);
 
   const navigateTo = useNavigate();
@@ -57,7 +57,7 @@ const Dashboard = (): JSX.Element => {
 
       <div className="w-full flex flex-col xl:flex-row gap-x-5 ">
         <div className="first-section w-full xl:w-8/12 flex flex-col items-center justify-center">
-          <div className="grid p-3 lg:grid-cols-3 gap-10 w-full">
+          <div className="grid p-1 lg:grid-cols-3 gap-10 w-full">
             {/* we would create another container for the md, sm and mobile screens */}
             <section className="mobile-data bg-green-10 rounded-lg  md:hidden p-4 flex flex-col gap-y-2">
               <section className="little-header flex items-center gap-x-1">
@@ -70,7 +70,7 @@ const Dashboard = (): JSX.Element => {
                   onClick={handleIconClick}
                 />
               </section>
-              <h3 className="text-[18px] font-bold">{money}</h3>
+              <h3 className="text-[18px] font-bold">{recyclingPoints}</h3>
 
               <section className="button-container w-full flex items-center justify-end">
                 <button
@@ -109,7 +109,7 @@ const Dashboard = (): JSX.Element => {
                       />
                     </svg>
                   </section>
-                  <p className="text-[10px] capitalize">add item</p>
+                  <p className="text-[11px] capitalize">add item</p>
                 </div>
 
                 <div className="action-1 flex items-center flex-col w-full gap-y-2">
@@ -132,7 +132,7 @@ const Dashboard = (): JSX.Element => {
                     </svg>
                   </section>
 
-                  <p className="text-[10px] capitalize">view items</p>
+                  <p className="text-[11px] capitalize">view items</p>
                 </div>
 
                 <div className="action-1 flex items-center flex-col w-full gap-y-2">
@@ -163,7 +163,7 @@ const Dashboard = (): JSX.Element => {
                       />
                     </svg>
                   </section>
-                  <p className="text-[10px] capitalize">explore</p>
+                  <p className="text-[11px] capitalize">explore</p>
                 </div>
               </section>
             </section>

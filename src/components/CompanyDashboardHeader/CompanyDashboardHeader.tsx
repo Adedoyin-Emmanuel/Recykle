@@ -91,20 +91,45 @@ const CompanyDashboardHeader: React.FC = ({
   const profileMenuItems = [
     {
       id: 1,
-      text: "Edit Profile",
+      text: "view submissions",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
     },
+
     {
       id: 2,
-      text: "Change Password",
+      text: "users feedback",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
     },
     {
       id: 3,
+      text: "items received",
+      onClick: (id: number) => {
+        console.log(`Hello profile item  ${id}`);
+      },
+    },
+
+    {
+      id: 4,
+      text: "edit profile",
+      onClick: (id: number) => {
+        console.log(`Hello profile item  ${id}`);
+      },
+    },
+
+    {
+      id: 5,
+      text: "change password",
+      onClick: (id: number) => {
+        console.log(`Hello profile item  ${id}`);
+      },
+    },
+
+    {
+      id: 6,
       text: "Logout",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
@@ -149,7 +174,7 @@ const CompanyDashboardHeader: React.FC = ({
               {notificationItems.map((item) => (
                 <p
                   key={item.id}
-                  className="text-sm p-2 hover:bg-green-10 rounded"
+                  className="text-sm p-2 hover:bg-green-10 rounded capitalize"
                   onClick={() => item.onClick(item.id)}
                 >
                   {item.text}
@@ -176,7 +201,7 @@ const CompanyDashboardHeader: React.FC = ({
               {profileMenuItems.map((item) => (
                 <p
                   key={item.id}
-                  className="text-sm p-2 hover:bg-green-10 rounded"
+                  className="text-sm p-2 hover:bg-green-10 rounded capitalize"
                   onClick={() => item.onClick(item.id)}
                 >
                   {item.text}

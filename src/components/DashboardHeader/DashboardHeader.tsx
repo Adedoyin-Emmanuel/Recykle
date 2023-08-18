@@ -66,7 +66,7 @@ const DashboardHeader: React.FC = ({
   const notificationItems = [
     {
       id: 1,
-      text: "New message from admin",
+      text: "Scrapay accepted your submission",
       onClick: (id: number) => {
         console.log(`Hello notification ${id}`);
       },
@@ -80,7 +80,7 @@ const DashboardHeader: React.FC = ({
     },
     {
       id: 3,
-      text: "Your submission has been approved",
+      text: "Recykle accepted your submission",
       onClick: (id: number) => {
         console.log(`Hello notification ${id}`);
       },
@@ -90,21 +90,37 @@ const DashboardHeader: React.FC = ({
   const profileMenuItems = [
     {
       id: 1,
-      text: "Edit Profile",
+      text: "items recycled",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
     },
     {
       id: 2,
-      text: "Change Password",
+      text: "items submitted",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
     },
     {
       id: 3,
-      text: "Logout",
+      text: "edit profile",
+      onClick: (id: number) => {
+        console.log(`Hello profile item  ${id}`);
+      },
+    },
+
+    {
+      id: 4,
+      text: "change password",
+      onClick: (id: number) => {
+        console.log(`Hello profile item  ${id}`);
+      },
+    },
+
+    {
+      id: 5,
+      text: "log out",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
@@ -148,7 +164,7 @@ const DashboardHeader: React.FC = ({
               {notificationItems.map((item) => (
                 <p
                   key={item.id}
-                  className="text-sm p-2 hover:bg-green-10 rounded"
+                  className="text-[12px] md:text-sm p-2 hover:bg-green-10 rounded capitalize"
                   onClick={() => item.onClick(item.id)}
                 >
                   {item.text}
@@ -175,7 +191,7 @@ const DashboardHeader: React.FC = ({
               {profileMenuItems.map((item) => (
                 <p
                   key={item.id}
-                  className="text-sm p-2 hover:bg-green-10 rounded"
+                  className="text-[12px] md:text-sm p-2 hover:bg-green-10 rounded capitalize"
                   onClick={() => item.onClick(item.id)}
                 >
                   {item.text}
