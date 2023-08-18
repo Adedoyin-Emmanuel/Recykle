@@ -7,8 +7,8 @@ import Submitted from "./../../assets/clipboard-tick-2.svg";
 import Feedback from "./../../assets/messages.svg";
 import CompanyChart from "../../components/CompanyChart/CompanyChart";
 import RecycleCard from "../../components/RecycleCard/RecycleCard";
-import SubmissionCard from "../../components/SubmissionCard/SubmissionCard";
 import Collection from "../../components/Collection/Collection";
+import CompanyClientSubmission from "../../components/CompanyClientSubmission/CompanyClientSubmission";
 
 const CompanyDashboard: React.FC = (): JSX.Element => {
   const recyclables = [
@@ -98,21 +98,18 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
                 recent submission
               </h4>
             </section>
-            <SubmissionCard
-              status="pending"
-              submissionCompany="recykle"
+            <CompanyClientSubmission
+              submittedBy="emmysoft"
               submissionDate="14/09/2023"
             />
 
-            <SubmissionCard
-              status="success"
-              submissionCompany="scrapay"
+            <CompanyClientSubmission
+              submittedBy="henqsoft"
               submissionDate="20/09/2023"
             />
 
-            <SubmissionCard
-              status="failed"
-              submissionCompany="bulaba"
+            <CompanyClientSubmission
+              submittedBy="benrobo"
               submissionDate="26/08/2023"
             />
           </section>
