@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
@@ -15,8 +16,8 @@ const DashboardHeader: React.FC = ({
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
     useState(false);
 
-  const notificationRef = useRef(null); // Reference to the notification dropdown
-  const profileRef = useRef(null); // Reference to the profile dropdown
+  const notificationRef: any = useRef(null);
+  const profileRef: any = useRef(null);
 
   useEffect(() => {
     const closeDropdowns = (event: MouseEvent) => {
