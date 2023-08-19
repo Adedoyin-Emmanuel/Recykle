@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { navigateToRecycling } from "../../utils/navigate";
 import { useNavigate } from "react-router-dom";
+import ScanItemContainer from "../../components/AddItemContainer/AddItemContainer";
 
 const Dashboard = (): JSX.Element => {
   const recyclables = [
@@ -35,6 +36,8 @@ const Dashboard = (): JSX.Element => {
   const [toggler, setToggler] = useState(true);
   const totalPoints = "209k";
   const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
+  const [showAddItemsContainer, setShowItemsContainer] =
+    useState<boolean>(false);
 
   const handleIconClick = () => {
     setToggler(!toggler);
@@ -49,6 +52,14 @@ const Dashboard = (): JSX.Element => {
 
   const handleRecycleButtonClick = () => {
     navigateToRecycling(navigateTo);
+  };
+
+  const handleModalClose = () => {
+    setShowItemsContainer(false);
+  };
+
+  const handleAddItem = () => {
+    setShowItemsContainer(true);
   };
 
   return (
@@ -91,7 +102,10 @@ const Dashboard = (): JSX.Element => {
 
               <section className="action-buttons flex w-full justify-around">
                 <div className="action-1 flex items-center flex-col w-full gap-y-2">
-                  <section className="image bg-green-10 rounded-full p-2">
+                  <section
+                    className="image bg-green-10 rounded-full p-2"
+                    onClick={handleAddItem}
+                  >
                     <svg
                       width="24"
                       height="24"
@@ -150,16 +164,16 @@ const Dashboard = (): JSX.Element => {
                       <path
                         d="M11 2C15.97 2 20 6.03 20 11C20 15.97 15.97 20 11 20C6.03 20 2 15.97 2 11C2 7.5 4 4.46 6.93 2.97"
                         stroke="#292D32"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M19.071 20.97C19.601 22.57 20.811 22.73 21.741 21.33C22.601 20.05 22.041 19 20.501 19C19.351 19 18.711 19.89 19.071 20.97Z"
                         stroke="#292D32"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </section>
@@ -265,6 +279,11 @@ const Dashboard = (): JSX.Element => {
             ))}
           </section>
         </div>
+        <ScanItemContainer
+          blur={true}
+          showAddItemContainer={showAddItemsContainer}
+          onClose={handleModalClose}
+        />
       </div>
     </DashboardComponent>
   );

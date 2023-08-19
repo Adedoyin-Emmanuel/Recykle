@@ -1,17 +1,17 @@
 import React from "react";
 import ScanIcon from "./../../assets/scan.svg";
 
-interface ScanItemProps extends React.HTMLAttributes<HTMLDivElement> {
+interface AddItemProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   onClick?: () => void;
   others?: React.Attributes;
 }
 
-const ScanItem = ({
+const AddItem = ({
   className,
   onClick,
   ...others
-}: ScanItemProps): JSX.Element => {
+}: AddItemProps): JSX.Element => {
   return (
     <section className="fixed bottom-20 right-10">
       <section
@@ -25,4 +25,4 @@ const ScanItem = ({
   );
 };
 
-export default ScanItem;
+export default AddItem;

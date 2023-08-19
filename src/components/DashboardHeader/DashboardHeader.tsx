@@ -137,7 +137,7 @@ const DashboardHeader: React.FC = ({
           welcome chief 👋
         </h3>
       </section>
-
+      {/* Add another section for quick actions so the profile-image would only carry profile items*/}
       <section className="action-icons flex items-center justify-around gap-x-5">
         <section
           className="notification cursor-pointer relative"

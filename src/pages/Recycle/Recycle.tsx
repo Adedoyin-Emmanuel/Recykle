@@ -5,11 +5,11 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Container from "../../components/Container/Container";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import RecycingCompanyCard from "../../components/RecycingCompanyCard/RecycingCompanyCard";
-import ScanItem from "../../components/ScanItem/ScanItem";
-import ScanItemContainer from "../../components/ScanItemContainer/ScanItemContainer";
+import AddItem from "../../components/AddItem/AddItem";
+import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
 
 const Recycle: React.FC = (): JSX.Element => {
-  const [showScanItemsContainer, setShowItemsContainer] =
+  const [showAddItemContainer, setShowAddItemContainer] =
     useState<boolean>(false);
 
   const recylingData = [
@@ -73,11 +73,11 @@ const Recycle: React.FC = (): JSX.Element => {
   };
 
   const handleModalClose = () => {
-    setShowItemsContainer(false);
+    setShowAddItemContainer(false);
   };
 
   const handleScanItemPick = () => {
-    setShowItemsContainer(true);
+    setShowAddItemContainer(true);
   };
   return (
     <DashboardComponent onRecyklePage className="flex flex-col items-center">
@@ -91,10 +91,10 @@ const Recycle: React.FC = (): JSX.Element => {
           <RecyingCompanies />
         </section>
       </section>
-      <ScanItem onClick={handleScanItemPick} />
-      <ScanItemContainer
+      <AddItem onClick={handleScanItemPick} />
+      <AddItemContainer
         blur={true}
-        showScanItemContainer={showScanItemsContainer}
+        showAddItemContainer={showAddItemContainer}
         onClose={handleModalClose}
       />
       <Container>

@@ -1,26 +1,66 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import Memoji from "./../../assets/memoji.png";
 import Input from "../Input/Input";
+import {
+  faFileText,
+  faBolt,
+  faGlassMartiniAlt,
+  faBoxOpen,
+  faLaptop,
+  faTshirt,
+  faLeaf,
+  faBatteryFull,
+  faSkullCrossbones,
+  faCarSide,
+  faBlender,
+  faWineGlassAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
-interface ScanItemContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  blur?: boolean;
-  onClose: () => void;
-  showScanItemContainer: boolean;
+interface CategoryIcons {
+  [category: string]: IconDefinition;
 }
 
-const ScanItemContainer = ({
+const categoryIcons: CategoryIcons = {
+  "Paper and Cardboard": faFileText,
+  Plastics: faBolt,
+  Glass: faGlassMartiniAlt,
+  Metals: faBoxOpen,
+  Electronics: faLaptop,
+  Textiles: faTshirt,
+  "Organic Waste": faLeaf,
+  Batteries: faBatteryFull,
+  "Hazardous Waste": faSkullCrossbones,
+  Tires: faCarSide,
+  Appliances: faBlender,
+  "Glass Bottles": faWineGlassAlt,
+};
+
+interface AddItemContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+  blur?: boolean;
+  onClose: () => void;
+  showAddItemContainer: boolean;
+}
+
+const AddItemContainer = ({
   blur,
   onClose,
-  showScanItemContainer,
-}: ScanItemContainerProps): JSX.Element => {
-  let showContainer = showScanItemContainer;
-  const handleButtonClick = () => {
+  showAddItemContainer,
+}: AddItemContainerProps): JSX.Element => {
+  let showContainer = showAddItemContainer;
+  const handleCloseButtonClick = () => {
     showContainer = false;
     onClose();
   };
+
+  const handleSaveItemClick = () => {
+    handleCloseButtonClick();
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState<any>();
 
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -54,13 +94,13 @@ const ScanItemContainer = ({
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="bg-green-5 w-11/12 md:w-2/4 lg:w-[35%] h-auto min-h-[50%] rounded shadow relative flex flex-col items-center justify-center overflow-y-scroll"
+        className="bg-green-5 w-11/12 md:w-2/4 lg:w-[35%] h-auto min-h-[45%] rounded shadow relative flex flex-col items-center justify-center overflow-y-scroll"
       >
         <motion.section
           className="absolute top-2 right-2 bg-slate-50 rounded-full p-0 h-10 w-10 flex items-center justify-center cursor-pointer transition-colors transform-gpu duration-100 hover:bg-red-500 hover:text-white"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={handleButtonClick}
+          onClick={handleCloseButtonClick}
         >
           <FontAwesomeIcon icon={faXmark} size={"lg"} />
         </motion.section>
@@ -71,11 +111,22 @@ const ScanItemContainer = ({
           transition={{ type: "spring", damping: 15 }}
           className=""
         >
-          <img src={Memoji} alt="memoji" className="w-[320px] h-[380px]" />
+          {selectedCategory && (
+            <section className="icon-contain p-5 my-5">
+              <FontAwesomeIcon
+                icon={categoryIcons[selectedCategory]}
+                size="5x"
+                className="text-green-500 "
+              />
+            </section>
+          )}
         </motion.section>
 
         <div className="relative inline-block w-11/12">
-          <select className="block w-full px-4 p-4 pr-8 text-gray-700 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:border-blue-500">
+          <select
+            className="block w-full px-4 p-4 pr-8 text-gray-700 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:border-blue-500"
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
             <option value="">Select a recyclable category</option>
             {recyclableCategories.map((category, index) => (
               <option
@@ -111,7 +162,10 @@ const ScanItemContainer = ({
             placeholder="eg ex water bottle "
           />
           <section className="button-section w-11/12 md:w-full flex items-center justify-center mx-auto md:mx-0 md:justify-end b-5 my-4">
-            <button className="bg-transparent border-2 md:w-48 border-gray-600 rounded-[30px] p-3 capitalize w-full hover:border-transparent hover:bg-green-200 hover:text-white transition-colors transform-gpu duration-100 ease-in-out">
+            <button
+              className="bg-transparent border-2 md:w-48 border-gray-600 rounded-[30px] p-3 capitalize w-full hover:border-transparent hover:bg-green-200 hover:text-white transition-colors transform-gpu duration-100 ease-in-out"
+              onClick={handleSaveItemClick}
+            >
               save item
             </button>
           </section>
@@ -123,4 +177,4 @@ const ScanItemContainer = ({
   );
 };
 
-export default ScanItemContainer;
+export default AddItemContainer;
