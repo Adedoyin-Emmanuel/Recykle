@@ -62,7 +62,28 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
 
   const loginWithCredentials = async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setUser(userCredentials);
+      toast.success("Login successful");
+      console.log(userCredentials.user);
+    } catch (error) {
+      console.log(error);
+      toast.error("Login error");
+    }
+  };
+
+  const loginWithGoogleAccount = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider).then((result) => {
+        const user = result.user;
+        setUser(user);
+        toast.success("Login successful");
+        console.log(`user signed in as ${user.displayName}`);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -132,19 +153,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       });
     } catch (error) {
       console.log(error);
-      toast.error("Signup failed");
-    }
-  };
-
-  const loginWithGoogleAccount = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider).then((result) => {
-        const user = result.user;
-        setUser(user);
-        console.log(`user signed in as ${user}`);
-      });
-    } catch (error) {
-      console.log(error);
+      toast.error("Signup error");
     }
   };
 

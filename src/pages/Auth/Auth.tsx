@@ -46,10 +46,33 @@ const Auth: React.FC = (): JSX.Element => {
   const {
     registerWithCredentials,
     registerWithGoogleAccount,
+    loginWithCredentials,
+    loginWithGoogleAccount,
   }: userAuthContextProps | any = useUserAuth();
-  const handleLoginWithCredentials = () => {};
+  const handleLoginWithCredentials = async (
+    e: any | React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
 
-  const handleLoginWithGoogle = async () => {};
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+
+    if (!email || !password) {
+      return toast.error("Please fill the required fields");
+    }
+
+    await loginWithCredentials(email, password);
+
+    //route the user to the details page
+  };
+
+  const handleLoginWithGoogle = async (
+    e: any | React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    await loginWithGoogleAccount();
+  };
 
   const handleRegisterWithCredentials = async (
     e: any | React.FormEvent<HTMLFormElement>
@@ -94,27 +117,28 @@ const Auth: React.FC = (): JSX.Element => {
 
   const Login = (): JSX.Element => {
     return (
-      <form className="login-section my-10 lg:w-1/4 w-11/12">
+      <form
+        className="login-section my-10 lg:w-1/4 w-11/12"
+        onSubmit={(e) => {
+          handleLoginWithCredentials(e);
+        }}
+      >
         <Header />
-        <div className="username my-5">
-          <label htmlFor="username" className="capitalize">
+        <div className="email my-5">
+          <label htmlFor="email" className="capitalize">
             email
           </label>
           <Input placeholder="Enter your email" type="email" required />
         </div>
 
-        <div className="username my-5">
-          <label htmlFor="username" className="capitalize">
+        <div className="password my-5">
+          <label htmlFor="password" className="capitalize">
             password
           </label>
-          <Input placeholder="Enter your username" type="text" required />
+          <Input placeholder="Enter your password" type="password" required />
         </div>
 
-        <Button
-          outline={false}
-          className="w-full my-4"
-          onClick={handleLoginWithCredentials}
-        >
+        <Button outline={false} className="w-full my-4">
           login
         </Button>
 
