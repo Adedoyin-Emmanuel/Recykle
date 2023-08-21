@@ -33,7 +33,7 @@ interface userAuthProps {
 export interface userAuthContextProps {
   user?: any;
   loading?: boolean;
-  loginWithCredentials?: () => void;
+  loginWithCredentials?: (email: string, password: string) => void;
   loginWithGoogleAccount?: () => void;
   registerWithCredentials: (
     email: string,
@@ -43,10 +43,10 @@ export interface userAuthContextProps {
   ) => void;
   registerWithGoogleAccount: () => void;
   logout?: () => void;
-  updateUserLocation?: () => void;
+  updateUserLocation?: (latitude: number, longitude: number) => void;
 }
 
-export const UserAuth = createContext({});
+export const UserAuth = createContext<userAuthContextProps>({});
 const defaultUserLocation = new GeoPoint(0, 0);
 
 export const UserAuthProvider = ({ children }: userAuthProps) => {
@@ -72,26 +72,24 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
         email,
         password
       );
-      setUser(userCredentials);
+      setUser(userCredentials.user);
       toast.success("Login successful");
-      console.log(userCredentials.user);
     } catch (error) {
-      console.log(error);
-      toast.error("Login error");
+      console.error(error);
+      return toast.error("Login error");
     }
   };
 
   const loginWithGoogleAccount = async () => {
     try {
-      await signInWithPopup(auth, googleProvider).then((result) => {
-        const user = result.user;
-        setUser(user);
-        toast.success("Login successful");
-        console.log(`user signed in as ${user.displayName}`);
-      });
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      setUser(user);
+      toast.success("Login successful");
+      console.log(`User signed in as ${user.displayName}`);
     } catch (error) {
-      console.log(error);
-      toast.error("Login failed");
+      console.error(error);
+      return toast.error("Login failed");
     }
   };
 
@@ -102,9 +100,9 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     username: string
   ) => {
     try {
-      const result = await checkIfUsernameIsTaken(username);
+      const usernameTaken = await checkIfUsernameIsTaken(username);
 
-      if (!result) {
+      if (!usernameTaken) {
         const userCredentials = await createUserWithEmailAndPassword(
           auth,
           email,
@@ -125,41 +123,38 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
         });
         setUser(userCredentials.user);
         toast.success("User created successfully");
-        console.log(user);
       } else {
-        toast.error("Username already exist");
+        toast.error("Username already exists");
       }
     } catch (error: any) {
-      console.log(error);
-      toast.error("Sigup error");
+      console.error(error);
+      return toast.error("Signup error");
     }
   };
 
   const registerWithGoogleAccount = async () => {
     try {
-      await signInWithPopup(auth, googleProvider).then(async (result) => {
-        const user = result.user;
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
 
-        //store the user details
-        await setDoc(doc(db, "users", user.uid), {
-          fullname: user.displayName,
-          username: user.displayName?.toLowerCase().split(" ").join(""),
-          email: user.email,
-          dateCreated: serverTimestamp(),
-          profileImageUrl: user.photoURL,
-          role: "user",
-          totalItemsRecycled: 0,
-          verified: false,
-          lastLogin: serverTimestamp(),
-          location: defaultUserLocation,
-        });
-        setUser(user);
-        toast.success("User created successfully");
-        console.log(user);
+      await setDoc(doc(db, "users", user.uid), {
+        fullname: user.displayName,
+        username: user.displayName?.toLowerCase().split(" ").join(""),
+        email: user.email,
+        dateCreated: serverTimestamp(),
+        profileImageUrl: user.photoURL,
+        role: "user",
+        totalItemsRecycled: 0,
+        verified: false,
+        lastLogin: serverTimestamp(),
+        location: defaultUserLocation,
       });
+
+      setUser(user);
+      toast.success("User created successfully");
     } catch (error) {
-      console.log(error);
-      toast.error("Signup error");
+      console.error(error);
+      return toast.error("Signup error");
     }
   };
 
@@ -167,14 +162,13 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     if (!username) return true;
 
     try {
-      // Create a query to search for documents with the specified username
       const querySnapshot = await getDocs(
         query(collectionGroup(db, "users"), where("username", "==", username))
       );
 
       return !querySnapshot.empty;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return true;
     }
   };
@@ -183,13 +177,17 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     try {
       await signOut(auth);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const updateUserLocation = async (latitude: number, longitude: number) => {
     try {
-      if (!user || !latitude || !longitude) return;
+      if (!user || !latitude || !longitude) {
+        toast.error("Invalid user or location data");
+        return;
+      }
+
       const location = new GeoPoint(latitude, longitude);
       await setDoc(doc(db, "users", user.uid), { location }, { merge: true });
       toast.success("Location saved");
@@ -198,7 +196,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
         navigateToDashboard(navigateTo);
       }, 1000);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error saving location");
       setTimeout(() => {
         navigateToAuth(navigateTo);
@@ -206,7 +204,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     }
   };
 
-  const value = {
+  const value: userAuthContextProps = {
     user,
     loading,
     loginWithCredentials,
