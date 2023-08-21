@@ -46,7 +46,7 @@ export interface userAuthContextProps {
   updateUserLocation?: (latitude: number, longitude: number) => void;
 }
 
-export const UserAuth = createContext<userAuthContextProps>({});
+export const UserAuth = createContext({});
 const defaultUserLocation = new GeoPoint(0, 0);
 
 export const UserAuthProvider = ({ children }: userAuthProps) => {
