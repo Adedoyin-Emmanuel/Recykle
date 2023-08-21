@@ -5,10 +5,7 @@ import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
-import {
-  navigateToDetails,
-  navigateToDashboard,
-} from "../../utils/navigate";
+import { navigateToDetails, navigateToDashboard } from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   useUserAuth,
@@ -81,10 +78,15 @@ const Auth: React.FC = (): JSX.Element => {
   ) => {
     e.preventDefault();
 
-    await loginWithGoogleAccount();
-    setTimeout(() => {
-      navigateToDetails(navigateTo);
-    }, 1000);
+    const result = await loginWithGoogleAccount();
+
+    if (!result) {
+      toast.error("Login failed");
+    } else {
+      setTimeout(() => {
+        navigateToDetails(navigateTo);
+      }, 1000);
+    }
   };
 
   const handleRegisterWithCredentials = async (
