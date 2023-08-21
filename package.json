@@ -23,6 +23,7 @@
     "faker": "^6.6.6",
     "firebase": "^10.2.0",
     "framer-motion": "^10.15.2",
+    "notyf": "^3.10.0",
     "postcss": "^8.4.27",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

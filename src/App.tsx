@@ -19,90 +19,91 @@ import CompanySettings from "./pages/CompanySettings/CompanySettings";
 import CompanySubmissions from "./pages/CompanySubmissions/CompanySubmissions";
 import CompanyMaterials from "./pages/CompanyMaterials/CompanyMaterials";
 import Dashboard from "./pages/Dashboard/Dashboard";
+//import { UserAuthProvider } from "./context/userAuthContext";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Users Routes */}
-        <Route path="/" element={<Home />}></Route>
+      <BrowserRouter>
+        <Routes>
+          {/* Users Routes */}
+          <Route path="/" element={<Home />}></Route>
 
-        <Route path="/auth" element={<Auth />}></Route>
-        <Route
-          path="/auth/details"
-          element={<ProtectedRoute children={<Details />} />}
-        ></Route>
+          <Route path="/auth" element={<Auth />}></Route>
+          <Route
+            path="/auth/details"
+            element={<ProtectedRoute children={<Details />} />}
+          ></Route>
 
-        <Route
-          path="/dashboard"
-          element={<ProtectedRoute children={<Dashboard />} />}
-        ></Route>
-        <Route
-          path="/dashboard/recycle"
-          element={<ProtectedRoute children={<Recycle />} />}
-        ></Route>
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute children={<Dashboard />} />}
+          ></Route>
+          <Route
+            path="/dashboard/recycle"
+            element={<ProtectedRoute children={<Recycle />} />}
+          ></Route>
 
-        <Route
-          path="/dashboard/marketplace"
-          element={<ProtectedRoute children={<MarketPlace />} />}
-        ></Route>
-        <Route
-          path="/dashboard/profile"
-          element={<ProtectedRoute children={<Profile />} />}
-        ></Route>
-        <Route
-          path="/dashboard/settings"
-          element={<ProtectedRoute children={<Settings />} />}
-        ></Route>
-        <Route
-          path="/dashboard/settings/profile-edit"
-          element={<ProtectedRoute children={<ProfileEdit />} />}
-        ></Route>
+          <Route
+            path="/dashboard/marketplace"
+            element={<ProtectedRoute children={<MarketPlace />} />}
+          ></Route>
+          <Route
+            path="/dashboard/profile"
+            element={<ProtectedRoute children={<Profile />} />}
+          ></Route>
+          <Route
+            path="/dashboard/settings"
+            element={<ProtectedRoute children={<Settings />} />}
+          ></Route>
+          <Route
+            path="/dashboard/settings/profile-edit"
+            element={<ProtectedRoute children={<ProfileEdit />} />}
+          ></Route>
 
-        {/* Recycling Companies routes */}
-        <Route path="/company" element={<Home />}></Route>
+          {/* Recycling Companies routes */}
+          <Route path="/company" element={<Home />}></Route>
 
-        <Route path="/company/auth" element={<CompanyAuth />}></Route>
+          <Route path="/company/auth" element={<CompanyAuth />}></Route>
 
-        <Route
-          path="/company/auth/details"
-          element={<ProtectedRoute children={<CompanyDetails />} />}
-        ></Route>
+          <Route
+            path="/company/auth/details"
+            element={<ProtectedRoute children={<CompanyDetails />} />}
+          ></Route>
 
-        <Route
-          path="/company/dashboard"
-          element={<ProtectedRoute children={<CompanyDashboard />} />}
-        ></Route>
+          <Route
+            path="/company/dashboard"
+            element={<ProtectedRoute children={<CompanyDashboard />} />}
+          ></Route>
 
-        <Route
-          path="/company/dashboard/manage-materials"
-          element={<ProtectedRoute children={<CompanyMaterials />} />}
-        ></Route>
+          <Route
+            path="/company/dashboard/manage-materials"
+            element={<ProtectedRoute children={<CompanyMaterials />} />}
+          ></Route>
 
-        <Route
-          path="/company/dashboard/submissions"
-          element={<ProtectedRoute children={<CompanySubmissions />} />}
-        ></Route>
+          <Route
+            path="/company/dashboard/submissions"
+            element={<ProtectedRoute children={<CompanySubmissions />} />}
+          ></Route>
 
-        <Route
-          path="/company/dashboard/settings"
-          element={<ProtectedRoute children={<CompanySettings />} />}
-        ></Route>
+          <Route
+            path="/company/dashboard/settings"
+            element={<ProtectedRoute children={<CompanySettings />} />}
+          ></Route>
 
-        <Route
-          path="/company/dashboard/profile"
-          element={<ProtectedRoute children={<CompanyProfile />} />}
-        ></Route>
+          <Route
+            path="/company/dashboard/profile"
+            element={<ProtectedRoute children={<CompanyProfile />} />}
+          ></Route>
 
-        <Route
-          path="/company/dashboard/profile/edit"
-          element={<ProtectedRoute children={<CompanyProfileEdit />} />}
-        ></Route>
+          <Route
+            path="/company/dashboard/profile/edit"
+            element={<ProtectedRoute children={<CompanyProfileEdit />} />}
+          ></Route>
 
-        {/* Super Admin Routes */}
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
-    </BrowserRouter>
+          {/* Super Admin Routes */}
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+      </BrowserRouter>
   );
 };
 
