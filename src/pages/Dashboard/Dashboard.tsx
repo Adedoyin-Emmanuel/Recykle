@@ -14,6 +14,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { navigateToRecycling } from "../../utils/navigate";
 import { useNavigate } from "react-router-dom";
 import ScanItemContainer from "../../components/AddItemContainer/AddItemContainer";
+import { useUserAuth } from "../../context/userAuthContext";
 
 const Dashboard = (): JSX.Element => {
   const recyclables = [
@@ -31,6 +32,10 @@ const Dashboard = (): JSX.Element => {
       dateAdded: "2023-06-11",
     },
   ];
+
+  const { name } = useUserAuth();
+
+  console.log(name);
 
   const [eyeIcon, setEyeIcon] = useState(faEye);
   const [toggler, setToggler] = useState(true);

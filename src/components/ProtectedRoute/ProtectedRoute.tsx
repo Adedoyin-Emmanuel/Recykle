@@ -1,5 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { UserAuthProvider } from "../../context/userAuthContext";
+//import { useUserAuth } from "../../context/userAuthContext";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -7,8 +9,13 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const isAuthenticated = true;
+ 
 
-  return <>{isAuthenticated ? children : <Navigate to={"/auth"} />}</>;
+  return (
+    <UserAuthProvider>
+      {isAuthenticated ? children : <Navigate to={"/auth"} />}
+    </UserAuthProvider>
+  );
 };
 
 export default ProtectedRoute;

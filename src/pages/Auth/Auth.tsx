@@ -7,7 +7,10 @@ import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
 import { navigateToDetails } from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useUserAuth } from "../../context/userAuthContext";
+import {
+  useUserAuth,
+  userAuthContextProps,
+} from "../../context/userAuthContext";
 import Notification from "../../utils/toast";
 import {
   validateEmail,
@@ -31,7 +34,8 @@ const Auth: React.FC = (): JSX.Element => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const loginParam = queryParams.get("login");
-  const { registerWithCredentials, registerWithGoogle } = useUserAuth();
+
+  const [loginClick, setLoginClick] = useState<boolean>(false);
 
   const toast = new Notification();
 
@@ -39,34 +43,54 @@ const Auth: React.FC = (): JSX.Element => {
     navigateToDetails(navigateTo);
   };
 
+  const {
+    registerWithCredentials,
+    registerWithGoogleAccount,
+  }: userAuthContextProps | any = useUserAuth();
   const handleLoginWithCredentials = () => {};
 
-  const handleLoginWithGoogle = () => {};
+  const handleLoginWithGoogle = async () => {};
 
-  const handleRegisterWithCredentials = (
+  const handleRegisterWithCredentials = async (
     e: any | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    const username = e.target[0].value;
-    const email = e.target[1].value;
-    const password = e.target[2].value;
+    const fullname = e.target[0].value;
+    const username = e.target[1].value;
+    const email = e.target[2].value;
+    const password = e.target[3].value;
 
-    if (!username || !email || !password) {
-      toast.error("Please fill the required fields");
+    if (!fullname || !username || !email || !password) {
+      return toast.error("Please fill the required fields");
     }
 
     if (!validateEmail(email)) {
-      toast.error("Please enter a valid email address");
+      return toast.error("Please enter a valid email address");
     }
     if (!checkPasswordLength(password)) {
-      toast.error("Password must be at least 6 characters long");
+      return toast.error("Password must be at least 6 characters long");
     }
     if (!checkIfUsernameHasSpace(username)) {
-      toast.error("Username can not contain space");
+      return toast.error("Username can not contain space");
     }
+
+    //setLoginClick(true);
+
+    /* finally we can register the user 😄 */
+    registerWithCredentials(email, password, fullname, username);
+
+    //route the user to the details page
   };
 
-  const handleRegisterWithGoogle = () => {};
+  const handleRegisterWithGoogle = async (
+    e: any | React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    await registerWithGoogleAccount();
+
+    //route the user to the details page
+  };
 
   const Login = (): JSX.Element => {
     return (
@@ -124,28 +148,35 @@ const Auth: React.FC = (): JSX.Element => {
         onSubmit={(e) => handleRegisterWithCredentials(e)}
       >
         <Header />
-        <div className="username my-5">
+        <div className="my-5">
+          <label htmlFor="fullname" className="capitalize">
+            fullname
+          </label>
+          <Input placeholder="Enter your fullname" type="text" required />
+        </div>
+
+        <div className="my-5">
           <label htmlFor="username" className="capitalize">
             username
           </label>
           <Input placeholder="Enter your username" type="text" required />
         </div>
-        <div className="username my-5">
-          <label htmlFor="username" className="capitalize">
+        <div className="email my-5">
+          <label htmlFor="email" className="capitalize">
             email
           </label>
           <Input placeholder="Enter your email" type="email" required />
         </div>
 
-        <div className="username my-5">
-          <label htmlFor="username" className="capitalize">
+        <div className="password my-5">
+          <label htmlFor="password" className="capitalize">
             password
           </label>
           <Input placeholder="Enter your password" type="password" required />
         </div>
 
-        <Button outline={false} className="w-full my-4">
-          sign up
+        <Button outline={false} className="w-full my-4" disabled={loginClick}>
+          {loginClick ? "Signing Up..." : "Sign Up"}
         </Button>
 
         <section className="google-auth flex w-full items-center justify-start">

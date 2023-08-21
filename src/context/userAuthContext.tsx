@@ -2,7 +2,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext, useContext, useState, useEffect } from "react";
-import { auth } from "../utils/firebase.config";
+import Notification from "../utils/toast";
+import { auth, db } from "../utils/firebase.config";
+import {
+  doc,
+  setDoc,
+  GeoPoint,
+  query,
+  collectionGroup,
+  where,
+  getDocs,
+  serverTimestamp,
+} from "firebase/firestore";
+
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -16,12 +28,28 @@ interface userAuthProps {
   children: React.ReactNode;
 }
 
-const UserAuth = createContext({});
+export interface userAuthContextProps {
+  user?: any;
+  loginWithCredentials?: () => void;
+  loginWithGoogleAccount?: () => void;
+  registerWithCredentials: (
+    email: string,
+    password: string,
+    fullname: string,
+    username: string
+  ) => void;
+  registerWithGoogleAccount: () => void;
+  logout?: () => void;
+}
+
+export const UserAuth = createContext({});
+const defaultUserLocation = new GeoPoint(0, 0);
 
 export const UserAuthProvider = ({ children }: userAuthProps) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const googleProvider = new GoogleAuthProvider();
+  const toast = new Notification();
 
   useEffect(() => {
     const unsuscribe = onAuthStateChanged(auth, (user) => {
@@ -40,29 +68,71 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     }
   };
 
-  const registerWithCredentials = async (email: string, password: string) => {
+  const registerWithCredentials = async (
+    email: string,
+    password: string,
+    fullname: string,
+    username: string
+  ) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password).then(
-        (result) => {
-          console.log(result);
-        }
-      );
-    } catch (error) {
+      const result = await checkIfUsernameIsTaken(username);
+
+      if (!result) {
+        const userCredentials = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        await setDoc(doc(db, "users", userCredentials.user.uid), {
+          fullname: fullname,
+          username: username,
+          email: email,
+          dateCreated: serverTimestamp(),
+          itemsSubmitted: 0,
+          profileImageUrl: "",
+          role: "user",
+          totalItemsRecycled: 0,
+          verified: false,
+          lastLogin: serverTimestamp(),
+          location: defaultUserLocation,
+        });
+        setUser(userCredentials.user);
+        toast.success("User created successfully");
+        console.log(user);
+      } else {
+        toast.error("Username already exist");
+      }
+    } catch (error: any) {
       console.log(error);
+      toast.error("Sigup error");
     }
   };
 
   const registerWithGoogleAccount = async () => {
     try {
-      await signInWithPopup(auth, googleProvider).then((result) => {
+      await signInWithPopup(auth, googleProvider).then(async (result) => {
         const user = result.user;
 
-        console.log(result);
-        console.log(user);
+        //store the user details
+        await setDoc(doc(db, "users", user.uid), {
+          fullname: user.displayName,
+          username: user.displayName?.toLowerCase().split(" ").join(""),
+          email: user.email,
+          dateCreated: serverTimestamp(),
+          profileImageUrl: user.photoURL,
+          role: "user",
+          totalItemsRecycled: 0,
+          verified: false,
+          lastLogin: serverTimestamp(),
+          location: defaultUserLocation,
+        });
         setUser(user);
+        toast.success("User created successfully");
+        console.log(user);
       });
     } catch (error) {
       console.log(error);
+      toast.error("Signup failed");
     }
   };
 
@@ -78,6 +148,22 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     }
   };
 
+  const checkIfUsernameIsTaken = async (username: string) => {
+    if (!username) return true;
+
+    try {
+      // Create a query to search for documents with the specified username
+      const querySnapshot = await getDocs(
+        query(collectionGroup(db, "users"), where("username", "==", username))
+      );
+
+      return !querySnapshot.empty;
+    } catch (error) {
+      console.log(error);
+      return true;
+    }
+  };
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -88,6 +174,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
 
   const value = {
     user,
+    loading,
     loginWithCredentials,
     loginWithGoogleAccount,
     registerWithCredentials,
@@ -95,9 +182,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     logout,
   };
 
-  return (
-    <UserAuth.Provider value={value}>{!loading && children}</UserAuth.Provider>
-  );
+  return <UserAuth.Provider value={value}>{children}</UserAuth.Provider>;
 };
 
 export const useUserAuth = () => {
