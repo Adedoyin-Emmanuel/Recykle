@@ -187,7 +187,7 @@ const DashboardHeader: React.FC = ({
           ref={profileRef}
         >
           <section
-            className="bg-green-300 h-10 w-10 rounded-full"
+            className="bg-green-100 h-10 w-10 rounded-full"
             onClick={toggleProfileDropdown}
           ></section>
 
