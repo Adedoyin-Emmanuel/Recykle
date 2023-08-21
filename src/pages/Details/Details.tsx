@@ -6,7 +6,7 @@ import Button from "../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { navigateToRecycling } from "../../utils/navigate";
+import { navigateToDashboard } from "../../utils/navigate";
 import {
   useUserAuth,
   userAuthContextProps,
@@ -14,15 +14,14 @@ import {
 
 const Details: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
-  
-  
+  const { updateUserLocation, user }: userAuthContextProps | any =
+    useUserAuth();
+
   if (user) {
     navigateToDashboard(navigateTo);
   }
   const [getLocationButtonClicked, setLocationButtonClicked] =
     useState<boolean>(false);
-
-  const { updateUserLocation }: userAuthContextProps | any = useUserAuth();
 
   useEffect(() => {
     //get user's current location

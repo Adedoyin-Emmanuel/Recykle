@@ -7,7 +7,6 @@ import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
 import {
   navigateToDetails,
-  navigateToAuth,
   navigateToDashboard,
 } from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
