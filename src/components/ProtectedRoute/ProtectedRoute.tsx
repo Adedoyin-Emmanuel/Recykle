@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate} from "react-router-dom";
 import { UserAuthProvider } from "../../context/userAuthContext";
 import {
   useUserAuth,
@@ -13,10 +13,13 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { user, loading }: userAuthContextProps | any = useUserAuth();
-
   return (
     <UserAuthProvider>
-      {!loading && !user ? children : <Navigate to={"/auth?login=true"} />}
+      {!loading && !user ? (
+        <UserAuthProvider>{children}</UserAuthProvider>
+      ) : (
+        <Navigate to={"/auth?login=true"} />
+      )}
     </UserAuthProvider>
   );
 };

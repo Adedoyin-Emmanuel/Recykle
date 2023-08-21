@@ -9,7 +9,7 @@ import {
   setDoc,
   GeoPoint,
   query,
-  collectionGroup,
+  collection,
   where,
   getDocs,
   serverTimestamp,
@@ -24,7 +24,11 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { navigateToDashboard, navigateToAuth } from "../utils/navigate";
+import {
+  navigateToDashboard,
+  navigateToAuth,
+  navigateToDetails,
+} from "../utils/navigate";
 
 interface userAuthProps {
   children: React.ReactNode;
@@ -43,11 +47,11 @@ export interface userAuthContextProps {
   ) => void;
   registerWithGoogleAccount: () => void;
   logout?: () => void;
-  updateUserLocation?: (latitude: number, longitude: number) => void;
+  updateUserLocation?: (user: any, latitude: number, longitude: number) => void;
+  hasValidLocation?: (user: any) => void;
 }
 
 export const UserAuth = createContext({});
-const defaultUserLocation = new GeoPoint(0, 0);
 
 export const UserAuthProvider = ({ children }: userAuthProps) => {
   const [user, setUser] = useState<any>(null);
@@ -74,6 +78,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       );
       setUser(userCredentials.user);
       toast.success("Login successful");
+      navigateToDashboard(navigateTo);
     } catch (error) {
       console.error(error);
       return toast.error("Login error");
@@ -86,10 +91,10 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       const user = result.user;
       setUser(user);
       toast.success("Login successful");
-      console.log(`User signed in as ${user.displayName}`);
+      navigateToDashboard(navigateTo);
     } catch (error) {
       console.error(error);
-      return toast.error("Login failed");
+      return;
     }
   };
 
@@ -119,16 +124,17 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
           totalItemsRecycled: 0,
           verified: false,
           lastLogin: serverTimestamp(),
-          location: defaultUserLocation,
         });
         setUser(userCredentials.user);
         toast.success("User created successfully");
+        navigateToDetails(navigateTo);
       } else {
-        toast.error("Username already exists");
+        return;
       }
     } catch (error: any) {
       console.error(error);
-      return toast.error("Signup error");
+      toast.error("Signup error");
+      return;
     }
   };
 
@@ -147,29 +153,30 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
         totalItemsRecycled: 0,
         verified: false,
         lastLogin: serverTimestamp(),
-        location: defaultUserLocation,
       });
 
       setUser(user);
       toast.success("User created successfully");
+      navigateToDetails(navigateTo);
     } catch (error) {
       console.error(error);
-      return toast.error("Signup error");
+      toast.error("Signup error");
+      return;
     }
   };
 
   const checkIfUsernameIsTaken = async (username: string) => {
-    if (!username) return true;
+    if (!username) return "errror with username";
 
     try {
       const querySnapshot = await getDocs(
-        query(collectionGroup(db, "users"), where("username", "==", username))
+        query(collection(db, "users"), where("username", "==", username))
       );
 
       return !querySnapshot.empty;
     } catch (error) {
-      console.error(error);
-      return true;
+      console.error("Error checking username:", error);
+      return error; // Return true if an error occurs to be cautious
     }
   };
 
@@ -180,10 +187,14 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       console.error(error);
     }
   };
-
-  const updateUserLocation = async (latitude: number, longitude: number) => {
+  const updateUserLocation = async (
+    user: any,
+    latitude: number,
+    longitude: number
+  ) => {
     try {
       if (!user || !latitude || !longitude) {
+        console.log(user);
         toast.error("Invalid user or location data");
         return;
       }

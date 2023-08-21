@@ -5,7 +5,7 @@ import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
-import { navigateToDetails, navigateToDashboard } from "../../utils/navigate";
+import { navigateToDashboard } from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   useUserAuth,
@@ -36,13 +36,13 @@ const Auth: React.FC = (): JSX.Element => {
     loginWithCredentials,
     loginWithGoogleAccount,
     user,
+    loading,
   }: userAuthContextProps | any = useUserAuth();
   const navigateTo = useNavigate();
 
-  if (user) {
+  if (!loading && user) {
     navigateToDashboard(navigateTo);
   }
-
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const loginParam = queryParams.get("login");
@@ -64,29 +64,15 @@ const Auth: React.FC = (): JSX.Element => {
       return toast.error("Please fill the required fields");
     }
 
-    await loginWithCredentials(email, password);
+    loginWithCredentials(email, password);
     setAuthButtonClicked(false);
-    setTimeout(() => {
-      navigateToDetails(navigateTo);
-    }, 1000);
-
-    //route the user to the details page
   };
 
   const handleLoginWithGoogle = async (
     e: any | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-
-    const result = await loginWithGoogleAccount();
-
-    if (!result) {
-      toast.error("Login failed");
-    } else {
-      setTimeout(() => {
-        navigateToDetails(navigateTo);
-      }, 1000);
-    }
+    await loginWithGoogleAccount();
   };
 
   const handleRegisterWithCredentials = async (
@@ -116,12 +102,6 @@ const Auth: React.FC = (): JSX.Element => {
     /* finally we can register the user 😄 */
     registerWithCredentials(email, password, fullname, username);
     setAuthButtonClicked(false);
-
-    //route the user to the details page
-
-    setTimeout(() => {
-      navigateToDetails(navigateTo);
-    }, 1000);
   };
 
   const handleRegisterWithGoogle = async (
@@ -130,11 +110,6 @@ const Auth: React.FC = (): JSX.Element => {
     e.preventDefault();
 
     await registerWithGoogleAccount();
-
-    //route the user to the details page
-    setTimeout(() => {
-      navigateToDetails(navigateTo);
-    }, 1000);
   };
 
   const Login = (): JSX.Element => {

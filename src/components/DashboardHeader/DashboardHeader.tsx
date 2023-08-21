@@ -2,6 +2,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
+import {
+  useUserAuth,
+  userAuthContextProps,
+} from "../../context/userAuthContext";
+import Notification from "../../utils/toast";
 
 interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -11,6 +16,7 @@ const DashboardHeader: React.FC = ({
   className,
   ...others
 }: DashboardHeaderProps): JSX.Element => {
+  const { logout, user}: userAuthContextProps | any = useUserAuth();
   const [isNotificationDropdownVisible, setIsNotificationDropdownVisible] =
     useState(false);
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
@@ -18,6 +24,7 @@ const DashboardHeader: React.FC = ({
 
   const notificationRef: any = useRef(null);
   const profileRef: any = useRef(null);
+  const toast = new Notification();
 
   useEffect(() => {
     const closeDropdowns = (event: MouseEvent) => {
@@ -121,8 +128,9 @@ const DashboardHeader: React.FC = ({
     {
       id: 5,
       text: "log out",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      onClick: () => {
+        toast.success(`Logging out`);
+        logout();
       },
     },
   ];

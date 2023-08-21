@@ -1,6 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
-
+import { UserAuthProvider } from "../../context/userAuthContext";
+import { useNavigate } from "react-router-dom";
+import {
+  useUserAuth,
+  userAuthContextProps,
+} from "../../context/userAuthContext";
 interface DashboardComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   children?: React.ReactNode;
@@ -20,17 +26,28 @@ const DashboardComponent = ({
   onMarketPlacePage,
   ...others
 }: DashboardComponentProps): JSX.Element => {
+  const navigateTo = useNavigate();
+
+  const { user, loading }: userAuthContextProps | any = useUserAuth();
+
+  if (!loading && !user) navigateTo("/auth?login=true");
+
+  if (!loading) {
+    console.log(user);
+  }
   return (
-    <Sidebar
-      onDashboardPage={onDashboardPage}
-      onProfilePage={onProfilePage}
-      onRecyklePage={onRecyklePage}
-      onMarketPlacePage={onMarketPlacePage}
-    >
-      <section className={`${className}`} {...others}>
-        {children}
-      </section>
-    </Sidebar>
+    <UserAuthProvider>
+      <Sidebar
+        onDashboardPage={onDashboardPage}
+        onProfilePage={onProfilePage}
+        onRecyklePage={onRecyklePage}
+        onMarketPlacePage={onMarketPlacePage}
+      >
+        <section className={`${className}`} {...others}>
+          {children}
+        </section>
+      </Sidebar>
+    </UserAuthProvider>
   );
 };
 
