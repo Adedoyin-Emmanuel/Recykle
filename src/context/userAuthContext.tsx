@@ -23,6 +23,8 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { navigateToDashboard, navigateToAuth } from "../utils/navigate";
 
 interface userAuthProps {
   children: React.ReactNode;
@@ -30,6 +32,7 @@ interface userAuthProps {
 
 export interface userAuthContextProps {
   user?: any;
+  loading?: boolean;
   loginWithCredentials?: () => void;
   loginWithGoogleAccount?: () => void;
   registerWithCredentials: (
@@ -40,6 +43,7 @@ export interface userAuthContextProps {
   ) => void;
   registerWithGoogleAccount: () => void;
   logout?: () => void;
+  updateUserLocation?: () => void;
 }
 
 export const UserAuth = createContext({});
@@ -50,6 +54,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const googleProvider = new GoogleAuthProvider();
   const toast = new Notification();
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     const unsuscribe = onAuthStateChanged(auth, (user) => {
@@ -86,6 +91,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       });
     } catch (error) {
       console.log(error);
+      toast.error("Login failed");
     }
   };
 
@@ -181,6 +187,25 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     }
   };
 
+  const updateUserLocation = async (latitude: number, longitude: number) => {
+    try {
+      if (!user || !latitude || !longitude) return;
+      const location = new GeoPoint(latitude, longitude);
+      await setDoc(doc(db, "users", user.uid), { location }, { merge: true });
+      toast.success("Location saved");
+
+      setTimeout(() => {
+        navigateToDashboard(navigateTo);
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error saving location");
+      setTimeout(() => {
+        navigateToAuth(navigateTo);
+      }, 1000);
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -189,6 +214,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     registerWithCredentials,
     registerWithGoogleAccount,
     logout,
+    updateUserLocation,
   };
 
   return <UserAuth.Provider value={value}>{children}</UserAuth.Provider>;

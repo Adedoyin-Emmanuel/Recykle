@@ -1,20 +1,44 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
 import Container from "../../components/Container/Container";
 import Button from "../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { navigateToRecycling } from "../../utils/navigate";
-
-//interface DetailsProps {}
+import {
+  useUserAuth,
+  userAuthContextProps,
+} from "../../context/userAuthContext";
 
 const Details: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
+  
+  
+  if (user) {
+    navigateToDashboard(navigateTo);
+  }
+  const [getLocationButtonClicked, setLocationButtonClicked] =
+    useState<boolean>(false);
 
+  const { updateUserLocation }: userAuthContextProps | any = useUserAuth();
+
+  useEffect(() => {
+    //get user's current location
+    getLocationButtonClicked &&
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+
+        console.log(latitude);
+        console.log(longitude);
+
+        updateUserLocation(latitude, longitude);
+      });
+  }, [getLocationButtonClicked]);
   const handleLocationButtonClick = () => {
-    navigateToRecycling(navigateTo);
-
-    //console.log("Hello world");
+    // navigateToRecycling(navigateTo);
+    setLocationButtonClicked(true);
   };
   return (
     <Container>

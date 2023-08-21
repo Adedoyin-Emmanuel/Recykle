@@ -5,7 +5,11 @@ import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
-import { navigateToDetails } from "../../utils/navigate";
+import {
+  navigateToDetails,
+  navigateToAuth,
+  navigateToDashboard,
+} from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   useUserAuth,
@@ -30,29 +34,32 @@ const Header = (): JSX.Element => {
 };
 
 const Auth: React.FC = (): JSX.Element => {
-  const navigateTo = useNavigate();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const loginParam = queryParams.get("login");
-
-  const [loginClick, setLoginClick] = useState<boolean>(false);
-
-  const toast = new Notification();
-
-  const handleAuthButtonClick = () => {
-    navigateToDetails(navigateTo);
-  };
-
   const {
     registerWithCredentials,
     registerWithGoogleAccount,
     loginWithCredentials,
     loginWithGoogleAccount,
+    user,
   }: userAuthContextProps | any = useUserAuth();
+  const navigateTo = useNavigate();
+
+  if (user) {
+    navigateToDashboard(navigateTo);
+  }
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const loginParam = queryParams.get("login");
+
+  const [authButtonClicked, setAuthButtonClicked] = useState<boolean>(false);
+
+  const toast = new Notification();
+
   const handleLoginWithCredentials = async (
     e: any | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+    setAuthButtonClicked(true);
 
     const email = e.target[0].value;
     const password = e.target[1].value;
@@ -62,6 +69,10 @@ const Auth: React.FC = (): JSX.Element => {
     }
 
     await loginWithCredentials(email, password);
+    setAuthButtonClicked(false);
+    setTimeout(() => {
+      navigateToDetails(navigateTo);
+    }, 1000);
 
     //route the user to the details page
   };
@@ -72,12 +83,16 @@ const Auth: React.FC = (): JSX.Element => {
     e.preventDefault();
 
     await loginWithGoogleAccount();
+    setTimeout(() => {
+      navigateToDetails(navigateTo);
+    }, 1000);
   };
 
   const handleRegisterWithCredentials = async (
     e: any | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+    setAuthButtonClicked(true);
     const fullname = e.target[0].value;
     const username = e.target[1].value;
     const email = e.target[2].value;
@@ -97,12 +112,15 @@ const Auth: React.FC = (): JSX.Element => {
       return toast.error("Username can not contain space");
     }
 
-    //setLoginClick(true);
-
     /* finally we can register the user 😄 */
     registerWithCredentials(email, password, fullname, username);
+    setAuthButtonClicked(false);
 
     //route the user to the details page
+
+    setTimeout(() => {
+      navigateToDetails(navigateTo);
+    }, 1000);
   };
 
   const handleRegisterWithGoogle = async (
@@ -113,6 +131,9 @@ const Auth: React.FC = (): JSX.Element => {
     await registerWithGoogleAccount();
 
     //route the user to the details page
+    setTimeout(() => {
+      navigateToDetails(navigateTo);
+    }, 1000);
   };
 
   const Login = (): JSX.Element => {
@@ -138,8 +159,12 @@ const Auth: React.FC = (): JSX.Element => {
           <Input placeholder="Enter your password" type="password" required />
         </div>
 
-        <Button outline={false} className="w-full my-4">
-          login
+        <Button
+          outline={false}
+          className="w-full my-4"
+          disabled={authButtonClicked}
+        >
+          {authButtonClicked ? "loading" : "login"}
         </Button>
 
         <section className="google-auth flex w-full items-center justify-start">
@@ -199,8 +224,12 @@ const Auth: React.FC = (): JSX.Element => {
           <Input placeholder="Enter your password" type="password" required />
         </div>
 
-        <Button outline={false} className="w-full my-4" disabled={loginClick}>
-          {loginClick ? "Signing Up..." : "Sign Up"}
+        <Button
+          outline={false}
+          className="w-full my-4"
+          disabled={authButtonClicked}
+        >
+          {authButtonClicked ? "Signing Up..." : "Sign Up"}
         </Button>
 
         <section className="google-auth flex w-full items-center justify-start">
