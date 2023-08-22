@@ -44,3 +44,21 @@ body {
   background-color: #8684848e; /* Change this color as needed */
   border-radius: 6px;
 }
+
+.loader {
+  border: 6px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #34d399;
+  animation: spin 1s infinite linear;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

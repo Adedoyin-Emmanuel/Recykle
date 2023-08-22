@@ -15,7 +15,7 @@ import {
   navigateToRecycling,
   navigateToDashboard,
 } from "../../utils/navigate";
-import Memoji from "./../../assets/memoji.png";
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -60,7 +60,7 @@ const Sidebar = ({
       >
         <section className="header-section w-full flex items-center justify-start my-5 flex-col">
           <section className="w-3/4 flex flex-col items-start mx-3">
-            <img src={Memoji} alt="" className="w-16 h-20" />
+            <UserAvatar size="50"/>
 
             <section className="profile-name mt-5">
               <h3 className="font-bold capitalize flex">

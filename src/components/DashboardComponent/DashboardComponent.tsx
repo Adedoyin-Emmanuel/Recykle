@@ -2,6 +2,7 @@
 import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { UserAuthProvider } from "../../context/userAuthContext";
+import { AppContextProvider } from "../../context/appContext";
 import { useNavigate } from "react-router-dom";
 import {
   useUserAuth,
@@ -28,25 +29,20 @@ const DashboardComponent = ({
 }: DashboardComponentProps): JSX.Element => {
   const navigateTo = useNavigate();
 
-  const { user, loading }: userAuthContextProps | any = useUserAuth();
-
-  if (!loading && !user) navigateTo("/auth?login=true");
-
-  if (!loading) {
-    console.log(user);
-  }
   return (
     <UserAuthProvider>
-      <Sidebar
-        onDashboardPage={onDashboardPage}
-        onProfilePage={onProfilePage}
-        onRecyklePage={onRecyklePage}
-        onMarketPlacePage={onMarketPlacePage}
-      >
-        <section className={`${className}`} {...others}>
-          {children}
-        </section>
-      </Sidebar>
+      <AppContextProvider>
+        <Sidebar
+          onDashboardPage={onDashboardPage}
+          onProfilePage={onProfilePage}
+          onRecyklePage={onRecyklePage}
+          onMarketPlacePage={onMarketPlacePage}
+        >
+          <section className={`${className}`} {...others}>
+            {children}
+          </section>
+        </Sidebar>
+      </AppContextProvider>
     </UserAuthProvider>
   );
 };

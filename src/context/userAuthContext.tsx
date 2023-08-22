@@ -12,6 +12,7 @@ import {
   collection,
   where,
   getDocs,
+  getDoc,
   serverTimestamp,
 } from "firebase/firestore";
 
@@ -48,7 +49,8 @@ export interface userAuthContextProps {
   registerWithGoogleAccount: () => void;
   logout?: () => void;
   updateUserLocation?: (user: any, latitude: number, longitude: number) => void;
-  hasValidLocation?: (user: any) => void;
+  getUsername?: (user: any) => void;
+  getDocumentData?: (collectionName: string, documentId: string) => void;
 }
 
 export const UserAuth = createContext({});
@@ -215,6 +217,47 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     }
   };
 
+  const getUsername = async (user: any) => {
+    if (!user) return;
+
+    try {
+      const { uid }: string | any = user;
+      const userRef = collection(db, "users");
+      const q = query(userRef, where("userId", "==", uid));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        return userDoc.data().username;
+      } else {
+        return null; // No user found with the given userId
+      }
+    } catch (error) {
+      console.error("Error getting username:", error);
+      return null;
+    }
+  };
+
+  const getDocumentData = async (
+    collectionName: string,
+    documentId: string
+  ) => {
+    try {
+      const documentRef = doc(db, collectionName, documentId);
+      const documentSnapshot = await getDoc(documentRef);
+
+      if (documentSnapshot.exists()) {
+        const documentData = documentSnapshot.data();
+        return documentData;
+      } else {
+        return null; // Document not found
+      }
+    } catch (error) {
+      console.error("Error getting document data:", error);
+      return null;
+    }
+  };
+
   const value: userAuthContextProps = {
     user,
     loading,
@@ -224,6 +267,8 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     registerWithGoogleAccount,
     logout,
     updateUserLocation,
+    getUsername,
+    getDocumentData,
   };
 
   return <UserAuth.Provider value={value}>{children}</UserAuth.Provider>;

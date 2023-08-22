@@ -7,6 +7,7 @@ import {
   userAuthContextProps,
 } from "../../context/userAuthContext";
 import Notification from "../../utils/toast";
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -16,7 +17,7 @@ const DashboardHeader: React.FC = ({
   className,
   ...others
 }: DashboardHeaderProps): JSX.Element => {
-  const { logout, user}: userAuthContextProps | any = useUserAuth();
+  const { logout }: userAuthContextProps | any = useUserAuth();
   const [isNotificationDropdownVisible, setIsNotificationDropdownVisible] =
     useState(false);
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
@@ -186,10 +187,7 @@ const DashboardHeader: React.FC = ({
           className="profile-image cursor-pointer relative"
           ref={profileRef}
         >
-          <section
-            className="bg-green-100 h-10 w-10 rounded-full"
-            onClick={toggleProfileDropdown}
-          ></section>
+          <UserAvatar onClick={toggleProfileDropdown} />
 
           {isProfileDropdownVisible && (
             <div className="profile-dropdown absolute  top-full w-72 right-0 bg-white z-[100] rounded-md shadow-md p-4">
