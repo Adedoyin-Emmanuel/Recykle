@@ -91,9 +91,21 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      setUser(user);
-      toast.success("Login successful");
-      navigateToDashboard(navigateTo);
+
+      // Check if the user's email is already registered
+      const existingUserQuerySnapshot = await getDocs(
+        query(collection(db, "users"), where("email", "==", user.email))
+      );
+
+      if (!existingUserQuerySnapshot.empty) {
+        setUser(user);
+        toast.success("Login successful");
+        navigateToDashboard(navigateTo);
+      } else {
+        // User's email is not registered, show an error message
+        toast.error("This email is not registered. Please sign up.");
+        return;
+      }
     } catch (error) {
       console.error(error);
       return;
