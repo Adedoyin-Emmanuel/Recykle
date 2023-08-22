@@ -3,11 +3,11 @@ import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { UserAuthProvider } from "../../context/userAuthContext";
 import { AppContextProvider } from "../../context/appContext";
-import { useNavigate } from "react-router-dom";
-import {
-  useUserAuth,
-  userAuthContextProps,
-} from "../../context/userAuthContext";
+// import { useNavigate } from "react-router-dom";
+// import {
+//   useUserAuth,
+//   userAuthContextProps,
+// } from "../../context/userAuthContext";
 interface DashboardComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   children?: React.ReactNode;
@@ -27,7 +27,7 @@ const DashboardComponent = ({
   onMarketPlacePage,
   ...others
 }: DashboardComponentProps): JSX.Element => {
-  const navigateTo = useNavigate();
+  //const navigateTo = useNavigate();
 
   return (
     <UserAuthProvider>

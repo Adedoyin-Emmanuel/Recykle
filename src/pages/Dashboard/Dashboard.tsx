@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
@@ -21,8 +20,7 @@ import {
   userAuthContextProps,
 } from "../../context/userAuthContext";
 import { UserAuthProvider } from "../../context/userAuthContext";
-import { useAppContext } from "../../context/appContext";
-import { formatNumbers } from "../../utils/utilis";
+//import { useAppContext } from "../../context/appContext";
 
 const Dashboard = (): JSX.Element => {
   const recyclables = [
@@ -43,14 +41,14 @@ const Dashboard = (): JSX.Element => {
 
   const [eyeIcon, setEyeIcon] = useState(faEye);
   const [toggler, setToggler] = useState(true);
+  const totalPoints = "209k";
   const navigateTo = useNavigate();
+  const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
   const { user, loading }: userAuthContextProps | any = useUserAuth();
   if (!loading && !user) navigateTo("/auth?login=true");
-  const { userData }: any = useAppContext();
+  //const { userData }: any = useAppContext();
   const [showAddItemsContainer, setShowItemsContainer] =
     useState<boolean>(false);
-  const totalPoints = formatNumbers(userData.totalRecyclePoints);
-  const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
 
   const handleIconClick = () => {
     setToggler(!toggler);
@@ -200,7 +198,7 @@ const Dashboard = (): JSX.Element => {
                   reykle points
                 </p>
 
-                <p className="font-bold">{recyclingPoints}</p>
+                <p className="font-bold">1,500</p>
               </UtilityBox>
 
               <UtilityBox>
@@ -210,9 +208,7 @@ const Dashboard = (): JSX.Element => {
                   items recycled
                 </p>
 
-                <p className="font-bold">
-                  {formatNumbers(userData.totalItemsRecycled)}
-                </p>
+                <p className="font-bold">500</p>
               </UtilityBox>
 
               <UtilityBox>
@@ -222,9 +218,7 @@ const Dashboard = (): JSX.Element => {
                   items submitted
                 </p>
 
-                <p className="font-bold">
-                  {formatNumbers(userData.itemsSubmitted)}
-                </p>
+                <p className="font-bold">50</p>
               </UtilityBox>
             </div>
 
