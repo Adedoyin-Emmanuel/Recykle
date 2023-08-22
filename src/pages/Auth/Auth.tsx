@@ -5,7 +5,7 @@ import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import GoogleIcon from "./../../assets/google.svg";
-import { navigateToDashboard } from "../../utils/navigate";
+import { navigateToDashboard, navigateToDetails } from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   useUserAuth,
@@ -35,7 +35,7 @@ const Auth: React.FC = (): JSX.Element => {
     registerWithGoogleAccount,
     loginWithCredentials,
     loginWithGoogleAccount,
-  }: UserAuthContextProps  = useUserAuth();
+  }: UserAuthContextProps = useUserAuth();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const loginParam = queryParams.get("login");
@@ -59,18 +59,16 @@ const Auth: React.FC = (): JSX.Element => {
     }
 
     setAuthButtonClicked(false);
-    if (await loginWithCredentials(email, password)) {
-      navigateToDashboard(navigateTo);
-    }
+    await loginWithCredentials(email, password);
+    navigateToDashboard(navigateTo);
   };
 
   const handleLoginWithGoogle = async (
     e: any | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    if (await loginWithGoogleAccount()) {
-      navigateToDashboard(navigateTo);
-    }
+    await loginWithGoogleAccount();
+    navigateToDashboard(navigateTo);
   };
 
   const handleRegisterWithCredentials = async (
@@ -98,8 +96,9 @@ const Auth: React.FC = (): JSX.Element => {
     }
 
     /* finally we can register the user 😄 */
-    registerWithCredentials(email, password, fullname, username);
+    await registerWithCredentials(email, password, fullname, username);
     setAuthButtonClicked(false);
+    navigateToDetails(navigateTo);
   };
 
   const handleRegisterWithGoogle = async (
@@ -108,6 +107,7 @@ const Auth: React.FC = (): JSX.Element => {
     e.preventDefault();
 
     await registerWithGoogleAccount();
+    navigateToDetails(navigateTo);
   };
 
   const Login = (): JSX.Element => {
