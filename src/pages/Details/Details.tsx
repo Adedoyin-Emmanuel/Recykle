@@ -9,14 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { navigateToDashboard, navigateToAuth } from "../../utils/navigate";
 import {
   useUserAuth,
-  userAuthContextProps,
+  UserAuthContextProps,
 } from "../../context/userAuthContext";
 
 import { UserAuthProvider } from "../../context/userAuthContext";
 
 const Details: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
-  const { updateUserLocation, user }: userAuthContextProps | any =
+  const { updateUserLocation, user }: UserAuthContextProps | any =
     useUserAuth();
 
   const [getLocationButtonClicked, setLocationButtonClicked] =
@@ -24,10 +24,10 @@ const Details: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     getLocationButtonClicked &&
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude, longitude } = position.coords;
 
-        if (updateUserLocation(user, latitude, longitude)) {
+        if (await updateUserLocation(user, latitude, longitude)) {
           navigateToDashboard(navigateTo);
         } else {
           navigateToAuth(navigateTo);
