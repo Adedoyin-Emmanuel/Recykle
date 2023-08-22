@@ -250,12 +250,13 @@ const Auth: React.FC = (): JSX.Element => {
     loginParam === "true" ? <Login /> : <SignUp />
   );
 
+
   const handleLoginTextClick = () => {
     setAuthType(<Login />);
   };
 
   const handleCreateAccountTextClick = () => {
-    setAuthType(<SignUp />);
+    setAuthType(<SignUp/>);
   };
 
   return (
