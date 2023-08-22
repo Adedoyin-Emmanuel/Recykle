@@ -59,7 +59,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const googleProvider = new GoogleAuthProvider();
-  const toast = new Notification();
+  const toast = new Notification(3000);
   const navigateTo = useNavigate();
 
   useEffect(() => {
@@ -103,6 +103,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
         navigateToDashboard(navigateTo);
       } else {
         // User's email is not registered, show an error message
+        setUser(null);
         toast.error("This email is not registered. Please sign up.");
         return;
       }
