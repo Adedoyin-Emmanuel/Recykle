@@ -2,16 +2,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
-import {
-  useUserAuth,
-  userAuthContextProps,
-} from "../../context/userAuthContext";
+import { useUserAuth } from "../../context/userAuthContext";
 import { useAppContext } from "../../context/appContext";
 import Notification from "../../utils/toast";
 import { getFirstName } from "../../utils/utilis";
 import UserAvatar from "../UserAvatar/UserAvatar";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -21,7 +17,7 @@ const DashboardHeader: React.FC = ({
   className,
   ...others
 }: DashboardHeaderProps): JSX.Element => {
-  const { logout }: userAuthContextProps | any = useUserAuth();
+  const { logout }: any = useUserAuth();
   const [isNotificationDropdownVisible, setIsNotificationDropdownVisible] =
     useState(false);
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
@@ -31,8 +27,12 @@ const DashboardHeader: React.FC = ({
   const profileRef: any = useRef(null);
   const toast = new Notification();
   const navigateTo = useNavigate();
-  
-  const { userData }: any = useAppContext();
+
+  const { userData, appContextLoading }: any = useAppContext();
+
+  // if (appContextLoading) {
+  //   return <div>Loading...</div>; // Show a loading indicator while data is loading
+  // }
 
   useEffect(() => {
     const closeDropdowns = (event: MouseEvent) => {
@@ -151,7 +151,7 @@ const DashboardHeader: React.FC = ({
     >
       <section className="greeting">
         <h3 className="text-[18px] md:text-2xl font-bold capitalize ">
-          hi {getFirstName(userData.fullname)} 👋
+          hi {!appContextLoading && getFirstName(userData?.fullname)} 👋
         </h3>
       </section>
       {/* Add another section for quick actions so the profile-image would only carry profile items*/}

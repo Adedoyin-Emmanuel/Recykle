@@ -9,7 +9,7 @@ export const formatNumbers = (number: number): string => {
 };
 
 export const getFirstName = (fullName: string): string => {
-  const spaceIndex = fullName.indexOf(" ");
+  const spaceIndex = fullName?.indexOf(" ");
 
   return spaceIndex === -1 ? fullName : fullName.substring(0, spaceIndex);
 };

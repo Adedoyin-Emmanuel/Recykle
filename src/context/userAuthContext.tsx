@@ -22,6 +22,7 @@ import {
   GoogleAuthProvider,
   signOut,
   signInWithPopup,
+  User as FirebaseUser,
   onAuthStateChanged,
 } from "firebase/auth";
 
@@ -29,25 +30,45 @@ interface userAuthProps {
   children: React.ReactNode;
 }
 
-export interface userAuthContextProps {
-  user?: any;
-  loading?: boolean;
-  loginWithCredentials?: (email: string, password: string) => void;
-  loginWithGoogleAccount?: () => void;
+export interface UserAuthContextProps {
+  user: FirebaseUser | null;
+  loading: boolean;
+  isAuthenticated: boolean;
+  loginWithCredentials: (email: string, password: string) => Promise<boolean>;
+  loginWithGoogleAccount: () => Promise<boolean>;
   registerWithCredentials: (
     email: string,
     password: string,
     fullname: string,
     username: string
-  ) => void;
-  registerWithGoogleAccount: () => void;
-  logout?: () => void;
-  updateUserLocation?: (user: any, latitude: number, longitude: number) => void;
-  getUsername?: (user: any) => void;
-  getDocumentData?: (collectionName: string, documentId: string) => void;
+  ) => Promise<boolean>;
+  registerWithGoogleAccount: () => Promise<boolean>;
+  logout: () => void;
+  updateUserLocation: (
+    user: FirebaseUser,
+    latitude: number,
+    longitude: number
+  ) => Promise<boolean>;
+  getUsername: (user: any) => Promise<string | null>;
+  getDocumentData: (
+    collectionName: string,
+    documentId: string
+  ) => Promise<any | null>;
 }
 
-export const UserAuth = createContext({});
+const UserAuthContext = createContext<UserAuthContextProps>({
+  user: null,
+  loading: true,
+  isAuthenticated: false,
+  loginWithCredentials: async () => false,
+  loginWithGoogleAccount: async () => false,
+  registerWithCredentials: async () => false,
+  registerWithGoogleAccount: async () => false,
+  logout: () => {},
+  updateUserLocation: async () => false,
+  getUsername: async () => null,
+  getDocumentData: async () => null,
+});
 
 export const UserAuthProvider = ({ children }: userAuthProps) => {
   const [user, setUser] = useState<any>(null);
@@ -106,6 +127,8 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       return false;
     }
   };
+
+  const isAuthenticated = !!user; // Determine whether user is authenticated
 
   const registerWithCredentials = async (
     email: string,
@@ -199,16 +222,17 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       console.error(error);
     }
   };
+
   const updateUserLocation = async (
-    user: any,
+    user: FirebaseUser,
     latitude: number,
     longitude: number
-  ) => {
+  ): Promise<boolean> => {
     try {
       if (!user || !latitude || !longitude) {
         console.log(user);
         toast.error("Invalid user or location data");
-        return;
+        return false;
       }
 
       const location = new GeoPoint(latitude, longitude);
@@ -263,22 +287,27 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     }
   };
 
-  const value: userAuthContextProps = {
+  const value: UserAuthContextProps = {
     user,
     loading,
+    isAuthenticated,
+    updateUserLocation,
     loginWithCredentials,
     loginWithGoogleAccount,
     registerWithCredentials,
     registerWithGoogleAccount,
     logout,
-    updateUserLocation,
     getUsername,
     getDocumentData,
   };
 
-  return <UserAuth.Provider value={value}>{children}</UserAuth.Provider>;
+  return (
+    <UserAuthContext.Provider value={value}>
+      {children}
+    </UserAuthContext.Provider>
+  );
 };
 
 export const useUserAuth = () => {
-  return useContext(UserAuth);
+  return useContext(UserAuthContext);
 };
