@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
-import Memoji from "./../../assets/memoji.png";
 import VerifiedLogo from "./../../assets/verify.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,6 +15,8 @@ import {
   navigateToProfileEdit,
 } from "../../utils/navigate";
 import { useNavigate } from "react-router-dom";
+import UserAvatar from "../../components/UserAvatar/UserAvatar";
+import { useAppContext } from "../../context/appContext";
 
 const Profile: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
@@ -26,15 +28,17 @@ const Profile: React.FC = (): JSX.Element => {
   const handleProfileEditIconClick = () => {
     navigateToProfileEdit(navigateTo);
   };
+
+  const { userData, appContextLoading }: any = useAppContext();
+
   return (
     <DashboardComponent onProfilePage>
       <section className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3">
         <section className="flex items-center justify-center w-full">
-          <img src={Memoji} alt="profile picture" className="h-64 w-52" />
+          <UserAvatar size="80" className="text-2xl" />
           <FontAwesomeIcon
             icon={faPen}
-            className="hover:bg-slate-100 bg-green-100 text-white transform-gpu duration-100 ease-in-out -translate-x-20 translate-y-20 rounded-full p-3 hover:text-green-300 cursor-pointer"
-            size={"lg"}
+            className="hover:bg-slate-100 bg-green-100 text-white transform-gpu duration-100 ease-in-out -translate-x-7 translate-y-8 rounded-full p-2 hover:text-green-300 cursor-pointer"
             title="Edit profile"
             onClick={handleProfileEditIconClick}
           />
@@ -50,16 +54,18 @@ const Profile: React.FC = (): JSX.Element => {
         </section>
         <section className="profile-details my-5 mx-3">
           <h3 className="profile-name font-bold capitalize text-[1.3rem] flex items-center justify-start gap-x-3">
-            adedoyin emmanuel
+            {!appContextLoading && userData.fullname}
             <p>
-              <img src={VerifiedLogo} alt="verified logo" />
+              {!appContextLoading && userData.verified && (
+                <img src={VerifiedLogo} alt="verified logo" />
+              )}
             </p>
           </h3>
-          <p className="profile-username text-slate-500">@doyin</p>
-
-          <p className="profile-description my-2 capitalize">
-            Software Engineer, chronic christ addict
+          <p className="profile-username text-slate-500">
+            @{!appContextLoading && userData.username}
           </p>
+
+          <p className="profile-description my-2 capitalize">Recykle user ♻️</p>
 
           <p className="profile-location flex items-center justify-start gap-x-2 mb-1">
             <FontAwesomeIcon icon={faLocationDot} />
@@ -73,7 +79,7 @@ const Profile: React.FC = (): JSX.Element => {
 
           <p className="profile-join-date flex items-center justify-start gap-x-2 mb-1">
             <FontAwesomeIcon icon={faRecycle} />
-            Recycled 120 items
+            Recycled {!appContextLoading && userData.totalItemsRecycled} items
           </p>
         </section>
       </section>

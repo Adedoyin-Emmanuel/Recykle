@@ -82,11 +82,6 @@ const Settings: React.FC = (): JSX.Element => {
     <DashboardComponent onProfilePage>
       <section className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3">
         <UserProfileCard
-          profileImage={Memoji}
-          isVerified
-          profileName="Adedoyin Emmanuel"
-          profileUsername="doyin"
-          profileDescription="Busy, text y'all later 🫵"
           className="md:mt-0"
         />
         <hr />

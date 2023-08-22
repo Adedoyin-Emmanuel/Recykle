@@ -1,23 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Input from "../../components/Input/Input";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
-import Memoji from "./../../assets/memoji.png";
+import { useAppContext } from "../../context/appContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import TextArea from "../../components/TextArea/TextArea";
 import Button from "../../components/Button/Button";
+import UserAvatar from "../../components/UserAvatar/UserAvatar";
 
 const ProfileEdit: React.FC = (): JSX.Element => {
+ const { userData }: any = useAppContext();
+ 
   return (
     <DashboardComponent onProfilePage>
       <form className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3 my-8">
         <section className="profile-image flex items-center justify-center w-full">
-          <img src={Memoji} alt="user-image-real" className="h-30 w-40" />
+          <UserAvatar size="100" />
           <label htmlFor="fileUpload">
             <FontAwesomeIcon
               icon={faCamera}
               size={"lg"}
-              className="bg-green-100 p-3 rounded-full  text-white transform-gpu -translate-x-16 translate-y-12 hover:bg-slate-100 hover:text-green-300 cursor-pointer transition-colors duration-150"
+              className="bg-green-100 p-2 rounded-full  text-white transform-gpu -translate-x-10 translate-y-10 hover:bg-slate-100 hover:text-green-300 cursor-pointer transition-colors duration-150"
             />
             <input
               type="file"
@@ -37,7 +41,7 @@ const ProfileEdit: React.FC = (): JSX.Element => {
               </label>
               <Input
                 placeholder="Enter your fullname"
-                value={"Adedoyin Emmanuel"}
+                value={userData.fullname}
                 required
               />
             </section>
