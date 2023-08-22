@@ -15,12 +15,10 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { navigateToRecycling } from "../../utils/navigate";
 import { useNavigate } from "react-router-dom";
 import ScanItemContainer from "../../components/AddItemContainer/AddItemContainer";
-import {
-  useUserAuth,
-  userAuthContextProps,
-} from "../../context/userAuthContext";
-import { UserAuthProvider } from "../../context/userAuthContext";
-//import { useAppContext } from "../../context/appContext";
+// import {
+//   useUserAuth,
+//   userAuthContextProps,
+// } from "../../context/userAuthContext";
 
 const Dashboard = (): JSX.Element => {
   const recyclables = [
@@ -44,8 +42,7 @@ const Dashboard = (): JSX.Element => {
   const totalPoints = "209k";
   const navigateTo = useNavigate();
   const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
-  const { user, loading }: userAuthContextProps | any = useUserAuth();
-  if (!loading && !user) navigateTo("/auth?login=true");
+  //const { user, loading }: userAuthContextProps | any = useUserAuth();
   //const { userData }: any = useAppContext();
   const [showAddItemsContainer, setShowItemsContainer] =
     useState<boolean>(false);
@@ -72,7 +69,6 @@ const Dashboard = (): JSX.Element => {
   };
 
   return (
-    <UserAuthProvider>
       <DashboardComponent onDashboardPage>
         <DashboardHeader />
 
@@ -300,7 +296,6 @@ const Dashboard = (): JSX.Element => {
           />
         </div>
       </DashboardComponent>
-    </UserAuthProvider>
   );
 };
 

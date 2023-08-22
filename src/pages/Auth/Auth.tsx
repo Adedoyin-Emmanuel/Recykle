@@ -35,19 +35,13 @@ const Auth: React.FC = (): JSX.Element => {
     registerWithGoogleAccount,
     loginWithCredentials,
     loginWithGoogleAccount,
-    user,
-    loading,
   }: userAuthContextProps | any = useUserAuth();
-  const navigateTo = useNavigate();
-
-  if (!loading && user) {
-    navigateToDashboard(navigateTo);
-  }
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const loginParam = queryParams.get("login");
 
   const [authButtonClicked, setAuthButtonClicked] = useState<boolean>(false);
+  const navigateTo = useNavigate();
 
   const toast = new Notification();
 
@@ -64,15 +58,19 @@ const Auth: React.FC = (): JSX.Element => {
       return toast.error("Please fill the required fields");
     }
 
-    loginWithCredentials(email, password);
     setAuthButtonClicked(false);
+    if (loginWithCredentials(email, password)) {
+      navigateToDashboard(navigateTo);
+    }
   };
 
   const handleLoginWithGoogle = async (
     e: any | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    await loginWithGoogleAccount();
+    if (await loginWithGoogleAccount()) {
+      navigateToDashboard(navigateTo);
+    }
   };
 
   const handleRegisterWithCredentials = async (

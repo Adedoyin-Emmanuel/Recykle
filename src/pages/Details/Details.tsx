@@ -6,7 +6,7 @@ import Button from "../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { navigateToDashboard } from "../../utils/navigate";
+import { navigateToDashboard, navigateToAuth } from "../../utils/navigate";
 import {
   useUserAuth,
   userAuthContextProps,
@@ -23,18 +23,18 @@ const Details: React.FC = (): JSX.Element => {
     useState<boolean>(false);
 
   useEffect(() => {
-    //get user's current location
-
     getLocationButtonClicked &&
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
 
-        updateUserLocation(user, latitude, longitude);
-        navigateToDashboard(navigateTo);
+        if (updateUserLocation(user, latitude, longitude)) {
+          navigateToDashboard(navigateTo);
+        } else {
+          navigateToAuth(navigateTo);
+        }
       });
   }, [getLocationButtonClicked]);
   const handleLocationButtonClick = () => {
-    // navigateToRecycling(navigateTo);
     setLocationButtonClicked(true);
   };
   return (

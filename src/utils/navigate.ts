@@ -13,6 +13,10 @@ export const navigateToDashboard = (navigator: NavigateFunction) => {
   navigator("/dashboard");
 };
 
+export const customNavigate = (page: string): void => {
+  window.location.href = `${page}`;
+};
+
 export const navigateToRecycling = (navigator: NavigateFunction) => {
   navigator("/dashboard/recycle");
 };
@@ -71,4 +75,3 @@ export const navigateToCompanyManageMaterials = (
 };
 
 /* Super Admin Navigations */
-

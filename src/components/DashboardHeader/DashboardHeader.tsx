@@ -10,6 +10,8 @@ import { useAppContext } from "../../context/appContext";
 import Notification from "../../utils/toast";
 import { getFirstName } from "../../utils/utilis";
 import UserAvatar from "../UserAvatar/UserAvatar";
+import { useNavigate } from 'react-router-dom';
+
 
 interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -28,6 +30,8 @@ const DashboardHeader: React.FC = ({
   const notificationRef: any = useRef(null);
   const profileRef: any = useRef(null);
   const toast = new Notification();
+  const navigateTo = useNavigate();
+  
   const { userData }: any = useAppContext();
 
   useEffect(() => {
@@ -135,6 +139,7 @@ const DashboardHeader: React.FC = ({
       onClick: () => {
         toast.success(`Logging out`);
         logout();
+        navigateTo("/auth?login=true");
       },
     },
   ];

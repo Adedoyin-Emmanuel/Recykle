@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
-import { UserAuthProvider } from "../../context/userAuthContext";
-import { AppContextProvider } from "../../context/appContext";
 // import { useNavigate } from "react-router-dom";
 // import {
 //   useUserAuth,
@@ -27,11 +25,8 @@ const DashboardComponent = ({
   onMarketPlacePage,
   ...others
 }: DashboardComponentProps): JSX.Element => {
-  //const navigateTo = useNavigate();
 
   return (
-    <UserAuthProvider>
-      <AppContextProvider>
         <Sidebar
           onDashboardPage={onDashboardPage}
           onProfilePage={onProfilePage}
@@ -42,8 +37,6 @@ const DashboardComponent = ({
             {children}
           </section>
         </Sidebar>
-      </AppContextProvider>
-    </UserAuthProvider>
   );
 };
 

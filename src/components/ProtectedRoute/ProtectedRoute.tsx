@@ -1,27 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { UserAuthProvider } from "../../context/userAuthContext";
-import {
-  useUserAuth,
-  userAuthContextProps,
-} from "../../context/userAuthContext";
+import { useAppContext } from "../../context/appContext";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
 };
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { user, loading }: userAuthContextProps | any = useUserAuth();
-  return (
-    <UserAuthProvider>
-      {!loading && user ? (
-        <UserAuthProvider>{children}</UserAuthProvider>
-      ) : (
-        <Navigate to={"/auth?login=true"} />
-      )}
-    </UserAuthProvider>
-  );
+  const { userData, loading }:  any = useAppContext();
+  console.log(userData);
+  return <> {!loading && userData ? children : <Navigate to="/auth?login=true" />} </>;
 };
 
 export default ProtectedRoute;

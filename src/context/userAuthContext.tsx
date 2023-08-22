@@ -24,12 +24,6 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import {
-  navigateToDashboard,
-  navigateToAuth,
-  navigateToDetails,
-} from "../utils/navigate";
 
 interface userAuthProps {
   children: React.ReactNode;
@@ -60,15 +54,14 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const googleProvider = new GoogleAuthProvider();
   const toast = new Notification(3000);
-  const navigateTo = useNavigate();
 
   useEffect(() => {
-    const unsuscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
     });
 
-    return () => unsuscribe();
+    return () => unsubscribe();
   }, [auth]);
 
   const loginWithCredentials = async (email: string, password: string) => {
@@ -80,10 +73,11 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       );
       setUser(userCredentials.user);
       toast.success("Login successful");
-      navigateToDashboard(navigateTo);
+      return true;
     } catch (error) {
       console.error(error);
-      return toast.error("Login error");
+      toast.error("Login error");
+      return false;
     }
   };
 
@@ -100,16 +94,16 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       if (!existingUserQuerySnapshot.empty) {
         setUser(user);
         toast.success("Login successful");
-        navigateToDashboard(navigateTo);
+        return true;
       } else {
         // User's email is not registered, show an error message
         toast.error("This email is not registered. Please sign up.");
         logout();
-        return;
+        return false;
       }
     } catch (error) {
       console.error(error);
-      return;
+      return false;
     }
   };
 
@@ -143,14 +137,14 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
         });
         setUser(userCredentials.user);
         toast.success("User created successfully");
-        navigateToDetails(navigateTo);
+        return true;
       } else {
-        return;
+        return false;
       }
     } catch (error: any) {
       console.error(error);
       toast.error("Signup error");
-      return;
+      return false;
     }
   };
 
@@ -175,11 +169,11 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
 
       setUser(user);
       toast.success("User created successfully");
-      navigateToDetails(navigateTo);
+      return true;
     } catch (error) {
       console.error(error);
       toast.error("Signup error");
-      return;
+      return false;
     }
   };
 
@@ -220,16 +214,11 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       const location = new GeoPoint(latitude, longitude);
       await setDoc(doc(db, "users", user.uid), { location }, { merge: true });
       toast.success("Location saved");
-
-      setTimeout(() => {
-        navigateToDashboard(navigateTo);
-      }, 1000);
+      return true;
     } catch (error) {
       console.error(error);
       toast.error("Error saving location");
-      setTimeout(() => {
-        navigateToAuth(navigateTo);
-      }, 1000);
+      return false;
     }
   };
 

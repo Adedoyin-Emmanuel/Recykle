@@ -3,7 +3,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { useUserAuth, userAuthContextProps } from "./userAuthContext";
-import Container from "../components/Container/Container";
 
 export const AppContext = createContext({});
 
@@ -12,11 +11,8 @@ interface AppContextProps {
 }
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
-  const {
-    user,
-    getDocumentData,
-    loading,
-  }: userAuthContextProps | any = useUserAuth();
+  const { user, getDocumentData, loading }: userAuthContextProps | any =
+    useUserAuth();
 
   const [appContextLoading, setAppContextLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<any>({});
@@ -40,15 +36,6 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         });
     }
   }, [loading, user]);
-
-  /* Conditional rendering based on data availability */
-  if (appContextLoading) {
-    return (
-      <Container>
-        <div className="loader"></div>
-      </Container>
-    );
-  }
 
   const value = {
     username: userData.username,
