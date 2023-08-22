@@ -9,7 +9,7 @@ import { navigateToDashboard } from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   useUserAuth,
-  userAuthContextProps,
+  UserAuthContextProps,
 } from "../../context/userAuthContext";
 import Notification from "../../utils/toast";
 import {
@@ -35,7 +35,7 @@ const Auth: React.FC = (): JSX.Element => {
     registerWithGoogleAccount,
     loginWithCredentials,
     loginWithGoogleAccount,
-  }: userAuthContextProps | any = useUserAuth();
+  }: UserAuthContextProps  = useUserAuth();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const loginParam = queryParams.get("login");
@@ -59,7 +59,7 @@ const Auth: React.FC = (): JSX.Element => {
     }
 
     setAuthButtonClicked(false);
-    if (loginWithCredentials(email, password)) {
+    if (await loginWithCredentials(email, password)) {
       navigateToDashboard(navigateTo);
     }
   };
