@@ -11,11 +11,6 @@ import UserAvatar from "../UserAvatar/UserAvatar";
 
 interface UserProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
-  isVerified: boolean;
-  profileImage: string;
-  profileName: string;
-  profileUsername?: string;
-  profileDescription: string;
   others?: React.Attributes;
 }
 

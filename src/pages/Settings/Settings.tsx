@@ -1,6 +1,5 @@
 import React from "react";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
-import Memoji from "./../../assets/memoji.png";
 
 import {
   faKey,
