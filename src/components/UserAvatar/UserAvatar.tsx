@@ -1,27 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useMemo } from "react";
-import Avatar from "react-avatar";
+import React from "react";
+import Avatar, { ReactAvatarProps } from "react-avatar";
 import {
   useUserAuth,
   userAuthContextProps,
 } from "../../context/userAuthContext";
 import { useAppContext } from "../../context/appContext";
 
-interface UserAvatarProps {
+interface UserAvatarProps extends ReactAvatarProps {
   className?: string;
   size?: string;
   profileImageUrl?: string;
   onClick?: () => void;
 }
 
-const UserAvatar: React.FC = ({
+const UserAvatar = ({
   className,
   size,
   onClick,
   ...others
 }: UserAvatarProps): JSX.Element => {
-  const { user, loading }: userAuthContextProps | any = useUserAuth();
+  const { loading }: userAuthContextProps | any = useUserAuth();
   const { username, userData }: any = useAppContext();
 
   if (!loading) {
