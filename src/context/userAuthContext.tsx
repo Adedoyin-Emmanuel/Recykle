@@ -139,6 +139,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
           totalItemsRecycled: 0,
           verified: false,
           lastLogin: serverTimestamp(),
+          totalRecyclePoints: 0,
         });
         setUser(userCredentials.user);
         toast.success("User created successfully");
@@ -163,11 +164,13 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
         username: user.displayName?.toLowerCase().split(" ").join(""),
         email: user.email,
         dateCreated: serverTimestamp(),
+        itemsSubmitted: 0,
         profileImageUrl: user.photoURL,
         role: "user",
         totalItemsRecycled: 0,
         verified: false,
         lastLogin: serverTimestamp(),
+        totalRecyclePoints: 0,
       });
 
       setUser(user);
