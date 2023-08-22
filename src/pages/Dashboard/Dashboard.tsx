@@ -43,11 +43,10 @@ const Dashboard = (): JSX.Element => {
   const totalPoints = "209k";
   const navigateTo = useNavigate();
   const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
-  const { user, loading, registered }: userAuthContextProps | any =
+  const { user, loading }: userAuthContextProps | any =
     useUserAuth();
   if (!loading && !user) navigateTo("/auth?login=true");
 
-  console.log(registered);
   const [showAddItemsContainer, setShowItemsContainer] =
     useState<boolean>(false);
 

@@ -1,11 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
 import Avatar, { ReactAvatarProps } from "react-avatar";
-import {
-  useUserAuth,
-  userAuthContextProps,
-} from "../../context/userAuthContext";
 import { useAppContext } from "../../context/appContext";
 
 interface UserAvatarProps extends ReactAvatarProps {
@@ -21,13 +16,8 @@ const UserAvatar = ({
   onClick,
   ...others
 }: UserAvatarProps): JSX.Element => {
-  const { loading }: userAuthContextProps | any = useUserAuth();
-  const { username, userData }: any = useAppContext();
+  const { userData }: any = useAppContext();
 
-  if (!loading) {
-    console.log(userData.fullname);
-    console.log(username);
-  }
   return (
     <Avatar
       name={userData.fullname}

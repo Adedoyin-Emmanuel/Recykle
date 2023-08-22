@@ -6,7 +6,9 @@ import {
   useUserAuth,
   userAuthContextProps,
 } from "../../context/userAuthContext";
+import { useAppContext } from "../../context/appContext";
 import Notification from "../../utils/toast";
+import { getFirstName } from "../../utils/utilis";
 import UserAvatar from "../UserAvatar/UserAvatar";
 
 interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,6 +28,7 @@ const DashboardHeader: React.FC = ({
   const notificationRef: any = useRef(null);
   const profileRef: any = useRef(null);
   const toast = new Notification();
+  const { userData }: any = useAppContext();
 
   useEffect(() => {
     const closeDropdowns = (event: MouseEvent) => {
@@ -142,8 +145,8 @@ const DashboardHeader: React.FC = ({
       {...others}
     >
       <section className="greeting">
-        <h3 className="text-[20px] md:text-2xl font-bold capitalize ">
-          welcome chief 👋
+        <h3 className="text-[18px] md:text-2xl font-bold capitalize ">
+          hi {getFirstName(userData.fullname)} 👋
         </h3>
       </section>
       {/* Add another section for quick actions so the profile-image would only carry profile items*/}
