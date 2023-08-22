@@ -137,8 +137,8 @@ const DashboardHeader: React.FC = ({
       id: 5,
       text: "log out",
       onClick: () => {
-        toast.success(`Logging out`);
         logout();
+        toast.success(`Logging out`);
         navigateTo("/auth?login=true");
       },
     },

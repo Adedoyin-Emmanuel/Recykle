@@ -17,6 +17,7 @@ import {
   checkPasswordLength,
   checkIfUsernameHasSpace,
 } from "../../utils/validations";
+import { useAppContext } from "../../context/appContext";
 
 const Header = (): JSX.Element => {
   return (
@@ -36,12 +37,18 @@ const Auth: React.FC = (): JSX.Element => {
     loginWithCredentials,
     loginWithGoogleAccount,
   }: UserAuthContextProps = useUserAuth();
+  const navigateTo = useNavigate();
+
+  const { userData, appContextLoading }: any = useAppContext();
+  if (!appContextLoading && userData) {
+    navigateTo("/dashboard");
+  }
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const loginParam = queryParams.get("login");
 
   const [authButtonClicked, setAuthButtonClicked] = useState<boolean>(false);
-  const navigateTo = useNavigate();
 
   const toast = new Notification();
 
@@ -59,16 +66,18 @@ const Auth: React.FC = (): JSX.Element => {
     }
 
     setAuthButtonClicked(false);
-    await loginWithCredentials(email, password);
-    navigateToDashboard(navigateTo);
+    const result = await loginWithCredentials(email, password);
+    if (result) {
+      navigateToDashboard(navigateTo);
+    }
   };
 
   const handleLoginWithGoogle = async (
     e: any | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    await loginWithGoogleAccount();
-    navigateToDashboard(navigateTo);
+    const result = await loginWithGoogleAccount();
+    if (result) navigateTo("/dashboard");
   };
 
   const handleRegisterWithCredentials = async (
@@ -96,9 +105,16 @@ const Auth: React.FC = (): JSX.Element => {
     }
 
     /* finally we can register the user 😄 */
-    await registerWithCredentials(email, password, fullname, username);
+    const result = await registerWithCredentials(
+      email,
+      password,
+      fullname,
+      username
+    );
     setAuthButtonClicked(false);
-    navigateToDetails(navigateTo);
+    if (result) {
+      navigateToDetails(navigateTo);
+    }
   };
 
   const handleRegisterWithGoogle = async (
@@ -106,8 +122,10 @@ const Auth: React.FC = (): JSX.Element => {
   ) => {
     e.preventDefault();
 
-    await registerWithGoogleAccount();
-    navigateToDetails(navigateTo);
+    const result = await registerWithGoogleAccount();
+    if (result) {
+      navigateToDetails(navigateTo);
+    }
   };
 
   const Login = (): JSX.Element => {

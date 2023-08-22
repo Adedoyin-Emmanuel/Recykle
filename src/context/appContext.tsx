@@ -23,7 +23,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       getDocumentData("users", user.uid)
         .then((documentData: any) => {
           if (documentData) {
-            console.log(`Document data ${documentData.location.longitude}`);
+            //console.log(`Document data ${documentData.location.longitude}`);
             setUserData(documentData);
             setAppContextLoading(false);
             setAppContextError(null); // Clear any previous error

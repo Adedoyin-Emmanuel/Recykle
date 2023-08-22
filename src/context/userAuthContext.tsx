@@ -218,6 +218,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
   const logout = async () => {
     try {
       await signOut(auth);
+      setUser(null);
     } catch (error) {
       console.error(error);
     }
