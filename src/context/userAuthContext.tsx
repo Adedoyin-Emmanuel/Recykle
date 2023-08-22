@@ -113,7 +113,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       );
 
       if (!existingUserQuerySnapshot.empty) {
-        setUser(user);
+        setUser(newUser); // Corrected this line
         toast.success("Login successful");
         return true;
       } else {

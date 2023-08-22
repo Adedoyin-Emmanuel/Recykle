@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
@@ -19,6 +20,7 @@ import ScanItemContainer from "../../components/AddItemContainer/AddItemContaine
 //   useUserAuth,
 //   userAuthContextProps,
 // } from "../../context/userAuthContext";
+import { useAppContext } from "../../context/appContext";
 
 const Dashboard = (): JSX.Element => {
   const recyclables = [
@@ -37,9 +39,13 @@ const Dashboard = (): JSX.Element => {
     },
   ];
 
+  const { userData }: any = useAppContext();
+
   const [eyeIcon, setEyeIcon] = useState(faEye);
   const [toggler, setToggler] = useState(true);
-  const totalPoints = "209k";
+  const totalPoints = userData.totalRecyclePoints;
+  const itemsSubmitted = userData.itemsSubmitted;
+  const totalItemsRecycled = userData.totalItemsRecycled;
   const navigateTo = useNavigate();
   const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
   // const { user, loading }: userAuthContextProps | any = useUserAuth();
@@ -54,7 +60,7 @@ const Dashboard = (): JSX.Element => {
   useEffect(() => {
     setEyeIcon(toggler ? faEye : faEyeSlash);
     setRecyclingPoints(toggler ? totalPoints : "****");
-  }, [toggler]);
+  });
 
   const handleRecycleButtonClick = () => {
     navigateToRecycling(navigateTo);
@@ -192,7 +198,7 @@ const Dashboard = (): JSX.Element => {
               <img src={Dollar} alt="dollar-bill" className="h-10 w-10" />
               <p className="total-balance capitalize text-sm">reykle points</p>
 
-              <p className="font-bold">1,500</p>
+              <p className="font-bold">{recyclingPoints}</p>
             </UtilityBox>
 
             <UtilityBox>
@@ -200,7 +206,7 @@ const Dashboard = (): JSX.Element => {
 
               <p className="total-balance capitalize text-sm">items recycled</p>
 
-              <p className="font-bold">500</p>
+              <p className="font-bold">{totalItemsRecycled}</p>
             </UtilityBox>
 
             <UtilityBox>
@@ -210,7 +216,7 @@ const Dashboard = (): JSX.Element => {
                 items submitted
               </p>
 
-              <p className="font-bold">50</p>
+              <p className="font-bold">{itemsSubmitted}</p>
             </UtilityBox>
           </div>
 
