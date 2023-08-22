@@ -51,6 +51,7 @@ export interface userAuthContextProps {
   updateUserLocation?: (user: any, latitude: number, longitude: number) => void;
   getUsername?: (user: any) => void;
   getDocumentData?: (collectionName: string, documentId: string) => void;
+  registered?: boolean;
 }
 
 export const UserAuth = createContext({});
@@ -58,6 +59,7 @@ export const UserAuth = createContext({});
 export const UserAuthProvider = ({ children }: userAuthProps) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [registered, setRegistered] = useState<boolean>(true);
   const googleProvider = new GoogleAuthProvider();
   const toast = new Notification(3000);
   const navigateTo = useNavigate();
@@ -104,6 +106,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
       } else {
         // User's email is not registered, show an error message
         setUser(null);
+        setRegistered(false);
         toast.error("This email is not registered. Please sign up.");
         return;
       }
@@ -282,6 +285,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
     updateUserLocation,
     getUsername,
     getDocumentData,
+    registered,
   };
 
   return <UserAuth.Provider value={value}>{children}</UserAuth.Provider>;
