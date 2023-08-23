@@ -111,20 +111,30 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       return false;
     }
   };
-
+  
   const getUserRecyclingCollection = async (userId: string) => {
     try {
       const userDocRef = doc(db, "users", userId);
-      const collectionRef = collection(userDocRef, "collections");
-      const collectionSnapshot = await getDocs(collectionRef);
+      const collectionRef = collection(userDocRef, "itemsCollections");
 
-      const collectionItems = collectionSnapshot.docs.map((doc) => doc.data());
-      return collectionItems;
+      const querySnapshot = await getDocs(collectionRef);
+
+      const recyclables = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          name: data.itemName,
+          category: data.category,
+          dateAdded: data.dateAdded.toDate().toLocaleDateString(),
+        };
+      });
+
+      return recyclables;
     } catch (error) {
-      console.error("Error fetching user's recycling collection:", error);
+      console.error("Error getting recycling items:", error);
       return [];
     }
   };
+
 
   const updateRecyclingItem = async (
     userId: string,

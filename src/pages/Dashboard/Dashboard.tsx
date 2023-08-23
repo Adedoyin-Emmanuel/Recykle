@@ -15,31 +15,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { navigateToRecycling } from "../../utils/navigate";
 import { useNavigate } from "react-router-dom";
-import ScanItemContainer from "../../components/AddItemContainer/AddItemContainer";
-// import {
-//   useUserAuth,
-//   userAuthContextProps,
-// } from "../../context/userAuthContext";
-import { useAppContext } from "../../context/appContext";
+import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
+
+import { useAppContext, AppContextValuesProps } from "../../context/appContext";
+import { collection } from 'firebase/firestore';
 
 const Dashboard = (): JSX.Element => {
-  const recyclables = [
-    {
-      name: "Cardboard Boxes",
-      category: "Paper and Cardboard",
-      dateAdded: "2023-06-10",
-    },
-    { name: "Plastic Bottles", category: "Plastics", dateAdded: "2023-06-08" },
-    { name: "Glass Jars", category: "Glass", dateAdded: "2023-06-09" },
-    { name: "Trees", category: "Organic Waste", dateAdded: "2023-06-09" },
-    {
-      name: "car batteries",
-      category: "Hazardous Waste",
-      dateAdded: "2023-06-11",
-    },
-  ];
+  const {
+    userData,
+    user,
+    appContextLoading,
+    getUserRecyclingCollection,
+  }: AppContextValuesProps = useAppContext();
+  const [recyclables, setRecyclables] = useState<any>({});
 
-  const { userData }: any = useAppContext();
+  useEffect(() => {
+    getUserRecyclingCollection(user.uid).then((result: any) => {
+      setRecyclables(result);
+    });
+  }, []);
 
   const [eyeIcon, setEyeIcon] = useState(faEye);
   const [toggler, setToggler] = useState(true);
@@ -286,12 +280,20 @@ const Dashboard = (): JSX.Element => {
                 your collections
               </h4>
             </section>
-            {recyclables.map((recyclable, index) => (
-              <Collection key={index} {...recyclable} />
-            ))}
+            {!appContextLoading && recyclables.length > 0 ? (
+              recyclables.map((recyclable: any, index: number) => (
+                <Collection key={index} {...recyclable} />
+              ))
+            ) : (
+              <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-10">
+                <p className="font-medium capitalize block text-center w-full"> No collection found 😔</p>
+
+                <button onClick={handleAddItem} className="mt-3  px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100">add item</button>
+              </section>
+            )}
           </section>
         </div>
-        <ScanItemContainer
+        <AddItemContainer
           blur={true}
           showAddItemContainer={showAddItemsContainer}
           onClose={handleModalClose}
