@@ -18,7 +18,6 @@ import { useNavigate } from "react-router-dom";
 import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
 
 import { useAppContext, AppContextValuesProps } from "../../context/appContext";
-import { collection } from 'firebase/firestore';
 
 const Dashboard = (): JSX.Element => {
   const {
