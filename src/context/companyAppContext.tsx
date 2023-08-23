@@ -44,7 +44,7 @@ export interface CompanyAppContextValuesProps {
   deleteCompanyServiceItem: (companyId: string, itemId: string) => void;
 }
 
-export const AppContext = createContext<CompanyAppContextValuesProps>({
+export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
   username: "",
   company: null,
   companyContextLoading: true,
@@ -57,7 +57,9 @@ export const AppContext = createContext<CompanyAppContextValuesProps>({
   deleteCompanyServiceItem: async () => null,
 });
 
-export const AppContextProvider = ({ children }: CompanyAppContextProps) => {
+export const CompanyAppContextProvider = ({
+  children,
+}: CompanyAppContextProps) => {
   const { company, getDocumentData, companyLoading }: CompanyAuthContextProps =
     useCompanyAuth();
 
@@ -68,7 +70,7 @@ export const AppContextProvider = ({ children }: CompanyAppContextProps) => {
 
   useEffect(() => {
     if (!companyLoading && company) {
-      getDocumentData("users", company.uid)
+      getDocumentData("companies", company.uid)
         .then((documentData: any) => {
           if (documentData) {
             setCompanyData(documentData);
@@ -90,7 +92,10 @@ export const AppContextProvider = ({ children }: CompanyAppContextProps) => {
   const addServiceItem = async (companyId: string, serviceDetails: any) => {
     try {
       const companyDocRef = doc(db, "companies", companyId);
-      const itemsCollectionRef = collection(companyDocRef, "serviceCollections");
+      const itemsCollectionRef = collection(
+        companyDocRef,
+        "serviceCollections"
+      );
 
       await addDoc(itemsCollectionRef, {
         itemName: serviceDetails.serviceName,
@@ -181,9 +186,13 @@ export const AppContextProvider = ({ children }: CompanyAppContextProps) => {
     deleteCompanyServiceItem: deleteServiceItem,
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <CompanyAppContext.Provider value={value}>
+      {children}
+    </CompanyAppContext.Provider>
+  );
 };
 
-export const useAppContext = () => {
-  return useContext(AppContext);
+export const useCompanyAppContext = () => {
+  return useContext(CompanyAppContext);
 };

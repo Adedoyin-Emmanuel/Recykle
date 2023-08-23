@@ -4,27 +4,22 @@ import { navigateToCompanyProfileEdit } from "../../utils/navigate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import VerifiedIcon from "./../../assets/verify.svg";
+import {
+  useCompanyAppContext,
+  CompanyAppContextValuesProps,
+} from "../../context/companyAppContext";
+import CompanyAvatar from "../CompanyAvatar/CompanyAvatar";
 
 interface CompanyProfileCardProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
-  isVerified: boolean;
-  companyProfileImage: string;
-  companyProfileName: string;
-  companyProfileUsername?: string;
-  companyProfileDescription: string;
 }
 
 const CompanyProfileCard = ({
   className,
-  isVerified,
-  companyProfileImage,
-  companyProfileName,
-  companyProfileUsername,
-  companyProfileDescription,
   ...others
 }: CompanyProfileCardProps): JSX.Element => {
   const navigateTo = useNavigate();
-
+  const { companyData }: CompanyAppContextValuesProps = useCompanyAppContext();
   const handleProfileCardClick = () => {
     navigateToCompanyProfileEdit(navigateTo);
   };
@@ -34,10 +29,10 @@ const CompanyProfileCard = ({
   };
 
   const HeaderSection = () => {
-    return isVerified ? (
+    return companyData.verified ? (
       <>
         <h4 className="recycling-company-name font-bold flex">
-          {companyProfileName}
+          {companyData.fullname}
           <p className="m-0 px-[5px]">
             <img
               src={VerifiedIcon}
@@ -47,14 +42,14 @@ const CompanyProfileCard = ({
             />
           </p>
         </h4>
-        <p className="text-sm text-slate-500 mb-1">@{companyProfileUsername}</p>
+        <p className="text-sm text-slate-500 mb-1">@{companyData.username}</p>
       </>
     ) : (
       <>
         <h4 className="recycling-company-name font-bold">
-          {companyProfileName}
+          {companyData.fullname}
         </h4>
-        <p className="text-sm text-slate-500 mb-1">@{companyProfileUsername}</p>
+        <p className="text-sm text-slate-500 mb-1">@{companyData.username}</p>
       </>
     );
   };
@@ -66,11 +61,7 @@ const CompanyProfileCard = ({
       onClick={handleProfileCardClick}
     >
       <section className="image flex items-center justify-center">
-        <img
-          src={companyProfileImage}
-          alt="user profile image"
-          className="h-24 w-24 rounded-full"
-        />
+        <CompanyAvatar size="80" />
 
         <FontAwesomeIcon
           icon={faPen}
@@ -83,7 +74,7 @@ const CompanyProfileCard = ({
       <section className="profile-name">
         <HeaderSection />
         <p className="profile-description text-[15px]">
-          {companyProfileDescription}
+          Bridging the gap between recycling companies and consumers
         </p>
       </section>
     </section>

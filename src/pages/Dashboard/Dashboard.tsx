@@ -271,6 +271,12 @@ const Dashboard = (): JSX.Element => {
               submissionCompany="bulaba"
               submissionDate="26/08/2023"
             />
+
+            <section className="w-full flex flex-col items-end justify-end">
+              <button className="mt-3  px-4 py-2 rounded-[30px] md:11/12  capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100">
+                add new submission
+              </button>
+            </section>
           </section>
 
           <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
@@ -285,9 +291,17 @@ const Dashboard = (): JSX.Element => {
               ))
             ) : (
               <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-10">
-                <p className="font-medium capitalize block text-center w-full"> No collection found 😔</p>
+                <p className="font-medium capitalize block text-center w-full">
+                  {" "}
+                  No collection found 😔
+                </p>
 
-                <button onClick={handleAddItem} className="mt-3  px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100">add item</button>
+                <button
+                  onClick={handleAddItem}
+                  className="mt-3  px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
+                >
+                  add item
+                </button>
               </section>
             )}
           </section>

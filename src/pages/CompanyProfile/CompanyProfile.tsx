@@ -1,6 +1,5 @@
 import React from "react";
 import CompanyDashboardComponent from "../../components/CompanyDashboardComponent/CompanyDashboardComponent";
-import RecycleLogo from "./../../assets/trash.svg";
 import VerifiedLogo from "./../../assets/verify.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,9 +14,16 @@ import {
   navigateToCompanyProfileEdit,
 } from "../../utils/navigate";
 import { useNavigate } from "react-router-dom";
+import CompanyAvatar from "../../components/CompanyAvatar/CompanyAvatar";
+import {
+  useCompanyAppContext,
+  CompanyAppContextValuesProps,
+} from "../../context/companyAppContext";
+import { formatDateFromTimestamp } from "../../utils/utilis";
 
 const CompanyProfile: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
+  const { companyData }: CompanyAppContextValuesProps = useCompanyAppContext();
 
   const handleSettingsButtonClick = () => {
     navigateToCompanySettings(navigateTo);
@@ -31,15 +37,11 @@ const CompanyProfile: React.FC = (): JSX.Element => {
     <CompanyDashboardComponent onProfilePage>
       <section className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3">
         <section className="flex items-center justify-center w-full">
-          <img
-            src={RecycleLogo}
-            alt="profile picture"
-            className="h-44 w-48 rounded-full "
-          />
+          <CompanyAvatar size="80" className="text-2xl" />
+
           <FontAwesomeIcon
             icon={faPen}
-            className="hover:bg-slate-100 bg-green-100 text-white transform-gpu duration-100 ease-in-out -translate-x-20 translate-y-20 rounded-full p-3 hover:text-green-300 cursor-pointer"
-            size={"lg"}
+            className="hover:bg-slate-100 bg-green-100 text-white transform-gpu duration-100 ease-in-out -translate-x-7 translate-y-8 rounded-full p-2 hover:text-green-300 cursor-pointer"
             title="Edit profile"
             onClick={handleProfileEditIconClick}
           />
@@ -55,12 +57,14 @@ const CompanyProfile: React.FC = (): JSX.Element => {
         </section>
         <section className="profile-details my-5 mx-3">
           <h3 className="profile-name font-bold capitalize text-[1.3rem] flex items-center justify-start gap-x-3">
-            Recykle
+            {companyData.fullname}
             <p>
               <img src={VerifiedLogo} alt="verified logo" />
             </p>
           </h3>
-          <p className="profile-username text-slate-500">@recykle</p>
+          <p className="profile-username text-slate-500">
+            @{companyData.username}
+          </p>
 
           <p className="profile-description my-2 capitalize">
             Bridging the gap between recycling companies and post consumers
@@ -68,17 +72,17 @@ const CompanyProfile: React.FC = (): JSX.Element => {
 
           <p className="profile-location flex items-center justify-start gap-x-2 mb-1">
             <FontAwesomeIcon icon={faLocationDot} />
-            123, Ikorodu road, Lagos
+            {companyData.address}
           </p>
 
           <p className="profile-join-date flex items-center justify-start gap-x-2 mb-1">
             <FontAwesomeIcon icon={faCalendar} />
-            Joined september 2022
+            Joined {formatDateFromTimestamp(companyData.dateCreated)}
           </p>
 
           <p className="profile-join-date flex items-center justify-start gap-x-2 mb-1">
             <FontAwesomeIcon icon={faRecycle} />
-            Over 150 transactions
+            {companyData.itemsRecycled} total recycle transactions
           </p>
         </section>
       </section>

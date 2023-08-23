@@ -34,9 +34,12 @@ const Details: React.FC = (): JSX.Element => {
         }
       });
   }, [getLocationButtonClicked]);
+  
   const handleLocationButtonClick = () => {
     setLocationButtonClicked(true);
   };
+  
+  
   return (
     <UserAuthProvider>
       <Container>

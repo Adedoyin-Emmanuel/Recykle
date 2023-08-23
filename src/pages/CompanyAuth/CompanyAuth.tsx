@@ -1,10 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import Container from "../../components/Container/Container";
 import Layout from "../../components/Layout/Layout";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
-import { navigateToCompanyDetails } from "../../utils/navigate";
+import {
+  navigateToCompanyDetails,
+  navigateToCompanyDashboard,
+} from "../../utils/navigate";
 import { useNavigate, useLocation } from "react-router-dom";
+import Notification from "../../utils/toast";
+import {
+  validateEmail,
+  checkPasswordLength,
+  checkIfUsernameHasSpace,
+} from "../../utils/validations";
+
+import {
+  useCompanyAuth,
+  CompanyAuthContextProps,
+} from "../../context/companyAuthContext";
 
 interface HeaderProps {
   headerText?: string;
@@ -30,13 +45,101 @@ const CompanyAuth = (): JSX.Element => {
   const queryParams = new URLSearchParams(location.search);
   const loginParam = queryParams.get("login");
 
-  const handleAuthButtonClick = () => {
-    navigateToCompanyDetails(navigateTo);
+  const {
+    registerWithCredentials,
+    loginWithCredentials,
+  }: CompanyAuthContextProps = useCompanyAuth();
+
+  const toast = new Notification();
+
+  // const handleLoginWithCredentials = async (
+  //   e: any | React.FormEvent<HTMLFormElement>
+  // ) => {
+  //   e.preventDefault();
+  //   setAuthButtonClicked(true);
+
+  //   const email = e.target[0].value;
+  //   const password = e.target[1].value;
+
+  //   if (!email || !password) {
+  //     return toast.error("Please fill the required fields");
+  //   }
+
+  //   setAuthButtonClicked(false);
+  //   const result = await loginWithCredentials(email, password);
+  //   if (result) {
+  //     navigateToDashboard(navigateTo);
+  //   }
+  // };
+
+  const handleRegisterWithCredentials = async (
+    e: any | React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    const companyName = e.target[0].value;
+    const companyUsername = e.target[1].value;
+    const companyEmail = e.target[2].value;
+    const companyPassword = e.target[3].value;
+
+    if (!companyName || !companyUsername || !companyEmail || !companyPassword) {
+      toast.error("Plese fill the required fields");
+      return;
+    }
+
+    if (!validateEmail(companyEmail)) {
+      return toast.error("Please enter a valid email address");
+    }
+    if (!checkPasswordLength(companyPassword)) {
+      return toast.error("Password must be at least 6 characters long");
+    }
+    if (!checkIfUsernameHasSpace(companyUsername)) {
+      return toast.error("Username can not contain space");
+    }
+
+    //everything is well
+
+    const result = await registerWithCredentials(
+      companyEmail,
+      companyPassword,
+      companyName,
+      companyUsername
+    );
+
+    if (result) {
+      console.log(result);
+      navigateToCompanyDetails(navigateTo);
+    }
+    console.log(result);
+  };
+
+  const handleLoginWithCredentials = async (
+    e: any | React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    const companyEmail = e.target[0].value;
+    const companyPassword = e.target[1].value;
+
+    if (!companyEmail || !companyPassword) {
+      return toast.error("Please fill the required fields");
+    }
+
+    //everything is well :)
+
+    const result = await loginWithCredentials(companyEmail, companyPassword);
+
+    if (result) {
+      navigateToCompanyDashboard(navigateTo);
+    }
   };
 
   const CompanyLogin = (): JSX.Element => {
     return (
-      <form className="login-section my-10 lg:w-1/4 w-11/12">
+      <form
+        className="login-section my-10 lg:w-1/4 w-11/12"
+        onSubmit={(e) => handleLoginWithCredentials(e)}
+      >
         <Header
           headerText="Login"
           subHeaderText="You are logging in as a recycling company"
@@ -45,21 +148,17 @@ const CompanyAuth = (): JSX.Element => {
           <label htmlFor="username" className="capitalize">
             email
           </label>
-          <Input placeholder="Enter your email" type="email" />
+          <Input placeholder="Enter your email" type="email" required />
         </div>
 
         <div className="username my-5">
           <label htmlFor="username" className="capitalize">
             password
           </label>
-          <Input placeholder="Enter your username" type="text" />
+          <Input placeholder="Enter your password" type="password" required />
         </div>
 
-        <Button
-          outline={false}
-          className="w-full my-4"
-          onClick={handleAuthButtonClick}
-        >
+        <Button outline={false} className="w-full my-4">
           login
         </Button>
 
@@ -79,7 +178,10 @@ const CompanyAuth = (): JSX.Element => {
 
   const CompanySignup = (): JSX.Element => {
     return (
-      <form className="login-section my-10 lg:w-1/4 w-11/12">
+      <form
+        className="login-section my-10 lg:w-1/4 w-11/12"
+        onSubmit={(e) => handleRegisterWithCredentials(e)}
+      >
         <Header
           headerText="Create Account"
           subHeaderText="Create an account for your recycling company"
@@ -88,27 +190,31 @@ const CompanyAuth = (): JSX.Element => {
           <label htmlFor="username" className="capitalize">
             company name
           </label>
-          <Input placeholder="Enter your username" type="text" />
+          <Input placeholder="Enter your company name" type="text" required />
         </div>
+
+        <div className="username my-5">
+          <label htmlFor="username" className="capitalize">
+            company username
+          </label>
+          <Input placeholder="Enter your username" type="text" required />
+        </div>
+
         <div className="username my-5">
           <label htmlFor="username" className="capitalize">
             email
           </label>
-          <Input placeholder="Enter your email" type="email" />
+          <Input placeholder="Enter your email" type="email" required />
         </div>
 
         <div className="username my-5">
           <label htmlFor="username" className="capitalize">
             password
           </label>
-          <Input placeholder="Enter your username" type="text" />
+          <Input placeholder="Enter your password" type="password" required />
         </div>
 
-        <Button
-          outline={false}
-          className="w-full my-4"
-          onClick={handleAuthButtonClick}
-        >
+        <Button outline={false} className="w-full my-4">
           sign up
         </Button>
 

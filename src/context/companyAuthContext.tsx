@@ -3,25 +3,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext, useContext, useState, useEffect } from "react";
 import Notification from "../utils/toast";
-import { auth, db } from "../utils/firebase.config";
+import { auth, db, storage } from "../utils/firebase.config";
 import {
   doc,
   setDoc,
-  GeoPoint,
+  updateDoc,
   query,
   collection,
   where,
   getDocs,
   getDoc,
   serverTimestamp,
+  GeoPoint,
 } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
   signOut,
-  signInWithPopup,
   User as FirebaseUser,
   onAuthStateChanged,
 } from "firebase/auth";
@@ -31,18 +31,16 @@ interface companyAuthProps {
 }
 
 export interface CompanyAuthContextProps {
-  company: FirebaseUser | null;
+  company: FirebaseUser | any;
   companyLoading: boolean;
   isAuthenticated: boolean;
   loginWithCredentials: (email: string, password: string) => Promise<boolean>;
-  loginWithGoogleAccount: () => Promise<boolean>;
   registerWithCredentials: (
     email: string,
     password: string,
     fullname: string,
     username: string
   ) => Promise<boolean>;
-  registerWithGoogleAccount: () => Promise<boolean>;
   logout: () => void;
   updateCompanyLocation: (
     company: FirebaseUser,
@@ -54,6 +52,14 @@ export interface CompanyAuthContextProps {
     collectionName: string,
     documentId: string
   ) => Promise<any | null>;
+  updateCompanyDetails: (
+    company: FirebaseUser,
+    latitude: number,
+    longitude: number,
+    companyAddress: string,
+    companyLogoFile: File,
+    companyNumber: number
+  ) => Promise<any | null>;
 }
 
 const CompanyAuthContext = createContext<CompanyAuthContextProps>({
@@ -61,19 +67,17 @@ const CompanyAuthContext = createContext<CompanyAuthContextProps>({
   companyLoading: true,
   isAuthenticated: false,
   loginWithCredentials: async () => false,
-  loginWithGoogleAccount: async () => false,
   registerWithCredentials: async () => false,
-  registerWithGoogleAccount: async () => false,
   logout: () => {},
   updateCompanyLocation: async () => false,
   getUsername: async () => null,
   getDocumentData: async () => null,
+  updateCompanyDetails: async () => null,
 });
 
 export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
   const [company, setCompany] = useState<any>(null);
   const [companyLoading, setCompanyLoading] = useState<boolean>(true);
-  const googleProvider = new GoogleAuthProvider();
   const toast = new Notification(3000);
 
   useEffect(() => {
@@ -98,32 +102,6 @@ export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
     } catch (error) {
       console.error(error);
       toast.error("Login error");
-      return false;
-    }
-  };
-
-  const loginWithGoogleAccount = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const newCompany = result.user;
-
-      // Check if the user's email is already registered
-      const existingUserQuerySnapshot = await getDocs(
-        query(collection(db, "companies"), where("email", "==", newCompany.email))
-      );
-
-      if (!existingUserQuerySnapshot.empty) {
-        setCompany(newCompany); // Corrected this line
-        toast.success("Login successful");
-        return true;
-      } else {
-        // User's email is not registered, show an error message
-        toast.error("This email is not registered. Please sign up.");
-        logout();
-        return false;
-      }
-    } catch (error) {
-      console.error(error);
       return false;
     }
   };
@@ -171,35 +149,6 @@ export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
     }
   };
 
-  const registerWithGoogleAccount = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-
-      await setDoc(doc(db, "companies", user.uid), {
-        fullname: user.displayName,
-        username: user.displayName?.toLowerCase().split(" ").join(""),
-        email: user.email,
-        dateCreated: serverTimestamp(),
-        usersFeedback: 0,
-        profileImageUrl: user.photoURL,
-        role: "company",
-        itemsReceived: 0,
-        verified: false,
-        lastLogin: serverTimestamp(),
-        itemsRecycled: 0,
-      });
-
-      setCompany(user);
-      toast.success("company registered successfully");
-      return true;
-    } catch (error) {
-      console.error(error);
-      toast.error("Signup error");
-      return false;
-    }
-  };
-
   const checkIfUsernameIsTaken = async (username: string) => {
     if (!username) return "errror with username";
 
@@ -214,6 +163,55 @@ export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
       return error; // Return true if an error occurs to be cautious
     }
   };
+const updateCompanyDetails = async (
+  company: FirebaseUser,
+  latitude: number,
+  longitude: number,
+  companyAddress: string,
+  companyLogoFile: File,
+  companyNumber: number
+) => {
+  try {
+    const companyLocation = new GeoPoint(latitude, longitude);
+
+    if (!companyLogoFile.type.startsWith("image/")) {
+      toast.error("Invalid file type. Please upload an image.");
+      return;
+    }
+
+    if (companyLogoFile) {
+      const companyLogoStorageRef = ref(storage, `companyLogo/${company.uid}`);
+      const uploadTask = await uploadBytes(
+        companyLogoStorageRef,
+        companyLogoFile
+      );
+      const logoUrl = await getDownloadURL(uploadTask.ref);
+
+      const companyDocRef = doc(db, "companies", company.uid);
+      await updateDoc(companyDocRef, {
+        location: companyLocation,
+        address: companyAddress,
+        logo: logoUrl,
+        number: companyNumber,
+      });
+    } else {
+      const companyDocRef = doc(db, "companies", company.uid);
+
+      await updateDoc(companyDocRef, {
+        location: companyLocation,
+        address: companyAddress,
+        number: companyNumber,
+      });
+    }
+
+    toast.success("Details updated successfully");
+    return true;
+  } catch (error) {
+    console.error("Error updating company details:", error);
+    toast.error("Failed to update details");
+    return false;
+  }
+};
 
   const logout = async () => {
     try {
@@ -237,7 +235,11 @@ export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
       }
 
       const location = new GeoPoint(latitude, longitude);
-      await setDoc(doc(db, "companies", company.uid), { location }, { merge: true });
+      await setDoc(
+        doc(db, "companies", company.uid),
+        { location },
+        { merge: true }
+      );
       toast.success("Location saved");
       return true;
     } catch (error) {
@@ -294,12 +296,11 @@ export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
     isAuthenticated,
     updateCompanyLocation: updateCompanyLocation,
     loginWithCredentials,
-    loginWithGoogleAccount,
     registerWithCredentials,
-    registerWithGoogleAccount,
     logout,
     getUsername,
     getDocumentData,
+    updateCompanyDetails,
   };
 
   return (

@@ -2,6 +2,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
+import {
+  useCompanyAppContext,
+  CompanyAppContextValuesProps,
+} from "../../context/companyAppContext";
+import {
+  useCompanyAuth,
+  CompanyAuthContextProps,
+} from "../../context/companyAuthContext";
+import Notification from "../../utils/toast";
+import { useNavigate } from "react-router-dom";
+import { getFirstName } from "../../utils/utilis";
+import CompanyAvatar from "../CompanyAvatar/CompanyAvatar";
 
 interface CompanyDashboardHeaderProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,8 +29,15 @@ const CompanyDashboardHeader: React.FC = ({
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
     useState(false);
 
+  const { companyData, companyContextLoading }: CompanyAppContextValuesProps =
+    useCompanyAppContext();
+  const { logout }: CompanyAuthContextProps = useCompanyAuth();
+
+  const toast = new Notification();
+
   const notificationRef: any = useRef(null);
   const profileRef: any = useRef(null);
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     const closeDropdowns = (event: MouseEvent) => {
@@ -131,8 +150,10 @@ const CompanyDashboardHeader: React.FC = ({
     {
       id: 6,
       text: "Logout",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      onClick: () => {
+        logout();
+        toast.success("Logging out");
+        navigateTo("/company/auth?login=true");
       },
     },
   ];
@@ -143,8 +164,8 @@ const CompanyDashboardHeader: React.FC = ({
       {...others}
     >
       <section className="greeting">
-        <h3 className="text-[20px] md:text-2xl font-bold capitalize ">
-          welcome chief 👋
+        <h3 className="text-[18px] md:text-2xl font-bold capitalize ">
+          hi {!companyContextLoading && getFirstName(companyData.fullname)} 👋
         </h3>
       </section>
 
@@ -188,11 +209,7 @@ const CompanyDashboardHeader: React.FC = ({
           className="profile-image cursor-pointer relative"
           ref={profileRef}
         >
-          <section
-            className="bg-green-300 h-10 w-10 rounded-full"
-            onClick={toggleProfileDropdown}
-          ></section>
-
+          <CompanyAvatar onClick={toggleProfileDropdown} />
           {isProfileDropdownVisible && (
             <div className="profile-dropdown absolute  top-full w-72 right-0 bg-white z-[100] rounded-md shadow-md p-4">
               <h4 className="mb-2 font-bold text-gray-800 capitalize">

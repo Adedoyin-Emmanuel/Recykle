@@ -1,27 +1,30 @@
 import React from "react";
 import CompanyDashboardComponent from "../../components/CompanyDashboardComponent/CompanyDashboardComponent";
 import Input from "../../components/Input/Input";
-import RecyleLogo from "./../../assets/trash.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import TextArea from "../../components/TextArea/TextArea";
 import Button from "../../components/Button/Button";
+import { useCompanyAppContext, CompanyAppContextValuesProps } from '../../context/companyAppContext';
+import CompanyAvatar from "../../components/CompanyAvatar/CompanyAvatar";
 
 const CompanyProfileEdit: React.FC = (): JSX.Element => {
+  const {companyData}: CompanyAppContextValuesProps = useCompanyAppContext();
+  
   return (
     <CompanyDashboardComponent onProfilePage>
       <form className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3 my-8">
         <section className="profile-image flex items-center justify-center w-full">
-          <img src={RecyleLogo} alt="user-image-real" className="h-30 w-40" />
+          <CompanyAvatar size="100" />
           <label htmlFor="fileUpload">
             <FontAwesomeIcon
               icon={faCamera}
               size={"lg"}
-              className="bg-green-100 p-3 rounded-full  text-white transform-gpu -translate-x-16 translate-y-12 hover:bg-slate-100 hover:text-green-300 cursor-pointer transition-colors duration-150"
+              className="bg-green-100 p-2 rounded-full  text-white transform-gpu -translate-x-10 translate-y-10 hover:bg-slate-100 hover:text-green-300 cursor-pointer transition-colors duration-150"
             />
             <input
               type="file"
-              name="company-profile-picture"
+              name="user-profile-picture"
               id="fileUpload"
               hidden
               accept=".png, .jpg, .jpeg"
@@ -37,7 +40,7 @@ const CompanyProfileEdit: React.FC = (): JSX.Element => {
               </label>
               <Input
                 placeholder="Enter your company name"
-                value={"Recykle"}
+                value={companyData.fullname}
                 required
               />
             </section>
@@ -66,7 +69,7 @@ const CompanyProfileEdit: React.FC = (): JSX.Element => {
               <Input
                 placeholder="Enter your company number"
                 type="tel"
-                value={"07061620301"}
+                value={companyData.number}
                 required
               />
             </section>
