@@ -4,7 +4,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useUserAuth, UserAuthContextProps } from "./userAuthContext";
 import {
-  FieldValue as ServerTimeStamp,
   addDoc,
   doc,
   collection,
@@ -16,13 +15,15 @@ import {
 } from "firebase/firestore";
 import { db } from "../utils/firebase.config";
 import Notification from "../utils/toast";
+import { User as FirebaseUser } from "firebase/auth";
 
 interface AppContextProps {
   children?: React.ReactNode;
 }
 
-interface AppContextValuesProps {
+export interface AppContextValuesProps {
   username: string;
+  user: FirebaseUser | any;
   appContextLoading: boolean;
   loading: boolean;
   userData: any;
@@ -32,9 +33,8 @@ interface AppContextValuesProps {
     itemDetails: {
       itemName: string;
       itemCategory: string;
-      dateAdded: ServerTimeStamp;
     }
-  ) => void;
+  ) => any;
   getUserRecyclingCollection: (userId: string) => any;
   updateRecyclingItem: (
     userId: string,
@@ -46,6 +46,7 @@ interface AppContextValuesProps {
 
 export const AppContext = createContext<AppContextValuesProps>({
   username: "",
+  user: null,
   appContextLoading: true,
   loading: true,
   userData: {},
@@ -89,11 +90,11 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   const addRecyclingItem = async (userId: string, itemDetails: any) => {
     try {
       const userDocRef = doc(db, "users", userId);
-      const collectionRef = collection(userDocRef, "collections");
+      const itemsCollectionRef = collection(userDocRef, "itemsCollections");
 
-      await addDoc(collectionRef, {
+      await addDoc(itemsCollectionRef, {
         itemName: itemDetails.itemName,
-        category: itemDetails.category,
+        category: itemDetails.itemCategory,
         dateAdded: serverTimestamp(),
       });
 
@@ -103,9 +104,11 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
       console.log("Recycling item added successfully");
       toast.success("Item added successfully");
+      return true;
     } catch (error) {
       console.error("Error adding recycling item:", error);
       toast.error("Error adding item");
+      return false;
     }
   };
 
@@ -135,9 +138,10 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
       await updateDoc(itemDocRef, updatedItemDetails);
 
-      console.log("Recycling item updated successfully");
+      toast.success("Item updated successfully");
     } catch (error) {
       console.error("Error updating recycling item:", error);
+      toast.error("Error updating item");
     }
   };
 
@@ -157,6 +161,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
   const value = {
     username: userData.username,
+    user: user,
     appContextLoading: appContextLoading,
     loading: loading,
     userData: userData,

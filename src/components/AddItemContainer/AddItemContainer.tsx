@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +19,8 @@ import {
   faWineGlassAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import Notification from "../../utils/toast";
+import { useAppContext, AppContextValuesProps } from "../../context/appContext";
 
 interface CategoryIcons {
   [category: string]: IconDefinition;
@@ -51,17 +53,62 @@ const AddItemContainer = ({
   showAddItemContainer,
 }: AddItemContainerProps): JSX.Element => {
   let showContainer = showAddItemContainer;
+
   const handleCloseButtonClick = () => {
     showContainer = false;
     onClose();
   };
 
+  const [selectedCategory, setSelectedCategory] = useState<any>();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const toast = new Notification();
+  const { user, addRecyclingItem }: AppContextValuesProps = useAppContext();
+
   const handleSaveItemClick = () => {
+    console.log(selectedCategory);
+    console.log(inputRef?.current?.value);
+
+    const userCategorySelected = selectedCategory;
+    const itemValue = inputRef?.current?.value;
+
+    if (!userCategorySelected || userCategorySelected === undefined) {
+      toast.error("Please select a category");
+      return;
+    }
+
+    if (!itemValue || itemValue.trim() === "" || itemValue === " ") {
+      toast.error("Enter valid item name");
+      return;
+    }
+
+    const newItemDetails = {
+      itemName: itemValue,
+      itemCategory: userCategorySelected,
+    };
+
+    //everything works fine
+    // addRecyclingItem(user.uid, {
+    //   itemName: itemValue,
+    //   itemCategory: userCategorySelected,
+    //   dateAdded: serverTimestamp(),
+    // });
+
+    addRecyclingItem(user.uid, newItemDetails)
+      .then((success: any) => {
+        if (success) {
+          console.log("Item added successfully");
+          // You can perform any additional actions here
+        } else {
+          console.log("Item could not be added");
+          // Handle the failure case
+        }
+      })
+      .catch((error: any) => {
+        console.error("An error occurred:", error);
+        // Handle the error
+      });
     handleCloseButtonClick();
   };
-
-  const [selectedCategory, setSelectedCategory] = useState<any>();
-
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: { opacity: 1, scale: 1 },
@@ -80,6 +127,7 @@ const AddItemContainer = ({
     "Appliances",
     "Glass Bottles",
   ];
+
   return showContainer ? (
     <motion.div
       initial="hidden"
@@ -160,6 +208,7 @@ const AddItemContainer = ({
           <Input
             className="mb-3 mt-1 text-sm bg-white capitalize"
             placeholder="eg ex water bottle "
+            inputRef={inputRef}
           />
           <section className="button-section w-11/12 md:w-full flex items-center justify-center mx-auto md:mx-0 md:justify-end b-5 my-4">
             <button
