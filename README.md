@@ -1,3 +1,2 @@
 # Recykle 🚀
-
-We would update this later 
+Recycle is an application bridging the gap between consumers and recycling companies. 

@@ -60,6 +60,8 @@ const IndividualCompany: React.FC = (): JSX.Element => {
           dateJoined={formatDateFromTimestamp(companiesData.dateCreated)}
         />
       </section>
+      
+      <br/><br/>
     </DashboardComponent>
   );
 };

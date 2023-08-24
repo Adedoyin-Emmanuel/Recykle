@@ -11,7 +11,8 @@ import Avatar from "react-avatar";
 import CompanyBottle from "./../../assets/company-bottle.svg";
 import CompanyMetals from "./../../assets/company-metals.svg";
 import CompanyPaper from "./../../assets/company-paper.svg";
-import CompanyPlastic from "./../../assets/company-plastic.svg";
+import CompanyTrash from "./../../assets/company-plastic.svg";
+import { useNavigate } from "react-router-dom";
 
 interface IndividualCompanyCardProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -63,9 +64,15 @@ const IndividualCompanyCard = ({
     return stars;
   };
 
+  const navigateTo = useNavigate();
+
+  const handleRecycleButtonClicked = () => {
+    navigateTo("submit");
+  };
+
   return (
     <section
-      className={`individual-card ${className} flex flex-col items-center `}
+      className={`individual-card ${className} flex flex-col items-center mb-10`}
     >
       <section className="company-profile-image">
         <Avatar
@@ -102,7 +109,10 @@ const IndividualCompanyCard = ({
             </h2>
 
             <section className="action-button flex">
-              <button className="border-green-200 border-2 px-2 h-9 w-24 text-sm capitalize rounded-[30px] transition-colors hover:border-transparent hover:bg-green-200 hover:text-white ease-out duration-150">
+              <button
+                className="border-green-200 border-2 px-2 h-9 w-24 text-sm capitalize rounded-[30px] transition-colors hover:border-transparent hover:bg-green-200 hover:text-white ease-out duration-150"
+                onClick={handleRecycleButtonClicked}
+              >
                 recycle
               </button>
             </section>
@@ -153,15 +163,15 @@ const IndividualCompanyCard = ({
           </h3>
 
           <section className="all-recyclables mt-4 grid grid-cols-2 gap-x-10 w-full p-3">
-            <section className="recyclables bg-slate-100 rounded-md flex flex-col items-center cursor-pointer transition-colors duration-150 ease-linear hover:bg-green-100 hover:text-white mt-2 mb-4">
-              <img src={CompanyPlastic} className="p-5" />
+            <section className="recyclables bg-slate-50 rounded-md flex flex-col items-center cursor-pointer transition-colors duration-150 ease-linear hover:bg-green-100 hover:text-white mt-2 mb-4">
+              <img src={CompanyTrash} className="p-5" />
 
               <section className="sategory p-2">
                 <p className="category-na capitalize font-bold">plastic</p>
               </section>
             </section>
 
-            <section className="recyclables bg-slate-100 rounded-md flex flex-col items-center cursor-pointer transition-colors duration-150 ease-linear hover:bg-green-100 hover:text-white mt-2 mb-4">
+            <section className="recyclables bg-slate-50 rounded-md flex flex-col items-center cursor-pointer transition-colors duration-150 ease-linear hover:bg-green-100 hover:text-white mt-2 mb-4">
               <img src={CompanyPaper} className="p-5" />
 
               <section className="sategory p-2">
@@ -169,7 +179,7 @@ const IndividualCompanyCard = ({
               </section>
             </section>
 
-            <section className="recyclables bg-slate-100 rounded-md flex flex-col items-center cursor-pointer transition-colors duration-150 ease-linear hover:bg-green-100 hover:text-white mt-2 mb-4">
+            <section className="recyclables bg-slate-50 rounded-md flex flex-col items-center cursor-pointer transition-colors duration-150 ease-linear hover:bg-green-100 hover:text-white mt-2 mb-4">
               <img src={CompanyBottle} className="p-5" />
 
               <section className="sategory p-2">
@@ -177,7 +187,7 @@ const IndividualCompanyCard = ({
               </section>
             </section>
 
-            <section className="recyclables bg-slate-100 rounded-md flex flex-col items-center cursor-pointer transition-colors duration-150 ease-linear hover:bg-green-100 hover:text-white mt-2 mb-4">
+            <section className="recyclables bg-slate-50 rounded-md flex flex-col items-center cursor-pointer transition-colors duration-150 ease-linear hover:bg-green-100 hover:text-white mt-2 mb-4">
               <img src={CompanyMetals} className="p-5" />
 
               <section className="sategory p-2">

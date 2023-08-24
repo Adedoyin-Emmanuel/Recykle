@@ -56,6 +56,11 @@ const App = () => {
                   path="/dashboard/recycle/:companyId"
                   element={<ProtectedRoute children={<IndividualCompany />} />}
                 ></Route>
+
+                <Route
+                  path="/dashboard/recycle/:companyId/submit"
+                  element={<ProtectedRoute children={<UserSubmissions />} />}
+                ></Route>
                 <Route
                   path="/dashboard/marketplace"
                   element={<ProtectedRoute children={<MarketPlace />} />}

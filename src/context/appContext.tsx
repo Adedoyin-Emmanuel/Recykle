@@ -48,6 +48,11 @@ export interface AppContextValuesProps {
   searchRecyclingCompanies: (searchQuery: string) => any;
   getAllRecyclingCompanies: () => any;
   getRecyclingCompanyById: (companyId: string) => any;
+  submitRecyclingData: (
+    companyId: string,
+    totalQuantity: number,
+    itemsSubmitted: any
+  ) => void;
 }
 
 export const AppContext = createContext<AppContextValuesProps>({
@@ -64,6 +69,7 @@ export const AppContext = createContext<AppContextValuesProps>({
   searchRecyclingCompanies: async () => null,
   getAllRecyclingCompanies: async () => null,
   getRecyclingCompanyById: async () => null,
+  submitRecyclingData: async () => null,
 });
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
@@ -232,6 +238,36 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     }
   };
 
+  const submitRecyclingData = async (
+    companyId: string,
+    totalQuantity: number,
+    itemsSubmitted: any
+  ) => {
+    try {
+      const submissionData = {
+        totalQuantity,
+        itemsSubmitted,
+        submittedAt: serverTimestamp(),
+      };
+
+      // Get a reference to the submissions collection under the specific company
+      const submissionsRef = collection(
+        db,
+        "companies",
+        companyId,
+        "submissions"
+      );
+
+      // Add the submission data to the submissions collection
+      await addDoc(submissionsRef, submissionData);
+
+      toast.success("Submission successful");
+    } catch (error) {
+      console.error("Error submitting recycling data:", error);
+      toast.error("Submission failed");
+    }
+  };
+
   const value = {
     username: userData.username,
     user: user,
@@ -246,6 +282,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     searchRecyclingCompanies,
     getAllRecyclingCompanies,
     getRecyclingCompanyById,
+    submitRecyclingData,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
