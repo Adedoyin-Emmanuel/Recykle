@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 import DashboardHeader from "../../components/DashboardHeader/DashboardHeader";
 import UtilityBox from "../../components/UtilityBox/UtilityBox";
@@ -8,14 +8,14 @@ import Dollar from "./../../assets/dollar-circle.svg";
 import Submitted from "./../../assets/clipboard-tick-2.svg";
 import TrashBin from "../../assets/recycle-icon.svg";
 import RecycleCard from "../../components/RecycleCard/RecycleCard";
-import SubmissionCard from "../../components/SubmissionCard/SubmissionCard";
 import Chart from "../../components/Chart/Chart";
 import Collection from "../../components/Collection/Collection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { navigateToRecycling } from "../../utils/navigate";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
+import UserSubmissions from "../../components/UserSubmissions/UserSubmissions";
 
 import { useAppContext, AppContextValuesProps } from "../../context/appContext";
 
@@ -41,8 +41,7 @@ const Dashboard = (): JSX.Element => {
   const totalItemsRecycled = userData.totalItemsRecycled;
   const navigateTo = useNavigate();
   const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
-  // const { user, loading }: userAuthContextProps | any = useUserAuth();
-  // const { userData }: any = useAppContext();
+
   const [showAddItemsContainer, setShowItemsContainer] =
     useState<boolean>(false);
 
@@ -187,6 +186,28 @@ const Dashboard = (): JSX.Element => {
               </section>
             </section>
 
+            <section className="mobile-data-2 bg-slate-50 rounded-lg md:hidden p-4 flex items-center justify-between">
+              <section className="bg-green-10 p-3 rounded-md flex items-center flex-col md:hidden gap-y-1">
+                <img src={TrashBin} alt="dollar-bill" className="h-10 w-10" />
+
+                <p className="total-balance capitalize text-[12px]">
+                  items recycled
+                </p>
+
+                <p className="font-bold">{totalItemsRecycled}</p>
+              </section>
+
+              <section className="bg-green-10 p-3 rounded-md flex items-center flex-col md:hidden gap-y-1">
+                <img src={Submitted} alt="dollar-bill" className="h-10 w-10" />
+
+                <p className="total-balance capitalize text-[12px]">
+                  items submitted
+                </p>
+
+                <p className="font-bold">{itemsSubmitted}</p>
+              </section>
+            </section>
+
             <UtilityBox>
               <img src={Dollar} alt="dollar-bill" className="h-10 w-10" />
               <p className="total-balance capitalize text-sm">reykle points</p>
@@ -254,28 +275,15 @@ const Dashboard = (): JSX.Element => {
                 recent submission
               </h4>
             </section>
-            <SubmissionCard
-              status="pending"
-              submissionCompany="recykle"
-              submissionDate="14/09/2023"
-            />
-
-            <SubmissionCard
-              status="success"
-              submissionCompany="scrapay"
-              submissionDate="20/09/2023"
-            />
-
-            <SubmissionCard
-              status="failed"
-              submissionCompany="bulaba"
-              submissionDate="26/08/2023"
-            />
+            <UserSubmissions />
 
             <section className="w-full flex flex-col items-end justify-end">
-              <button className="mt-3  px-4 py-2 rounded-[30px] md:11/12  capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100">
+              <Link
+                to="/dashboard/recycle"
+                className="mt-3  px-4 py-2 rounded-[30px] md:11/12  capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
+              >
                 add new submission
-              </button>
+              </Link>
             </section>
           </section>
 

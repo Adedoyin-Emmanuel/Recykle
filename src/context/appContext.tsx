@@ -50,6 +50,8 @@ export interface AppContextValuesProps {
   getRecyclingCompanyById: (companyId: string) => any;
   submitRecyclingData: (
     companyId: string,
+    companyName: string,
+    userId: string,
     totalQuantity: number,
     itemsSubmitted: any
   ) => void;
@@ -240,6 +242,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
   const submitRecyclingData = async (
     companyId: string,
+    companyName: string,
+    userId: string,
     totalQuantity: number,
     itemsSubmitted: any
   ) => {
@@ -248,6 +252,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         totalQuantity,
         itemsSubmitted,
         submittedAt: serverTimestamp(),
+        status: "pending",
       };
 
       // Get a reference to the submissions collection under the specific company
@@ -257,6 +262,30 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         companyId,
         "submissions"
       );
+
+      const userDocRef = doc(db, "users", userId);
+      const submissionsCollectionRef = collection(userDocRef, "submissions");
+
+      const userSubmissionData = {
+        companyName,
+        dateSubmitted: serverTimestamp(),
+        status: "pending",
+        itemsSubmitted: itemsSubmitted,
+      };
+
+      await addDoc(submissionsCollectionRef, userSubmissionData);
+
+      //update the user t
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, {
+        itemsSubmitted: increment(1),
+      });
+
+      // Update company's submission count
+      const companyRef = doc(db, "companies", companyId);
+      await updateDoc(companyRef, {
+        itemsReceived: increment(1),
+      });
 
       // Add the submission data to the submissions collection
       await addDoc(submissionsRef, submissionData);

@@ -11,7 +11,7 @@ const Recycle: React.FC = (): JSX.Element => {
   const [showAddItemContainer, setShowAddItemContainer] =
     useState<boolean>(false);
   const {
- //   searchRecyclingCompanies,
+    //   searchRecyclingCompanies,
     getAllRecyclingCompanies,
   }: AppContextValuesProps = useAppContext();
 
@@ -45,7 +45,7 @@ const Recycle: React.FC = (): JSX.Element => {
             key={index}
             name={company.fullname}
             address={company.address}
-            isVerified={company.verified}
+            isVerified={!company.verified}
             companyId={company.id}
             rating={company?.rating || Math.random() * 4 + 1}
           />

@@ -71,7 +71,15 @@ const UserSubmissions: React.FC = (): JSX.Element => {
       toast.error("Please enter a valid quantity");
     }
 
-    submitRecyclingData(companyId, totalQuantities, recyclables);
+    if (companyData) {
+      submitRecyclingData(
+        companyId,
+        companyData.fullname,
+        user.uid,
+        totalQuantities,
+        recyclables
+      );
+    }
   };
   return (
     <DashboardComponent onRecyklePage>
@@ -79,7 +87,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
         <h3 className=" font-bold capitalize text-[20px] md:text-2xl">
           submit recycle request to{" "}
           <span className="text-green-300">
-            {!appContextLoading && companyData.fullname}
+            {!appContextLoading && !loading && companyData?.fullname}
           </span>
         </h3>
       </section>
