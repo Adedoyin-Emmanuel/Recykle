@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import CompanyDashboardComponent from "../../components/CompanyDashboardComponent/CompanyDashboardComponent";
 import CompanyDashboardHeader from "../../components/CompanyDashboardHeader/CompanyDashboardHeader";
@@ -13,8 +14,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { navigateToRecycling } from "../../utils/navigate";
 import { useNavigate } from "react-router-dom";
+import {
+  useCompanyAppContext,
+  CompanyAppContextValuesProps,
+} from "../../context/companyAppContext";
 
 const CompanyDashboard: React.FC = (): JSX.Element => {
+  const { companyData }: CompanyAppContextValuesProps = useCompanyAppContext();
+
   const recyclables = [
     {
       name: "Cardboard Boxes",
@@ -33,7 +40,9 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
 
   const [eyeIcon, setEyeIcon] = useState(faEye);
   const [toggler, setToggler] = useState(true);
-  const totalItemsRecycled = "150.5k";
+  const totalItemsRecycled = companyData.itemsRecycled;
+  const itemsReceived = companyData.itemsReceived;
+  const usersFeedback = companyData.usersFeedback;
   const [itemsRecycled, setItemsRecycled] = useState(totalItemsRecycled);
 
   const handleIconClick = () => {
@@ -43,7 +52,7 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
   useEffect(() => {
     setEyeIcon(toggler ? faEye : faEyeSlash);
     setItemsRecycled(toggler ? totalItemsRecycled : "****");
-  }, [toggler]);
+  });
 
   const navigateTo = useNavigate();
 
@@ -172,7 +181,7 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
 
               <p className="total-balance capitalize text-sm">items recycled</p>
 
-              <p className="font-bold">2.5k</p>
+              <p className="font-bold">{itemsRecycled}</p>
             </UtilityBox>
 
             <UtilityBox>
@@ -180,7 +189,7 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
 
               <p className="total-balance capitalize text-sm">items received</p>
 
-              <p className="font-bold">50</p>
+              <p className="font-bold">{itemsReceived}</p>
             </UtilityBox>
 
             <UtilityBox>
@@ -188,7 +197,7 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
 
               <p className="total-balance capitalize text-sm">users feedback</p>
 
-              <p className="font-bold">5.3k</p>
+              <p className="font-bold">{usersFeedback}</p>
             </UtilityBox>
           </div>
 

@@ -10,8 +10,11 @@ import {
   serverTimestamp,
   updateDoc,
   increment,
+  getDoc,
   getDocs,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "../utils/firebase.config";
 import Notification from "../utils/toast";
@@ -42,6 +45,9 @@ export interface AppContextValuesProps {
     updatedItemDetails: any
   ) => void;
   deleteRecyclingItem: (userId: string, itemId: string) => void;
+  searchRecyclingCompanies: (searchQuery: string) => any;
+  getAllRecyclingCompanies: () => any;
+  getRecyclingCompanyById: (companyId: string) => any;
 }
 
 export const AppContext = createContext<AppContextValuesProps>({
@@ -55,6 +61,9 @@ export const AppContext = createContext<AppContextValuesProps>({
   getUserRecyclingCollection: async () => null,
   updateRecyclingItem: async () => null,
   deleteRecyclingItem: async () => null,
+  searchRecyclingCompanies: async () => null,
+  getAllRecyclingCompanies: async () => null,
+  getRecyclingCompanyById: async () => null,
 });
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
@@ -111,7 +120,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       return false;
     }
   };
-  
+
   const getUserRecyclingCollection = async (userId: string) => {
     try {
       const userDocRef = doc(db, "users", userId);
@@ -134,7 +143,6 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       return [];
     }
   };
-
 
   const updateRecyclingItem = async (
     userId: string,
@@ -168,6 +176,61 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       console.error("Error deleting recycling item:", error);
     }
   };
+  const searchRecyclingCompanies = async (searchQuery: string) => {
+    const lowercaseSearchQuery = searchQuery.trim().toLowerCase();
+    console.log(lowercaseSearchQuery);
+    try {
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "companies"),
+          where("fullname", ">=", lowercaseSearchQuery),
+          where("fullname", "<=", lowercaseSearchQuery + "\uf8ff")
+        )
+      );
+      console.log(querySnapshot.docs);
+      const results = querySnapshot.docs.map((doc) => doc.data());
+      return results;
+    } catch (error) {
+      console.error("Error searching companies:", error);
+      throw error;
+    }
+  };
+
+  const getAllRecyclingCompanies = async () => {
+    const companiesRef = collection(db, "companies");
+    try {
+      const querySnapshot = await getDocs(companiesRef);
+
+      const recyclingCompanies = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return recyclingCompanies;
+    } catch (error) {
+      console.error("Error fetching recycling companies:", error);
+      return [];
+    }
+  };
+
+  const getRecyclingCompanyById = async (companyId: string) => {
+    const companyRef = doc(db, "companies", companyId);
+
+    try {
+      const docSnapshot = await getDoc(companyRef);
+
+      if (docSnapshot.exists()) {
+        const companyData = docSnapshot.data();
+        return companyData;
+      } else {
+        console.log("Company not found");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching company data:", error);
+      return null;
+    }
+  };
 
   const value = {
     username: userData.username,
@@ -180,6 +243,9 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     getUserRecyclingCollection,
     updateRecyclingItem,
     deleteRecyclingItem,
+    searchRecyclingCompanies,
+    getAllRecyclingCompanies,
+    getRecyclingCompanyById,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

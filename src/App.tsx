@@ -24,6 +24,8 @@ import { AppContextProvider } from "./context/appContext";
 import { CompanyAuthProvider } from "./context/companyAuthContext";
 import { CompanyAppContextProvider } from "./context/companyAppContext";
 import CompanyProtectedRoute from "./components/CompanyProtectedRoute/CompanyProtectedRoute";
+import IndividualCompany from "./pages/IndividualCompany/IndividualCompany";
+import UserSubmissions from "./pages/UserSubmissions/UserSubmissions";
 
 const App = () => {
   return (
@@ -50,7 +52,10 @@ const App = () => {
                   path="/dashboard/recycle"
                   element={<ProtectedRoute children={<Recycle />} />}
                 ></Route>
-
+                <Route
+                  path="/dashboard/recycle/:companyId"
+                  element={<ProtectedRoute children={<IndividualCompany />} />}
+                ></Route>
                 <Route
                   path="/dashboard/marketplace"
                   element={<ProtectedRoute children={<MarketPlace />} />}

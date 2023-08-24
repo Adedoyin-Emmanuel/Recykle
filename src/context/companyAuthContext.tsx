@@ -135,6 +135,7 @@ export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
           verified: false,
           lastLogin: serverTimestamp(),
           usersFeedback: 0,
+          
         });
         setCompany(companyCredentials.user);
         toast.success("Company registered successfully");

@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faStarBold } from "@fortawesome/free-solid-svg-icons";
 import VerifiedIcon from "./../../assets/verify.svg";
+import { Link } from "react-router-dom";
 
 interface RecycingCompanyCardProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -10,6 +11,7 @@ interface RecycingCompanyCardProps
   address: string;
   rating: number;
   isVerified: boolean;
+  companyId: string;
   others?: React.Attributes;
 }
 
@@ -19,6 +21,7 @@ const RecycingCompanyCard = ({
   address,
   rating,
   isVerified,
+  companyId,
   others,
 }: RecycingCompanyCardProps): JSX.Element => {
   const HeaderSection = () => {
@@ -58,7 +61,8 @@ const RecycingCompanyCard = ({
     return stars;
   };
   return (
-    <section
+    <Link 
+      to={companyId}
       className={`recycling-company-card shadow bg-green-1 cursor-pointer hover:bg-green-5 mt-5 w-full p-3 rounded h-32  flex flex-col justify-center gap-3 ${className}`}
       {...others}
     >
@@ -69,7 +73,7 @@ const RecycingCompanyCard = ({
       <section className="flex">
         <StarRating />
       </section>
-    </section>
+    </Link>
   );
 };
 
