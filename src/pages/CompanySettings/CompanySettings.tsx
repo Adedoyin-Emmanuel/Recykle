@@ -1,6 +1,5 @@
 import React from "react";
 import CompanyDashboardComponent from "../../components/CompanyDashboardComponent/CompanyDashboardComponent";
-import RecycleLogo from "./../../assets/trash.svg";
 
 import {
   faKey,
@@ -82,11 +81,7 @@ const CompanySettings = (): JSX.Element => {
     <CompanyDashboardComponent onSettingsPage>
       <section className="profile-section w-full lg:w-2/4 mx-auto flex flex-col items-start justify-start gap-3">
         <CompanyProfileCard
-          companyProfileImage={RecycleLogo}
-          isVerified
-          companyProfileName="Recykle"
-          companyProfileUsername="recykle"
-          companyProfileDescription="Bridging the gap between recycling companies and consumers "
+        
           className="md:mt-0 m-2"
         />
         <hr />
