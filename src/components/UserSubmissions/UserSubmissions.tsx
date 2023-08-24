@@ -34,7 +34,11 @@ const UserSubmissions = () => {
         <SubmissionCard
           key={index}
           status={submission.status}
-          submissionCompany={submission.companyName}
+          submissionCompany={
+            submission.companyName.length > 10
+              ? submission.companyName.substring(0, 10)
+              : submission.companyName
+          }
           submissionDate={submission.dateSubmitted
             .toDate()
             .toLocaleDateString()}

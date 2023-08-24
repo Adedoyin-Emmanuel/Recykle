@@ -51,6 +51,7 @@ export interface AppContextValuesProps {
   submitRecyclingData: (
     companyId: string,
     companyName: string,
+    username: string,
     userId: string,
     totalQuantity: number,
     itemsSubmitted: any
@@ -243,6 +244,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   const submitRecyclingData = async (
     companyId: string,
     companyName: string,
+    username: string,
     userId: string,
     totalQuantity: number,
     itemsSubmitted: any
@@ -253,6 +255,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         itemsSubmitted,
         submittedAt: serverTimestamp(),
         status: "pending",
+        submittedBy: username,
+        userId: userId
       };
 
       // Get a reference to the submissions collection under the specific company

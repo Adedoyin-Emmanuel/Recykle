@@ -42,6 +42,7 @@ export interface CompanyAppContextValuesProps {
     updatedItemDetails: any
   ) => void;
   deleteCompanyServiceItem: (companyId: string, itemId: string) => void;
+  getUsersSubmission: (companyId: string) => any;
 }
 
 export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
@@ -55,6 +56,7 @@ export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
   getCompanyServiceCollection: async () => null,
   updateCompanyServiceItem: async () => null,
   deleteCompanyServiceItem: async () => null,
+  getUsersSubmission: async () => null
 });
 
 export const CompanyAppContextProvider = ({
@@ -140,6 +142,23 @@ export const CompanyAppContextProvider = ({
     }
   };
 
+  const getUsersSubmission = async (companyId: string) => {
+    try {
+      const companyDocRef = doc(db, "companies", companyId);
+      const submissionsRef = collection(companyDocRef, "submissions");
+      const querySnapshot = await getDocs(submissionsRef);
+
+      const companySubmissions = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return companySubmissions;
+    } catch (error) {
+      console.error("Error fetching users submissions:", error);
+      return [];
+    }
+  };
+
   const updateServiceItem = async (
     companyId: string,
     serviceId: string,
@@ -184,6 +203,7 @@ export const CompanyAppContextProvider = ({
     getCompanyServiceCollection: getCompanyServiceCollection,
     updateCompanyServiceItem: updateServiceItem,
     deleteCompanyServiceItem: deleteServiceItem,
+    getUsersSubmission,
   };
 
   return (

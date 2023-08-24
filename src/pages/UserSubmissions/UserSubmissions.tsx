@@ -16,6 +16,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
   const {
     getUserRecyclingCollection,
     user,
+    userData,
     appContextLoading,
     loading,
     getRecyclingCompanyById,
@@ -75,6 +76,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
       submitRecyclingData(
         companyId,
         companyData.fullname,
+        userData.fullname,
         user.uid,
         totalQuantities,
         recyclables

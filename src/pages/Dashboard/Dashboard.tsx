@@ -16,12 +16,13 @@ import { navigateToRecycling } from "../../utils/navigate";
 import { useNavigate, Link } from "react-router-dom";
 import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
 import UserSubmissions from "../../components/UserSubmissions/UserSubmissions";
+import { db } from "../../utils/firebase.config";
+import { doc, onSnapshot } from "firebase/firestore"; // Import Firestore functions for real-time listeners
 
 import { useAppContext, AppContextValuesProps } from "../../context/appContext";
 
 const Dashboard = (): JSX.Element => {
   const {
-    userData,
     user,
     appContextLoading,
     getUserRecyclingCollection,
@@ -34,11 +35,34 @@ const Dashboard = (): JSX.Element => {
     });
   }, []);
 
+  const [snapShotUserData, setSnapShotUserData] = useState<any>({
+    totalRecyclePoints: 0,
+    itemsSubmitted: 0,
+    itemsRecycled: 0,
+  });
+
+  useEffect(() => {
+    const userDocRef = doc(db, "users", user.uid);
+
+    const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        setSnapShotUserData(docSnapshot.data());
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
+
+  const totalPoints = snapShotUserData.totalRecyclePoints;
+  const itemsSubmitted = snapShotUserData.itemsSubmitted;
+  const totalItemsRecycled = snapShotUserData.totalItemsRecycled;
+
   const [eyeIcon, setEyeIcon] = useState(faEye);
   const [toggler, setToggler] = useState(true);
-  const totalPoints = userData.totalRecyclePoints;
-  const itemsSubmitted = userData.itemsSubmitted;
-  const totalItemsRecycled = userData.totalItemsRecycled;
+  //const [changeTotalItemsRecycled, setChangeTotalItemsRecycled] = useState();
+
   const navigateTo = useNavigate();
   const [recyclingPoints, setRecyclingPoints] = useState(totalPoints);
 
@@ -194,7 +218,7 @@ const Dashboard = (): JSX.Element => {
                   items recycled
                 </p>
 
-                <p className="font-bold">{totalItemsRecycled}</p>
+                <p className="font-bold text-sm">{totalItemsRecycled}</p>
               </section>
 
               <section className="bg-green-10 p-3 rounded-md flex items-center flex-col md:hidden gap-y-1">
@@ -204,7 +228,7 @@ const Dashboard = (): JSX.Element => {
                   items submitted
                 </p>
 
-                <p className="font-bold">{itemsSubmitted}</p>
+                <p className="font-bold text-sm">{itemsSubmitted}</p>
               </section>
             </section>
 

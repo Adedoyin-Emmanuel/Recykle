@@ -6,6 +6,7 @@ interface CompanyClientSubmissionProps
   className?: string;
   submissionDate: string;
   submittedBy: string;
+  status?: string;
 }
 
 const CompanyClientSubmission = ({
@@ -31,7 +32,7 @@ const CompanyClientSubmission = ({
       <section className="subbmitted-to flex items-center justify-around gap-x-3">
         <p className="font-bold block text-sm">
           @
-          {submittedBy.length > 10 ? submittedBy.substring(0, 30) : submittedBy}
+          {submittedBy?.length > 10 ? submittedBy.substring(0, 30) : submittedBy}
         </p>
       </section>
     </section>

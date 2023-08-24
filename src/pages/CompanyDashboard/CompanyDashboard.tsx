@@ -9,7 +9,6 @@ import Feedback from "./../../assets/messages.svg";
 import CompanyChart from "../../components/CompanyChart/CompanyChart";
 import RecycleCard from "../../components/RecycleCard/RecycleCard";
 import Collection from "../../components/Collection/Collection";
-import CompanyClientSubmission from "../../components/CompanyClientSubmission/CompanyClientSubmission";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { navigateToRecycling } from "../../utils/navigate";
@@ -18,7 +17,8 @@ import {
   useCompanyAppContext,
   CompanyAppContextValuesProps,
 } from "../../context/companyAppContext";
-
+import CompanySubmissions
+from "../../components/CompanySubmissions/CompanySubmissions";
 const CompanyDashboard: React.FC = (): JSX.Element => {
   const { companyData }: CompanyAppContextValuesProps = useCompanyAppContext();
 
@@ -240,20 +240,7 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
                 recent submission
               </h4>
             </section>
-            <CompanyClientSubmission
-              submittedBy="emmysoft"
-              submissionDate="14/09/2023"
-            />
-
-            <CompanyClientSubmission
-              submittedBy="henqsoft"
-              submissionDate="20/09/2023"
-            />
-
-            <CompanyClientSubmission
-              submittedBy="benrobo"
-              submissionDate="26/08/2023"
-            />
+            <CompanySubmissions />
           </section>
 
           <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
