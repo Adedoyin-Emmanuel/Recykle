@@ -68,7 +68,7 @@ const RecycingCompanyCard = ({
     >
       <HeaderSection />
       <p className="text-slate-500 text-sm capitalize">
-        {address.length > 30 ? address.substring(0, 30) : address}
+        {address?.length > 30 ? address.substring(0, 30) : address}
       </p>
       <section className="flex">
         <StarRating />
