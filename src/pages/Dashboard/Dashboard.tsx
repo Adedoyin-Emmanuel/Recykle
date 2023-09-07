@@ -214,7 +214,7 @@ const Dashboard = (): JSX.Element => {
               <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
                 <img src={TrashBin} alt="dollar-bill" className="h-6 w-6 mx-2" />
 
-                <p className="total-balance capitalize text-[10px]">
+                <p className="total-balance capitalize text-[11px]">
                   items recycled
                 </p>
 
@@ -224,7 +224,7 @@ const Dashboard = (): JSX.Element => {
               <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
                 <img src={Submitted} alt="dollar-bill" className="h-6 w-6 mx-2" />
 
-                <p className="total-balance capitalize text-[10px]">
+                <p className="total-balance capitalize text-[11px]">
                   items submitted
                 </p>
 
