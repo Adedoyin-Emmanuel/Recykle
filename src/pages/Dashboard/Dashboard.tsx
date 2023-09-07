@@ -212,7 +212,7 @@ const Dashboard = (): JSX.Element => {
 
             <section className="mobile-data-2 bg-slate-50 rounded-lg md:hidden p-4 flex items-center justify-between flex-row gap-x-5">
               <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
-                <img src={TrashBin} alt="dollar-bill" className="h-8 w-8" />
+                <img src={TrashBin} alt="dollar-bill" className="h-6 w-6 mx-2" />
 
                 <p className="total-balance capitalize text-[12px]">
                   items recycled
@@ -222,7 +222,7 @@ const Dashboard = (): JSX.Element => {
               </section>
 
               <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
-                <img src={Submitted} alt="dollar-bill" className="h-8 w-8" />
+                <img src={Submitted} alt="dollar-bill" className="h-6 w-6 mx-2" />
 
                 <p className="total-balance capitalize text-[12px]">
                   items submitted
