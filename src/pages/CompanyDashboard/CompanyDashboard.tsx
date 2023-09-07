@@ -64,7 +64,7 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
     <CompanyDashboardComponent onDashboardPage>
       <CompanyDashboardHeader />
 
-      <div className="w-full flex flex-col xl:flex-row gap-x-5 ">
+      <div className="w-full flex flex-col xl:flex-row gap-x-5">
         <div className="first-section w-full xl:w-8/12 flex flex-col items-center justify-center">
           <div className="grid p-1 lg:grid-cols-3 gap-10 w-full">
             <section className="mobile-data bg-green-10 rounded-lg  md:hidden p-4 flex flex-col gap-y-2">
@@ -200,6 +200,28 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
               <p className="font-bold">{usersFeedback}</p>
             </UtilityBox>
           </div>
+
+          <section className="mobile-data-2 bg-slate-50 rounded-lg md:hidden p-4 flex items-center justify-between flex-row gap-x-5 my-5 w-full">
+            <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
+              <img src={TrashBin} alt="dollar-bill" className="h-6 w-6 mx-2" />
+
+              <p className="total-balance capitalize text-[11px]">
+                items received
+              </p>
+
+              <p className="font-bold text-sm">{itemsReceived}</p>
+            </section>
+
+            <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
+              <img src={Submitted} alt="dollar-bill" className="h-6 w-6 mx-2" />
+
+              <p className="total-balance capitalize text-[11px]">
+                users feedback
+              </p>
+
+              <p className="font-bold text-sm">{usersFeedback}</p>
+            </section>
+          </section>
 
           <section className="growth-statistic mt-16 mb-2 w-full ">
             <h4 className="capitalize font-bold text-[20px]">

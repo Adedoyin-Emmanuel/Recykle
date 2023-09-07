@@ -57,7 +57,7 @@ const Dashboard = (): JSX.Element => {
 
   const totalPoints = snapShotUserData.totalRecyclePoints;
   const itemsSubmitted = snapShotUserData.itemsSubmitted;
-  const totalItemsRecycled = snapShotUserData.totalItemsRecycled;
+  const totalItemsRecycled = snapShotUserData.totalItemsRecycled || 0;
 
   const [eyeIcon, setEyeIcon] = useState(faEye);
   const [toggler, setToggler] = useState(true);
