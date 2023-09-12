@@ -10,6 +10,8 @@ import {
   useCompanyAuth,
   CompanyAuthContextProps,
 } from "../../context/companyAuthContext";
+import { formatDateFromTimestamp } from "../../utils/utilis";
+
 const CompanySubmissions = () => {
   const [userSubmissions, setUserSubmissions] = useState([]);
   const { getUsersSubmission }: CompanyAppContextValuesProps =
@@ -21,6 +23,7 @@ const CompanySubmissions = () => {
       try {
         const submissions = await getUsersSubmission(company.uid);
         setUserSubmissions(submissions);
+        console.log(submissions);
       } catch (error) {
         console.error("Error fetching user submissions:", error);
       }
@@ -31,13 +34,12 @@ const CompanySubmissions = () => {
 
   return (
     <div>
-      {userSubmissions.map((submission: any) => (
+      {userSubmissions?.map((submission: any) => (
         <CompanyClientSubmission
-          key={submission.id} // Assuming each submission has an id
+          key={submission.id}
           submittedBy={submission.submittedBy}
-          submissionDate={submission.submissionDate}
+          submissionDate={formatDateFromTimestamp(submission.submittedAt)}
           status={submission.status}
-          // Add other props as needed
         />
       ))}
     </div>

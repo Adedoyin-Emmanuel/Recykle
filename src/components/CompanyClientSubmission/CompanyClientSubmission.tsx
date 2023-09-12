@@ -1,23 +1,49 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Submitted from "./../../assets/clipboard-tick.svg";
+import { Timestamp } from "firebase/firestore";
 
 interface CompanyClientSubmissionProps
   extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
-  submissionDate: string;
+  submissionDate: Timestamp | any;
   submittedBy: string;
-  status?: string;
+  status: "success" | "failed" | "pending";
 }
 
 const CompanyClientSubmission = ({
   className,
   submissionDate,
   submittedBy,
+  status,
   ...others
 }: CompanyClientSubmissionProps): JSX.Element => {
+  const StatusMapper = () => {
+    switch (status) {
+      case "success":
+        return (
+          <div className="bg-green-200 text-[11px] font-bold w-20 rounded opacity-90 hover:opacity-100 capitalize p-1 text-center">
+            success
+          </div>
+        );
+      case "failed":
+        return (
+          <div className="bg-red-500 text-[11px] font-bold w-20 text-white rounded opacity-90 hover:opacity-100 capitalize p-1 text-center">
+            failed
+          </div>
+        );
+      case "pending":
+        return (
+          <div className="bg-yellow-300 text-[11px] w-20 font-bold rounded opacity-90 hover:opacity-100 capitalize p-1 text-center">
+            pending
+          </div>
+        );
+    }
+  };
+
   return (
     <section
-      className={`submission-card rounded-md p-3 flex items-center justify-between w-full mb-1   cursor-pointer ${className} transition-color transform-gpu ease-in-out duration-100 hover:bg-slate-50`}
+      className={`submission-card rounded-md p-3 flex items-center justify-between w-full mb-1  cursor-pointer ${className} transition-color transform-gpu ease-in-out duration-100 hover:bg-slate-50 gap-x-6`}
       {...others}
     >
       <section className="first-section flex items-center gap-x-4 p-1">
@@ -32,9 +58,12 @@ const CompanyClientSubmission = ({
       <section className="subbmitted-to flex items-center justify-around gap-x-3">
         <p className="font-bold block text-sm">
           @
-          {submittedBy?.length > 10 ? submittedBy.substring(0, 30) : submittedBy}
+          {submittedBy?.length > 10
+            ? `${submittedBy.substring(0, 10)} ...`
+            : submittedBy}
         </p>
       </section>
+      <StatusMapper />
     </section>
   );
 };

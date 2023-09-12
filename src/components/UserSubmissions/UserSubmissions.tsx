@@ -30,6 +30,12 @@ const UserSubmissions = () => {
 
   return (
     <>
+      {submissions.length == 0 && (
+        <p className="font-medium capitalize block text-center w-full">
+          {" "}
+        You have no submissions yet !
+        </p>
+      )}
       {submissions.map((submission: any, index: number) => (
         <SubmissionCard
           key={index}

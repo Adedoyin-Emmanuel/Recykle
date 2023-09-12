@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -29,6 +29,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
 
   const { companyId }: any = useParams();
   const [companyData, setCompanyData] = useState<any>(null);
+  const inputRef: number | any = useRef(0);
 
   useEffect(() => {
     getUserRecyclingCollection(user.uid).then((result: any) => {
@@ -53,7 +54,8 @@ const UserSubmissions: React.FC = (): JSX.Element => {
     setShowItemsContainer(false);
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = (e: React.FormEvent<HTMLFormElement> | any) => {
+    e.preventDefault();
     setShowItemsContainer(true);
   };
 
@@ -66,12 +68,15 @@ const UserSubmissions: React.FC = (): JSX.Element => {
     e: React.FormEvent<HTMLFormElement> | any
   ) => {
     e.preventDefault();
-    const totalQuantities = e.target[0].value;
+    const totalQuantities = inputRef.current.value;
 
-    if (!totalQuantities) {
+    if (!totalQuantities || totalQuantities === 0) {
       toast.error("Please enter a valid quantity");
     }
 
+    if (recyclables.length === 0) {
+      return toast.error("You don't have any collections");
+    }
     if (companyData) {
       submitRecyclingData(
         companyId,
@@ -85,6 +90,11 @@ const UserSubmissions: React.FC = (): JSX.Element => {
   };
   return (
     <DashboardComponent onRecyklePage>
+      <AddItemContainer
+        blur={true}
+        showAddItemContainer={showAddItemsContainer}
+        onClose={handleModalClose}
+      />
       <section className="header">
         <h3 className=" font-bold capitalize text-[20px] md:text-2xl">
           submit recycle request to{" "}
@@ -95,10 +105,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
       </section>
       <section className="all-collections"></section>
 
-      <form
-        className="submitform  p-3 lg:w-4/6 mx-auto mt-24"
-        onSubmit={(e) => handleFinishSubmission(e)}
-      >
+      <form className="submitform  p-3 lg:w-4/6 mx-auto mt-24">
         <section className="grid items-center lg:justify-center  md:grid-cols-2 lg:grid-cols-3">
           {!appContextLoading && recyclables.length > 0 ? (
             recyclables.map((recyclable: any, index: number) => (
@@ -110,14 +117,16 @@ const UserSubmissions: React.FC = (): JSX.Element => {
               />
             ))
           ) : (
-            <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-10">
+            <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-3">
               <p className="font-medium capitalize block text-center w-full">
                 {" "}
                 No collection found 😔
               </p>
 
               <button
-                onClick={handleAddItem}
+                onClick={(e) => {
+                  handleAddItem(e);
+                }}
                 className="mt-3  px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
               >
                 add item
@@ -131,19 +140,19 @@ const UserSubmissions: React.FC = (): JSX.Element => {
           type="number"
           min={1}
           required
+          inputRef={inputRef}
         />
 
         <section className="button my-5 w-full flex items-center justify-end">
-          <Button className="" outline>
+          <Button
+            className=""
+            outline
+            onClick={(e) => handleFinishSubmission(e)}
+            disabled
+          >
             finish submission
           </Button>
         </section>
-
-        <AddItemContainer
-          blur={true}
-          showAddItemContainer={showAddItemsContainer}
-          onClose={handleModalClose}
-        />
       </form>
     </DashboardComponent>
   );

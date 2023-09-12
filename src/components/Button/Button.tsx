@@ -21,7 +21,7 @@ const Button: React.FC<ButtonProps> = ({
   } ${className}`;
 
   return (
-    <button className={outlineClass} {...rest} >
+    <button className={outlineClass} {...rest}>
       {children}
     </button>
   );

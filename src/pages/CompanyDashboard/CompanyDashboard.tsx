@@ -17,8 +17,7 @@ import {
   useCompanyAppContext,
   CompanyAppContextValuesProps,
 } from "../../context/companyAppContext";
-import CompanySubmissions
-from "../../components/CompanySubmissions/CompanySubmissions";
+import CompanySubmissions from "../../components/CompanySubmissions/CompanySubmissions";
 const CompanyDashboard: React.FC = (): JSX.Element => {
   const { companyData }: CompanyAppContextValuesProps = useCompanyAppContext();
 

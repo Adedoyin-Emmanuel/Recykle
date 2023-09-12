@@ -21,6 +21,7 @@ import {
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import Notification from "../../utils/toast";
 import { useAppContext, AppContextValuesProps } from "../../context/appContext";
+
 //import { useNavigate } from "react-router-dom";
 
 interface CategoryIcons {
@@ -64,7 +65,6 @@ const AddItemContainer = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const toast = new Notification();
   const { user, addRecyclingItem }: AppContextValuesProps = useAppContext();
-  //const navigateTo = useNavigate();
 
   const handleSaveItemClick = () => {
     console.log(selectedCategory);
@@ -88,17 +88,11 @@ const AddItemContainer = ({
       itemCategory: userCategorySelected,
     };
 
-    //everything works fine
-    // addRecyclingItem(user.uid, {
-    //   itemName: itemValue,
-    //   itemCategory: userCategorySelected,
-    //   dateAdded: serverTimestamp(),
-    // });
-
     addRecyclingItem(user.uid, newItemDetails)
       .then((success: any) => {
         if (success) {
           console.log("Item added successfully");
+          location.reload();
         } else {
           console.log("Item could not be added");
         }
