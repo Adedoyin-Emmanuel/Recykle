@@ -23,14 +23,27 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
 
   const recyclables = [
     {
+      id: "1",
       name: "Cardboard Boxes",
       category: "Paper and Cardboard",
       dateAdded: "2023-06-10",
     },
-    { name: "Plastic Bottles", category: "Plastics", dateAdded: "2023-06-08" },
-    { name: "Glass Jars", category: "Glass", dateAdded: "2023-06-09" },
-    { name: "Trees", category: "Organic Waste", dateAdded: "2023-06-09" },
+
     {
+      id: "2",
+      name: "Plastic Bottles",
+      category: "Plastics",
+      dateAdded: "2023-06-08",
+    },
+    { id: "3", name: "Glass Jars", category: "Glass", dateAdded: "2023-06-09" },
+    {
+      id: "4",
+      name: "Trees",
+      category: "Organic Waste",
+      dateAdded: "2023-06-09",
+    },
+    {
+      id: "5",
       name: "car batteries",
       category: "Hazardous Waste",
       dateAdded: "2023-06-11",
@@ -271,7 +284,13 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
               </h4>
             </section>
             {recyclables.map((recyclable, index) => (
-              <Collection key={index} {...recyclable} />
+              <Collection
+                key={index}
+                name={recyclable.name}
+                category={recyclable.category}
+                dateAdded={recyclable.dateAdded}
+                id={recyclable.id}
+              />
             ))}
           </section>
         </div>
