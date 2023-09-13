@@ -12,7 +12,6 @@ import { useAppContext, AppContextValuesProps } from "../../context/appContext";
 import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
 import Notification from "../../utils/toast";
 import {
-  navigateToCompanyDashboard,
   navigateToDashboard,
 } from "../../utils/navigate";
 
@@ -93,7 +92,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
         recyclables
       );
       setButtonDisabled(false);
-      navigateToDashboard(useNavigate);
+      navigateToDashboard(navigateTo);
     }
   };
   return (
