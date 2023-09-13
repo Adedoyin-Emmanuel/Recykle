@@ -19,6 +19,7 @@ import {
 import { db } from "../utils/firebase.config";
 import Notification from "../utils/toast";
 import { User as FirebaseUser } from "firebase/auth";
+import { generateRandomId } from "../utils/utilis";
 
 interface AppContextProps {
   children?: React.ReactNode;
@@ -109,13 +110,16 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     try {
       const userDocRef = doc(db, "users", userId);
       const itemsCollectionRef = collection(userDocRef, "itemsCollections");
+      const itemId = generateRandomId();
+
+      console.log(itemsCollectionRef);
 
       await addDoc(itemsCollectionRef, {
+        id: itemId,
         itemName: itemDetails.itemName,
         category: itemDetails.itemCategory,
         dateAdded: serverTimestamp(),
       });
-
       await updateDoc(userDocRef, {
         totalItemsAdded: increment(1),
       });
@@ -141,6 +145,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         const data = doc.data();
         return {
           name: data.itemName,
+          id: data.id,
           category: data.category,
           dateAdded: data.dateAdded.toDate().toLocaleDateString(),
         };
@@ -250,13 +255,14 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     itemsSubmitted: any
   ) => {
     try {
+      const submissionId = generateRandomId();
       const submissionData = {
         totalQuantity,
         itemsSubmitted,
         submittedAt: serverTimestamp(),
         status: "pending",
         submittedBy: username,
-        userId: userId
+        userId: userId,
       };
 
       // Get a reference to the submissions collection under the specific company
@@ -271,6 +277,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       const submissionsCollectionRef = collection(userDocRef, "submissions");
 
       const userSubmissionData = {
+        id: submissionId,
         companyName,
         dateSubmitted: serverTimestamp(),
         status: "pending",

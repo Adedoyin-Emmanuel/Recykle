@@ -30,10 +30,22 @@ const Dashboard = (): JSX.Element => {
   const [recyclables, setRecyclables] = useState<any>({});
 
   useEffect(() => {
-    getUserRecyclingCollection(user.uid).then((result: any) => {
-      setRecyclables(result);
+    const userDocRef = doc(db, "users", user.uid);
+
+    const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        setSnapShotUserData(docSnapshot.data());
+        getUserRecyclingCollection(user.uid).then((result: any) => {
+          setRecyclables(result);
+          console.log(recyclables);
+        });
+      }
     });
-  }, []);
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
 
   const [snapShotUserData, setSnapShotUserData] = useState<any>({
     totalRecyclePoints: 0,
@@ -212,7 +224,11 @@ const Dashboard = (): JSX.Element => {
 
             <section className="mobile-data-2 bg-slate-50 rounded-lg md:hidden p-4 flex items-center justify-between flex-row gap-x-5">
               <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
-                <img src={TrashBin} alt="dollar-bill" className="h-6 w-6 mx-2" />
+                <img
+                  src={TrashBin}
+                  alt="dollar-bill"
+                  className="h-6 w-6 mx-2"
+                />
 
                 <p className="total-balance capitalize text-[11px]">
                   items recycled
@@ -222,7 +238,11 @@ const Dashboard = (): JSX.Element => {
               </section>
 
               <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
-                <img src={Submitted} alt="dollar-bill" className="h-6 w-6 mx-2" />
+                <img
+                  src={Submitted}
+                  alt="dollar-bill"
+                  className="h-6 w-6 mx-2"
+                />
 
                 <p className="total-balance capitalize text-[11px]">
                   items submitted
@@ -293,7 +313,7 @@ const Dashboard = (): JSX.Element => {
         </div>
 
         <div className="second-section w-full xl:w-4/12 mt-16 md:mt-0 grid grid-cols-1  items-center justify-center">
-          <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
+          <section className="submission-cards md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
             <section className="header w-full flex p-2">
               <h4 className="capitalize font-bold text-[20px] md:p-3">
                 recent submission
@@ -319,7 +339,13 @@ const Dashboard = (): JSX.Element => {
             </section>
             {!appContextLoading && recyclables.length > 0 ? (
               recyclables.map((recyclable: any, index: number) => (
-                <Collection key={index} {...recyclable} />
+                <Collection
+                  key={index}
+                  name={recyclable.name}
+                  category={recyclable.category}
+                  dateAdded={recyclable.dateAdded}
+                  id={recyclable.id}
+                />
               ))
             ) : (
               <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-10">

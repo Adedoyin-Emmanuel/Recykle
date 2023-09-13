@@ -30,6 +30,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
   const { companyId }: any = useParams();
   const [companyData, setCompanyData] = useState<any>(null);
   const inputRef: number | any = useRef(0);
+  const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     getUserRecyclingCollection(user.uid).then((result: any) => {
@@ -67,9 +68,9 @@ const UserSubmissions: React.FC = (): JSX.Element => {
   const handleFinishSubmission = (
     e: React.FormEvent<HTMLFormElement> | any
   ) => {
+    setButtonDisabled(true);
     e.preventDefault();
     const totalQuantities = inputRef.current.value;
-
     if (!totalQuantities || totalQuantities === 0) {
       toast.error("Please enter a valid quantity");
     }
@@ -86,6 +87,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
         totalQuantities,
         recyclables
       );
+      setButtonDisabled(false);
     }
   };
   return (
@@ -127,7 +129,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
                 onClick={(e) => {
                   handleAddItem(e);
                 }}
-                className="mt-3  px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
+                className="mt-3 px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2 border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
               >
                 add item
               </button>
@@ -147,8 +149,10 @@ const UserSubmissions: React.FC = (): JSX.Element => {
           <Button
             className=""
             outline
-            onClick={(e) => handleFinishSubmission(e)}
-            disabled
+            onClick={(e) => {
+              handleFinishSubmission(e);
+            }}
+            disabled={buttonDisabled}
           >
             finish submission
           </Button>

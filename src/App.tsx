@@ -26,6 +26,7 @@ import { CompanyAppContextProvider } from "./context/companyAppContext";
 import CompanyProtectedRoute from "./components/CompanyProtectedRoute/CompanyProtectedRoute";
 import IndividualCompany from "./pages/IndividualCompany/IndividualCompany";
 import UserSubmissions from "./pages/UserSubmissions/UserSubmissions";
+import CollectionView from "./pages/CollectionView/CollectionView";
 
 const App = () => {
   return (
@@ -55,6 +56,11 @@ const App = () => {
                 <Route
                   path="/dashboard/recycle/:companyId"
                   element={<ProtectedRoute children={<IndividualCompany />} />}
+                ></Route>
+
+                <Route
+                  path="/dashboard/collection/:collectionId"
+                  element={<ProtectedRoute children={<CollectionView />} />}
                 ></Route>
 
                 <Route

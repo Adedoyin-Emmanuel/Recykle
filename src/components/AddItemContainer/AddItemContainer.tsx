@@ -92,7 +92,6 @@ const AddItemContainer = ({
       .then((success: any) => {
         if (success) {
           console.log("Item added successfully");
-          location.reload();
         } else {
           console.log("Item could not be added");
         }

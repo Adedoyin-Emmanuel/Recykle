@@ -26,8 +26,20 @@ export const formatDateFromTimestamp = (timestamp: Timestamp) => {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
+  return `${day}/${month}/${year}`;
 };
+export function generateRandomId(length = 20) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let randomId = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomId += characters.charAt(randomIndex);
+  }
+
+  return randomId;
+}
 
 export const toRad = (value: number) => (value * Math.PI) / 180;
 export const calculateDistance = (
@@ -49,5 +61,3 @@ export const calculateDistance = (
   const distance = R * c; // Distance in kilometers
   return distance;
 };
-
-

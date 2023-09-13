@@ -7,6 +7,7 @@ import {
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../../utils/firebase.config";
 import SubmissionCard from "../SubmissionCard/SubmissionCard";
+import { formatDateFromTimestamp } from "../../utils/utilis";
 
 const UserSubmissions = () => {
   const { user }: UserAuthContextProps = useUserAuth();
@@ -32,12 +33,12 @@ const UserSubmissions = () => {
     <>
       {submissions.length == 0 && (
         <p className="font-medium capitalize block text-center w-full">
-          {" "}
-        You have no submissions yet !
+          You have no submissions yet !
         </p>
       )}
       {submissions.map((submission: any, index: number) => (
         <SubmissionCard
+          linkTo={`submissions/${submission.companyName}`}
           key={index}
           status={submission.status}
           submissionCompany={
@@ -45,9 +46,7 @@ const UserSubmissions = () => {
               ? submission.companyName.substring(0, 10)
               : submission.companyName
           }
-          submissionDate={submission.dateSubmitted
-            .toDate()
-            .toLocaleDateString()}
+          submissionDate={formatDateFromTimestamp(submission.dateSubmitted)}
         />
       ))}
     </>

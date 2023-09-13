@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,12 +16,15 @@ import {
   faWineGlassAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { Timestamp } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 interface Recyclable {
   className?: string;
   name: string;
   category: keyof typeof categoryIcons;
-  dateAdded: string; // Add the dateAdded property
+  dateAdded: Timestamp | any;
+  id: string;
 }
 
 interface CategoryIcons {
@@ -47,28 +51,31 @@ const Collection: React.FC<Recyclable> = ({
   className,
   category,
   dateAdded,
+  id,
   ...others
 }) => {
   return (
-    <section
-      className={`collection-card rounded-md p-3 flex items-center justify-between w-full mb-1   cursor-pointer ${className} transition-color transform-gpu ease-in-out duration-100 hover:bg-slate-50`}
-      {...others}
-    >
-      <section className="flex flex-row items-center justify-center gap-x-4">
-        <FontAwesomeIcon
-          icon={categoryIcons[category]}
-          className="text-[20px] p-3 w-5 h-5  rounded bg-green-100 text-white shadow-sm"
-        />
+    <Link to={`/dashboard/collection/${id}`} className="w-full">
+      <section
+        className={`collection-card rounded-md p-3 flex items-center justify-between w-full mb-1   cursor-pointer ${className} transition-color transform-gpu ease-in-out duration-100 hover:bg-slate-50`}
+        {...others}
+      >
+        <section className="flex flex-row items-center justify-center gap-x-4">
+          <FontAwesomeIcon
+            icon={categoryIcons[category]}
+            className="text-[22px] p-3 w-6 h-6  rounded bg-green-100 text-white shadow-sm"
+          />
 
-        <p className="font-bold block text-sm capitalize">
-          {name.length > 10 ? name.substring(0, 30) : name}
-        </p>
-      </section>
+          <p className="font-bold block text-sm capitalize">
+            {name?.length > 10 ? name.substring(0, 30) : name}
+          </p>
+        </section>
 
-      <section className="flex items-center justify-around">
-        <p className="text-sm text-gray-500">{dateAdded}</p>
+        <section className="flex items-center justify-around">
+          <p className="text-sm text-gray-500">{dateAdded}</p>
+        </section>
       </section>
-    </section>
+    </Link>
   );
 };
 
