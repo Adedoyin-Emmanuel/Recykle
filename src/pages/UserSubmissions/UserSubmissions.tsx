@@ -6,11 +6,15 @@ import DashboardComponent from "../../components/DashboardComponent/DashboardCom
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import Collection from "../../components/Collection/Collection";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { useAppContext, AppContextValuesProps } from "../../context/appContext";
 import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
 import Notification from "../../utils/toast";
+import {
+  navigateToCompanyDashboard,
+  navigateToDashboard,
+} from "../../utils/navigate";
 
 const UserSubmissions: React.FC = (): JSX.Element => {
   const {
@@ -31,6 +35,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
   const [companyData, setCompanyData] = useState<any>(null);
   const inputRef: number | any = useRef(0);
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     getUserRecyclingCollection(user.uid).then((result: any) => {
@@ -88,6 +93,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
         recyclables
       );
       setButtonDisabled(false);
+      navigateToDashboard(useNavigate);
     }
   };
   return (
