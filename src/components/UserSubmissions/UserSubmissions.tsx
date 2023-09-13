@@ -12,6 +12,9 @@ import { formatDateFromTimestamp } from "../../utils/utilis";
 const UserSubmissions = () => {
   const { user }: UserAuthContextProps = useUserAuth();
   const [submissions, setSubmissions] = useState<any>([]);
+  const [waitingForData, setWaitingForData] = useState<JSX.Element>(
+    <div className="loader h-7 w-7 border-1"></div>
+  );
 
   useEffect(() => {
     if (user) {
@@ -29,13 +32,20 @@ const UserSubmissions = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (submissions && submissions.length == 0) {
+      setWaitingForData(
+        <p className="font-medium capitalize block text-center w-full">
+          {" "}
+          No collection found 😔
+        </p>
+      );
+    }
+  }, [submissions]);
+
   return (
     <>
-      {submissions.length == 0 && (
-        <p className="font-medium capitalize block text-center w-full">
-          You have no submissions yet !
-        </p>
-      )}
+      {submissions.length == 0 && waitingForData}
       {submissions.map((submission: any, index: number) => (
         <SubmissionCard
           linkTo={`submissions/${submission.id}`}

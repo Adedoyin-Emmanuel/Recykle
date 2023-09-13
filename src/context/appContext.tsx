@@ -57,6 +57,8 @@ export interface AppContextValuesProps {
     totalQuantity: number,
     itemsSubmitted: any
   ) => void;
+  getUserSubmissions: (userId: string, submissionId: string) => any;
+  deleteUserSubmission: (userId: string, submissionId: string) => any;
 }
 
 export const AppContext = createContext<AppContextValuesProps>({
@@ -74,6 +76,8 @@ export const AppContext = createContext<AppContextValuesProps>({
   getAllRecyclingCompanies: async () => null,
   getRecyclingCompanyById: async () => null,
   submitRecyclingData: async () => null,
+  getUserSubmissions: async () => null,
+  deleteUserSubmission: async () => null,
 });
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
@@ -278,6 +282,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
       const userSubmissionData = {
         id: submissionId,
+        companyId: companyId,
         companyName,
         dateSubmitted: serverTimestamp(),
         status: "pending",
@@ -308,6 +313,68 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     }
   };
 
+  const getUserSubmissions = async (userId: string, submissionId: string) => {
+    if (!submissionId || !userId)
+      throw new Error("userId or submissionId  is required");
+
+    try {
+      const submissionRef = doc(db, "users", userId);
+      const submissionCollectionRef = collection(submissionRef, "submissions");
+
+      const submissionQuery = query(
+        submissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+
+      const querySnapshot = await getDocs(submissionQuery);
+
+      if (querySnapshot.empty) return null;
+
+      const submisionDoc = querySnapshot.docs[0];
+      return submisionDoc.data();
+    } catch (error: unknown) {
+      toast.error("An error occured while fetching submission data");
+      console.log(error);
+    }
+  };
+
+  const deleteUserSubmission = async (userId: string, submissionId: string) => {
+    if (!submissionId || !userId) {
+      throw new Error("userId or submissionId is required");
+    }
+
+    try {
+      const submissionRef = doc(db, "users", userId);
+      const submissionCollectionRef = collection(submissionRef, "submissions");
+      const userDocRef = doc(db, "users", userId);
+      //const companySubmissionRef = doc(db, "companies", submissionId);
+
+      await updateDoc(userDocRef, {
+        itemsSubmitted: increment(-1),
+      });
+
+      const submissionQuery = query(
+        submissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+
+      const querySnapshot = await getDocs(submissionQuery);
+
+      if (querySnapshot.empty) {
+        throw new Error("Submission not found");
+      }
+
+      // Assuming there's only one matching submission, delete it
+      const submissionDoc = querySnapshot.docs[0];
+      await deleteDoc(submissionDoc.ref);
+      toast.success("Submission deleted successfully");
+    } catch (error) {
+      toast.error("An error occurred while deleting submission data");
+      console.error("Error deleting document:", error);
+      throw error;
+    }
+  };
+
   const value = {
     username: userData.username,
     user: user,
@@ -323,6 +390,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     getAllRecyclingCompanies,
     getRecyclingCompanyById,
     submitRecyclingData,
+    getUserSubmissions,
+    deleteUserSubmission,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

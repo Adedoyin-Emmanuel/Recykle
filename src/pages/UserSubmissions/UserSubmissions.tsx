@@ -27,7 +27,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
     useState<boolean>(false);
   const toast = new Notification();
 
-  const { companyId }: any = useParams();
+  const { companyId }: string | any = useParams();
   const [companyData, setCompanyData] = useState<any>(null);
   const inputRef: number | any = useRef(0);
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
