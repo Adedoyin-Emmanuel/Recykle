@@ -27,6 +27,7 @@ import CompanyProtectedRoute from "./components/CompanyProtectedRoute/CompanyPro
 import IndividualCompany from "./pages/IndividualCompany/IndividualCompany";
 import UserSubmissions from "./pages/UserSubmissions/UserSubmissions";
 import CollectionView from "./pages/CollectionView/CollectionView";
+import ViewSubmissions from "./pages/ViewSubmissions/ViewSubmissions";
 
 const App = () => {
   return (
@@ -61,6 +62,11 @@ const App = () => {
                 <Route
                   path="/dashboard/collection/:collectionId"
                   element={<ProtectedRoute children={<CollectionView />} />}
+                ></Route>
+
+                <Route
+                  path="/dashboard/submissions/:submissionId"
+                  element={<ProtectedRoute children={<ViewSubmissions />} />}
                 ></Route>
 
                 <Route

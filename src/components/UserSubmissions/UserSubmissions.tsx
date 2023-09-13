@@ -38,7 +38,7 @@ const UserSubmissions = () => {
       )}
       {submissions.map((submission: any, index: number) => (
         <SubmissionCard
-          linkTo={`submissions/${submission.companyName}`}
+          linkTo={`submissions/${submission.id}`}
           key={index}
           status={submission.status}
           submissionCompany={
