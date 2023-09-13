@@ -15,6 +15,7 @@ interface SubmissionDataProps {
   status: "pending" | "success" | "failed";
   companyName: string;
   dateSubmitted: Timestamp;
+  companyId: string;
 }
 
 const ViewSubmissions: React.FC = (): JSX.Element => {
@@ -47,7 +48,7 @@ const ViewSubmissions: React.FC = (): JSX.Element => {
   }, [user, submissionId]);
 
   const handleButtonClick = async () => {
-    submissionData && (await deleteUserSubmission(user.uid, submissionData.id));
+    submissionData && (await deleteUserSubmission(user.uid, submissionData.id, submissionData.companyId));
     navigateToDashboard(navigateTo);
   };
   return (

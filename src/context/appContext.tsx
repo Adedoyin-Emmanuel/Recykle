@@ -58,7 +58,11 @@ export interface AppContextValuesProps {
     itemsSubmitted: any
   ) => void;
   getUserSubmissions: (userId: string, submissionId: string) => any;
-  deleteUserSubmission: (userId: string, submissionId: string) => any;
+  deleteUserSubmission: (
+    userId: string,
+    submissionId: string,
+    companyId: string
+  ) => any;
 }
 
 export const AppContext = createContext<AppContextValuesProps>({
@@ -267,6 +271,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         status: "pending",
         submittedBy: username,
         userId: userId,
+        id: submissionId,
       };
 
       // Get a reference to the submissions collection under the specific company
@@ -338,8 +343,12 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     }
   };
 
-  const deleteUserSubmission = async (userId: string, submissionId: string) => {
-    if (!submissionId || !userId) {
+  const deleteUserSubmission = async (
+    userId: string,
+    submissionId: string,
+    companyId: string
+  ) => {
+    if (!submissionId || !userId || !companyId) {
       throw new Error("userId or submissionId is required");
     }
 
@@ -347,7 +356,11 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       const submissionRef = doc(db, "users", userId);
       const submissionCollectionRef = collection(submissionRef, "submissions");
       const userDocRef = doc(db, "users", userId);
-      //const companySubmissionRef = doc(db, "companies", submissionId);
+      const companySubmissionRef = doc(db, "companies", companyId);
+      const companySubmisionCollectionRef = collection(
+        companySubmissionRef,
+        "submissions"
+      );
 
       await updateDoc(userDocRef, {
         itemsSubmitted: increment(-1),
@@ -358,15 +371,26 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         where("id", "==", submissionId)
       );
 
-      const querySnapshot = await getDocs(submissionQuery);
+      const companySubmissionQuery = query(
+        companySubmisionCollectionRef,
+        where("id", "==", submissionId)
+      );
 
-      if (querySnapshot.empty) {
+      const querySnapshot = await getDocs(submissionQuery);
+      const companyQuerySnapshot = await getDocs(companySubmissionQuery);
+
+      if (querySnapshot.empty || companyQuerySnapshot.empty) {
+        toast.error("Submission not found!");
         throw new Error("Submission not found");
       }
 
       // Assuming there's only one matching submission, delete it
       const submissionDoc = querySnapshot.docs[0];
+      const companySubmissionDoc = companyQuerySnapshot.docs[0];
+
       await deleteDoc(submissionDoc.ref);
+      await deleteDoc(companySubmissionDoc.ref);
+
       toast.success("Submission deleted successfully");
     } catch (error) {
       toast.error("An error occurred while deleting submission data");
