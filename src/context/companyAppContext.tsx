@@ -1,21 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, useContext, useEffect, useState } from "react";
-import { useCompanyAuth, CompanyAuthContextProps } from "./companyAuthContext";
+import { User as FirebaseUser } from "firebase/auth";
 import {
   addDoc,
-  doc,
   collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  increment,
+  query,
   serverTimestamp,
   updateDoc,
-  increment,
-  getDocs,
-  deleteDoc,
+  where,
+  writeBatch,
 } from "firebase/firestore";
+import { createContext, useContext, useEffect, useState } from "react";
 import { db } from "../utils/firebase.config";
 import Notification from "../utils/toast";
-import { User as FirebaseUser } from "firebase/auth";
+import { CompanyAuthContextProps, useCompanyAuth } from "./companyAuthContext";
 
 interface CompanyAppContextProps {
   children?: React.ReactNode;
@@ -43,6 +47,22 @@ export interface CompanyAppContextValuesProps {
   ) => void;
   deleteCompanyServiceItem: (companyId: string, itemId: string) => void;
   getUsersSubmission: (companyId: string) => any;
+  getUserSubmissionById: (submissionId: string, companyId: string) => any;
+  deleteUserSubmission: (
+    submissionId: string,
+    userId: string,
+    companyId: string
+  ) => any;
+  acceptUserSubmission: (
+    submissionId: string,
+    userId: string,
+    companyId: string
+  ) => any;
+  cancelUserSubmission: (
+    submissionId: string,
+    userId: string,
+    companyId: string
+  ) => any;
 }
 
 export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
@@ -56,7 +76,11 @@ export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
   getCompanyServiceCollection: async () => null,
   updateCompanyServiceItem: async () => null,
   deleteCompanyServiceItem: async () => null,
-  getUsersSubmission: async () => null
+  getUsersSubmission: async () => null,
+  getUserSubmissionById: async () => null,
+  deleteUserSubmission: async () => null,
+  acceptUserSubmission: async () => null,
+  cancelUserSubmission: async () => null,
 });
 
 export const CompanyAppContextProvider = ({
@@ -141,7 +165,6 @@ export const CompanyAppContextProvider = ({
       return [];
     }
   };
-  
 
   const getUsersSubmission = async (companyId: string) => {
     try {
@@ -193,6 +216,245 @@ export const CompanyAppContextProvider = ({
     }
   };
 
+  const getUserSubmissionById = async (
+    submissionId: string,
+    companyId: string
+  ) => {
+    if (!submissionId || !companyId)
+      throw new Error("submissionId, userId or companyId is required");
+
+    try {
+      const submissionRef = doc(db, "companies", companyId);
+      const submissionCollectionRef = collection(submissionRef, "submissions");
+
+      const submissionQuery = query(
+        submissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+
+      const querySnapshot = await getDocs(submissionQuery);
+
+      if (querySnapshot.empty) return null;
+
+      const submisionDoc = querySnapshot.docs[0];
+      return submisionDoc.data();
+    } catch (error: unknown) {
+      toast.error("An error occured when getting user submission");
+      console.log(error);
+    }
+  };
+
+  const deleteUserSubmission = async (
+    submissionId: string,
+    companyId: string,
+    userId: string
+  ) => {
+    if (!submissionId || !userId || !companyId) {
+      throw new Error("userId, submissionId, or companyId is missing");
+    }
+
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (!userDocSnapshot.exists()) {
+        throw new Error(`User document with ID ${userId} does not exist.`);
+      }
+
+      const batch = writeBatch(db);
+
+      const submissionCollectionRef = collection(userDocRef, "submissions");
+      const companySubmissionRef = doc(db, "companies", companyId);
+      const companySubmissionCollectionRef = collection(
+        companySubmissionRef,
+        "submissions"
+      );
+
+      // Query for the submission document
+      const submissionQuery = query(
+        submissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+      const submissionQuerySnapshot = await getDocs(submissionQuery);
+
+      // Query for the company submission document
+      const companySubmissionQuery = query(
+        companySubmissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+      const companySubmissionQuerySnapshot = await getDocs(
+        companySubmissionQuery
+      );
+
+      if (!submissionQuerySnapshot.empty) {
+        const submissionDocRef = submissionQuerySnapshot.docs[0].ref;
+        batch.delete(submissionDocRef);
+      }
+
+      if (!companySubmissionQuerySnapshot.empty) {
+        const companySubmissionDocRef =
+          companySubmissionQuerySnapshot.docs[0].ref;
+        batch.delete(companySubmissionDocRef);
+      }
+
+      // Update the user document
+      batch.update(userDocRef, {
+        itemsSubmitted: increment(-1),
+      });
+
+      batch.update(companySubmissionRef, {
+        itemsReceived: increment(-1),
+      });
+
+      await batch.commit();
+
+      toast.success("Submission deleted successfully");
+    } catch (error) {
+      toast.error("An error occurred while deleting submission data");
+      console.error("Error deleting documents:", error);
+      throw error;
+    }
+  };
+
+  const acceptUserSubmission = async (
+    submissionId: string,
+    userId: string,
+    companyId: string
+  ) => {
+    if (!submissionId || !userId || !companyId)
+      throw new Error("submissionId, userId or companyId must be provided");
+
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (!userDocSnapshot.exists()) {
+        throw new Error(`User document with ID ${userId} does not exist.`);
+      }
+
+      const batch = writeBatch(db);
+
+      const submissionCollectionRef = collection(userDocRef, "submissions");
+      const companySubmissionRef = doc(db, "companies", companyId);
+      const companySubmissionCollectionRef = collection(
+        companySubmissionRef,
+        "submissions"
+      );
+
+      // Query for the submission document
+      const submissionQuery = query(
+        submissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+      const submissionQuerySnapshot = await getDocs(submissionQuery);
+
+      // Query for the company submission document
+      const companySubmissionQuery = query(
+        companySubmissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+      const companySubmissionQuerySnapshot = await getDocs(
+        companySubmissionQuery
+      );
+
+      if (!submissionQuerySnapshot.empty) {
+        const submissionDocRef = submissionQuerySnapshot.docs[0].ref;
+        batch.update(submissionDocRef, {
+          status: "success",
+        });
+      }
+
+      if (!companySubmissionQuerySnapshot.empty) {
+        const companySubmissionDocRef =
+          companySubmissionQuerySnapshot.docs[0].ref;
+        batch.update(companySubmissionDocRef, {
+          status: "success",
+        });
+      }
+
+      //dash the user some recycling points
+      batch.update(userDocRef, {
+        totalRecyclePoints: increment(100),
+      });
+
+      //update the company total recycling transactions
+      batch.update(companySubmissionRef, {
+        itemsRecycled: increment(1),
+      });
+
+      await batch.commit();
+      toast.success("Submission approved successfully");
+    } catch (error: unknown) {
+      toast.error("An error occurred while approving submission");
+      console.error("Error approving documents:", error);
+      throw error;
+    }
+  };
+
+  const cancelUserSubmission = async (
+    submissionId: string,
+    userId: string,
+    companyId: string
+  ) => {
+    if (!submissionId || !userId || !companyId)
+      throw new Error("submissionId, userId or companyId must be provided");
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (!userDocSnapshot.exists()) {
+        throw new Error(`User document with ID ${userId} does not exist.`);
+      }
+
+      const batch = writeBatch(db);
+
+      const submissionCollectionRef = collection(userDocRef, "submissions");
+      const companySubmissionRef = doc(db, "companies", companyId);
+      const companySubmissionCollectionRef = collection(
+        companySubmissionRef,
+        "submissions"
+      );
+
+      // Query for the submission document
+      const submissionQuery = query(
+        submissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+      const submissionQuerySnapshot = await getDocs(submissionQuery);
+
+      // Query for the company submission document
+      const companySubmissionQuery = query(
+        companySubmissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+      const companySubmissionQuerySnapshot = await getDocs(
+        companySubmissionQuery
+      );
+
+      if (!submissionQuerySnapshot.empty) {
+        const submissionDocRef = submissionQuerySnapshot.docs[0].ref;
+        batch.update(submissionDocRef, {
+          status: "failed",
+        });
+      }
+
+      if (!companySubmissionQuerySnapshot.empty) {
+        const companySubmissionDocRef =
+          companySubmissionQuerySnapshot.docs[0].ref;
+        batch.update(companySubmissionDocRef, {
+          status: "failed",
+        });
+      }
+
+      await batch.commit();
+      toast.success("Submission canceled successfully");
+    } catch (error: unknown) {
+      toast.error("An error occurred while canceling submission");
+      console.error("Error canceling documents:", error);
+      throw error;
+    }
+  };
+
   const value: CompanyAppContextValuesProps = {
     username: companyData.username,
     company: company,
@@ -205,6 +467,10 @@ export const CompanyAppContextProvider = ({
     updateCompanyServiceItem: updateServiceItem,
     deleteCompanyServiceItem: deleteServiceItem,
     getUsersSubmission,
+    getUserSubmissionById,
+    deleteUserSubmission,
+    acceptUserSubmission,
+    cancelUserSubmission,
   };
 
   return (

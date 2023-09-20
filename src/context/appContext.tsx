@@ -1,25 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, useContext, useEffect, useState } from "react";
-import { useUserAuth, UserAuthContextProps } from "./userAuthContext";
+import { User as FirebaseUser } from "firebase/auth";
 import {
   addDoc,
-  doc,
   collection,
-  serverTimestamp,
-  updateDoc,
-  increment,
+  deleteDoc,
+  doc,
   getDoc,
   getDocs,
-  deleteDoc,
+  increment,
   query,
+  serverTimestamp,
+  updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
+import { createContext, useContext, useEffect, useState } from "react";
 import { db } from "../utils/firebase.config";
 import Notification from "../utils/toast";
-import { User as FirebaseUser } from "firebase/auth";
 import { generateRandomId } from "../utils/utilis";
+import { UserAuthContextProps, useUserAuth } from "./userAuthContext";
 
 interface AppContextProps {
   children?: React.ReactNode;
@@ -353,43 +354,54 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     }
 
     try {
-      const submissionRef = doc(db, "users", userId);
-      const submissionCollectionRef = collection(submissionRef, "submissions");
       const userDocRef = doc(db, "users", userId);
+      const submissionCollectionRef = collection(userDocRef, "submissions");
       const companySubmissionRef = doc(db, "companies", companyId);
-      const companySubmisionCollectionRef = collection(
+      const companySubmissionCollectionRef = collection(
         companySubmissionRef,
         "submissions"
       );
 
-      await updateDoc(userDocRef, {
-        itemsSubmitted: increment(-1),
-      });
+      const batch = writeBatch(db);
 
+      // Create queries for the submission and company submission documents
       const submissionQuery = query(
         submissionCollectionRef,
         where("id", "==", submissionId)
       );
 
       const companySubmissionQuery = query(
-        companySubmisionCollectionRef,
+        companySubmissionCollectionRef,
         where("id", "==", submissionId)
       );
 
-      const querySnapshot = await getDocs(submissionQuery);
-      const companyQuerySnapshot = await getDocs(companySubmissionQuery);
+      // Get the documents for the queries
+      const [submissionDocs, companySubmissionDocs] = await Promise.all([
+        getDocs(submissionQuery),
+        getDocs(companySubmissionQuery),
+      ]);
 
-      if (querySnapshot.empty || companyQuerySnapshot.empty) {
-        toast.error("Submission not found!");
-        throw new Error("Submission not found");
+      // Check if the submission document exists and delete it
+      if (!submissionDocs.empty) {
+        const submissionDoc = submissionDocs.docs[0];
+        batch.delete(submissionDoc.ref);
       }
 
-      // Assuming there's only one matching submission, delete it
-      const submissionDoc = querySnapshot.docs[0];
-      const companySubmissionDoc = companyQuerySnapshot.docs[0];
+      // Check if the company submission document exists and delete it
+      if (!companySubmissionDocs.empty) {
+        const companySubmissionDoc = companySubmissionDocs.docs[0];
+        batch.delete(companySubmissionDoc.ref);
+      }
 
-      await deleteDoc(submissionDoc.ref);
-      await deleteDoc(companySubmissionDoc.ref);
+      batch.update(userDocRef, {
+        itemsSubmitted: increment(-1),
+      });
+
+      batch.update(companySubmissionRef, {
+        itemsReceived: increment(-1),
+      });
+
+      await batch.commit();
 
       toast.success("Submission deleted successfully");
     } catch (error) {

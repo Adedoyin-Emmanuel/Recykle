@@ -28,6 +28,7 @@ import IndividualCompany from "./pages/IndividualCompany/IndividualCompany";
 import UserSubmissions from "./pages/UserSubmissions/UserSubmissions";
 import CollectionView from "./pages/CollectionView/CollectionView";
 import ViewSubmissions from "./pages/ViewSubmissions/ViewSubmissions";
+import ViewClientSubmission from "./pages/ViewClientSubmission/ViewClientSubmission";
 
 const App = () => {
   return (
@@ -134,6 +135,15 @@ const App = () => {
                   path="/company/dashboard/profile"
                   element={
                     <CompanyProtectedRoute children={<CompanyProfile />} />
+                  }
+                ></Route>
+
+                <Route
+                  path="/company/dashboard/submissions/:submissionId"
+                  element={
+                    <CompanyProtectedRoute
+                      children={<ViewClientSubmission />}
+                    />
                   }
                 ></Route>
 

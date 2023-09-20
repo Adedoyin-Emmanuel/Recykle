@@ -60,7 +60,7 @@ const SubmissionCard = ({
           <p className="font-bold block text-sm">
             @
             {submissionCompany.length > 10
-              ? submissionCompany.substring(0, 30)
+              ? submissionCompany.substring(0, 10)
               : submissionCompany}
           </p>
 

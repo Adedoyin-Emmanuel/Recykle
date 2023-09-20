@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import CompanyClientSubmission from "../CompanyClientSubmission/CompanyClientSubmission";
+import { useEffect, useState } from "react";
 import {
-  useCompanyAppContext,
   CompanyAppContextValuesProps,
+  useCompanyAppContext,
 } from "../../context/companyAppContext";
 import {
-  useCompanyAuth,
   CompanyAuthContextProps,
+  useCompanyAuth,
 } from "../../context/companyAuthContext";
 import { formatDateFromTimestamp } from "../../utils/utilis";
+import CompanyClientSubmission from "../CompanyClientSubmission/CompanyClientSubmission";
 
 const CompanySubmissions = () => {
   const [userSubmissions, setUserSubmissions] = useState([]);
@@ -33,16 +33,21 @@ const CompanySubmissions = () => {
   }, [company]);
 
   return (
-    <div>
-      {userSubmissions?.map((submission: any) => (
-        <CompanyClientSubmission
-          key={submission.id}
-          submittedBy={submission.submittedBy}
-          submissionDate={formatDateFromTimestamp(submission.submittedAt)}
-          status={submission.status}
-        />
-      ))}
-    </div>
+    <>
+      {userSubmissions && userSubmissions?.length > 0 ? (
+        userSubmissions?.map((submission: any) => (
+          <CompanyClientSubmission
+            linkTo={`submissions/${submission.id}`}
+            key={submission.id}
+            submittedBy={submission.submittedBy}
+            submissionDate={formatDateFromTimestamp(submission.submittedAt)}
+            status={submission.status}
+          />
+        ))
+      ) : (
+        <p>No submissions found 😥</p>
+      )}
+    </>
   );
 };
 
