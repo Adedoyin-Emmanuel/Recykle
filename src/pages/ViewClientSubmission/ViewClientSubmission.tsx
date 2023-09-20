@@ -33,6 +33,8 @@ const ViewClientSubmission: React.FC = (): JSX.Element => {
 
   const {
     deleteUserSubmission,
+    acceptUserSubmission,
+    cancelUserSubmission,
     getUserSubmissionById,
     companyLoading,
     company,
@@ -43,7 +45,7 @@ const ViewClientSubmission: React.FC = (): JSX.Element => {
     async function fetchData() {
       try {
         const result = await getUserSubmissionById(submissionId, company.uid);
-        console.log(result);
+
         setSubmissionData(result);
         setRecyclables(result.itemsSubmitted);
       } catch (error: unknown) {
@@ -67,6 +69,28 @@ const ViewClientSubmission: React.FC = (): JSX.Element => {
 
   const handleActionButtonClick = () => {
     setViewActionContainer(!viewActionContainer);
+  };
+
+  const handleAcceptButtonClick = async () => {
+    submissionData &&
+      (await acceptUserSubmission(
+        submissionData.id,
+        company.uid,
+        submissionData.userId
+      ));
+
+    navigateToCompanyDashboard(navigateTo);
+  };
+
+  const handleCancelButtonClick = async () => {
+    submissionData &&
+      (await cancelUserSubmission(
+        submissionData.id,
+        company.uid,
+        submissionData.userId
+      ));
+
+    navigateToCompanyDashboard(navigateTo);
   };
 
   return (
@@ -128,7 +152,10 @@ const ViewClientSubmission: React.FC = (): JSX.Element => {
                   </svg>
                   <p>delete</p>
                 </button>
-                <button className="mt-3 px-3 py-2 rounded-[30px] w-10/12 flex items-center justify-center gap-x-3  capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-300  hover:text-white hover:border-transparent transition-colors ease-linear duration-100">
+                <button
+                  className="mt-3 px-3 py-2 rounded-[30px] w-10/12 flex items-center justify-center gap-x-3  capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-300  hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
+                  onClick={handleAcceptButtonClick}
+                >
                   <svg
                     width="24"
                     height="24"
@@ -141,7 +168,10 @@ const ViewClientSubmission: React.FC = (): JSX.Element => {
                   </svg>
                   <p>approve</p>
                 </button>
-                <button className="mt-3 px-3 py-2 rounded-[30px] w-10/12 flex items-center justify-center gap-x-3 capitalize text-[13px] border-2  border-yellow-300 text-center hover:bg-yellow-300  hover:text-white hover:border-transparent transition-colors ease-linear duration-100">
+                <button
+                  className="mt-3 px-3 py-2 rounded-[30px] w-10/12 flex items-center justify-center gap-x-3 capitalize text-[13px] border-2  border-yellow-300 text-center hover:bg-yellow-300  hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
+                  onClick={handleCancelButtonClick}
+                >
                   <svg
                     width="24"
                     height="24"
