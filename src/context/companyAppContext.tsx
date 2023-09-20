@@ -318,8 +318,8 @@ export const CompanyAppContextProvider = ({
 
   const acceptUserSubmission = async (
     submissionId: string,
-    userId: string,
-    companyId: string
+    companyId: string,
+    userId: string
   ) => {
     if (!submissionId || !userId || !companyId)
       throw new Error("submissionId, userId or companyId must be provided");
@@ -375,6 +375,7 @@ export const CompanyAppContextProvider = ({
       //dash the user some recycling points
       batch.update(userDocRef, {
         totalRecyclePoints: increment(100),
+        totalItemsRecycled: increment(1),
       });
 
       //update the company total recycling transactions
@@ -393,8 +394,8 @@ export const CompanyAppContextProvider = ({
 
   const cancelUserSubmission = async (
     submissionId: string,
-    userId: string,
-    companyId: string
+    companyId: string,
+    userId: string
   ) => {
     if (!submissionId || !userId || !companyId)
       throw new Error("submissionId, userId or companyId must be provided");
