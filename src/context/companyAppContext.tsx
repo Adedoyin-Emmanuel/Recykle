@@ -322,7 +322,7 @@ export const CompanyAppContextProvider = ({
     userId: string
   ) => {
     if (!submissionId || !userId || !companyId)
-      throw new Error("submissionId, userId or companyId must be provided");
+      throw new Error("submissionId, userId, or companyId must be provided");
 
     try {
       const userDocRef = doc(db, "users", userId);
@@ -372,13 +372,56 @@ export const CompanyAppContextProvider = ({
         });
       }
 
-      //dash the user some recycling points
+      // Update the user's recycling points and total items recycled
       batch.update(userDocRef, {
         totalRecyclePoints: increment(100),
         totalItemsRecycled: increment(1),
       });
 
-      //update the company total recycling transactions
+      // Update the company's total recycling transactions
+      batch.update(companySubmissionRef, {
+        itemsRecycled: increment(1),
+      });
+
+      // Query for the company submission document
+      const companyItemSubmittedRefQuery = query(
+        companySubmissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+      const getItemsSubmittedSnapshot = await getDocs(
+        companyItemSubmittedRefQuery
+      );
+
+      if (getItemsSubmittedSnapshot.empty) return null;
+
+      const submisionDoc = getItemsSubmittedSnapshot.docs[0];
+      const data = submisionDoc.data();
+
+      // Reference the recyclingHistory sub-collection within user's and company's documents
+      const recyclingHistoryUserRef = collection(
+        userDocRef,
+        "recyclingHistory"
+      );
+      const recyclingHistoryCompanyRef = collection(
+        companySubmissionRef,
+        "recyclingHistory"
+      );
+
+      // Create data for recycling history
+      const recyclingHistoryData = {
+        submissionId: submissionId,
+        dateAdded: serverTimestamp(),
+        totalItemsRecycled: data.totalQuantity || 0, // Use a default value if it's undefined
+        submittedBy: data.submittedBy || "",
+        itemsSubmitted: data.itemsSubmitted || "",
+      };
+
+      // Add data to recyclingHistory sub-collection in user's document
+      await addDoc(recyclingHistoryUserRef, recyclingHistoryData);
+
+      // Add data to recyclingHistory sub-collection in company's document
+      await addDoc(recyclingHistoryCompanyRef, recyclingHistoryData);
+
       batch.update(companySubmissionRef, {
         itemsRecycled: increment(1),
       });
