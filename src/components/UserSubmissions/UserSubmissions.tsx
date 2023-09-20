@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import {
-  useUserAuth,
   UserAuthContextProps,
+  useUserAuth,
 } from "../../context/userAuthContext";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../../utils/firebase.config";
-import SubmissionCard from "../SubmissionCard/SubmissionCard";
 import { formatDateFromTimestamp } from "../../utils/utilis";
+import SubmissionCard from "../SubmissionCard/SubmissionCard";
 
 const UserSubmissions = () => {
   const { user }: UserAuthContextProps = useUserAuth();
@@ -37,7 +37,7 @@ const UserSubmissions = () => {
       setWaitingForData(
         <p className="font-medium capitalize block text-center w-full">
           {" "}
-          No collection found 😔
+          No submissions found 😔
         </p>
       );
     }

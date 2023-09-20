@@ -132,10 +132,9 @@ export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
           profileImageUrl: "",
           role: "company",
           itemsReceived: 0,
-          verified: false,
+          verified: true,
           lastLogin: serverTimestamp(),
           usersFeedback: 0,
-          
         });
         setCompany(companyCredentials.user);
         toast.success("Company registered successfully");
@@ -164,55 +163,58 @@ export const CompanyAuthProvider = ({ children }: companyAuthProps) => {
       return error; // Return true if an error occurs to be cautious
     }
   };
-const updateCompanyDetails = async (
-  company: FirebaseUser,
-  latitude: number,
-  longitude: number,
-  companyAddress: string,
-  companyLogoFile: File,
-  companyNumber: number
-) => {
-  try {
-    const companyLocation = new GeoPoint(latitude, longitude);
+  const updateCompanyDetails = async (
+    company: FirebaseUser,
+    latitude: number,
+    longitude: number,
+    companyAddress: string,
+    companyLogoFile: File,
+    companyNumber: number
+  ) => {
+    try {
+      const companyLocation = new GeoPoint(latitude, longitude);
 
-    if (!companyLogoFile.type.startsWith("image/")) {
-      toast.error("Invalid file type. Please upload an image.");
-      return;
+      if (!companyLogoFile.type.startsWith("image/")) {
+        toast.error("Invalid file type. Please upload an image.");
+        return;
+      }
+
+      if (companyLogoFile) {
+        const companyLogoStorageRef = ref(
+          storage,
+          `companyLogo/${company.uid}`
+        );
+        const uploadTask = await uploadBytes(
+          companyLogoStorageRef,
+          companyLogoFile
+        );
+        const logoUrl = await getDownloadURL(uploadTask.ref);
+
+        const companyDocRef = doc(db, "companies", company.uid);
+        await updateDoc(companyDocRef, {
+          location: companyLocation,
+          address: companyAddress,
+          logo: logoUrl,
+          number: companyNumber,
+        });
+      } else {
+        const companyDocRef = doc(db, "companies", company.uid);
+
+        await updateDoc(companyDocRef, {
+          location: companyLocation,
+          address: companyAddress,
+          number: companyNumber,
+        });
+      }
+
+      toast.success("Details updated successfully");
+      return true;
+    } catch (error) {
+      console.error("Error updating company details:", error);
+      toast.error("Failed to update details");
+      return false;
     }
-
-    if (companyLogoFile) {
-      const companyLogoStorageRef = ref(storage, `companyLogo/${company.uid}`);
-      const uploadTask = await uploadBytes(
-        companyLogoStorageRef,
-        companyLogoFile
-      );
-      const logoUrl = await getDownloadURL(uploadTask.ref);
-
-      const companyDocRef = doc(db, "companies", company.uid);
-      await updateDoc(companyDocRef, {
-        location: companyLocation,
-        address: companyAddress,
-        logo: logoUrl,
-        number: companyNumber,
-      });
-    } else {
-      const companyDocRef = doc(db, "companies", company.uid);
-
-      await updateDoc(companyDocRef, {
-        location: companyLocation,
-        address: companyAddress,
-        number: companyNumber,
-      });
-    }
-
-    toast.success("Details updated successfully");
-    return true;
-  } catch (error) {
-    console.error("Error updating company details:", error);
-    toast.error("Failed to update details");
-    return false;
-  }
-};
+  };
 
   const logout = async () => {
     try {

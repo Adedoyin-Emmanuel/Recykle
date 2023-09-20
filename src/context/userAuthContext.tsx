@@ -154,7 +154,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
           profileImageUrl: "",
           role: "user",
           totalItemsRecycled: 0,
-          verified: false,
+          verified: true,
           lastLogin: serverTimestamp(),
           totalRecyclePoints: 0,
         });
@@ -185,7 +185,7 @@ export const UserAuthProvider = ({ children }: userAuthProps) => {
         profileImageUrl: user.photoURL,
         role: "user",
         totalItemsRecycled: 0,
-        verified: false,
+        verified: true,
         lastLogin: serverTimestamp(),
         totalRecyclePoints: 0,
       });

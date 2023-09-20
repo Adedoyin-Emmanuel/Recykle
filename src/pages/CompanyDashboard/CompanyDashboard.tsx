@@ -267,8 +267,8 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
           </section>
         </div>
 
-        <div className="second-section w-full xl:w-4/12 mt-16 md:mt-0 grid grid-cols-1 items-center justify-center">
-          <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
+        <div className="second-section w-full xl:w-4/12 mt-16 md:mt-0 grid grid-cols-1  items-center justify-center">
+          <section className="submission-cards md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
             <section className="header w-full flex">
               <h4 className="capitalize font-bold text-[20px] md:p-3">
                 recent submission
