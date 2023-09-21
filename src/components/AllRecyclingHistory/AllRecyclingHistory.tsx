@@ -15,7 +15,6 @@ const AllRecyclingHistory = () => {
     useCompanyAppContext();
 
   const [recyclingHistoryData, setRecyclingHistoryData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { company }: CompanyAuthContextProps = useCompanyAuth();
 
   useEffect(() => {
@@ -38,19 +37,19 @@ const AllRecyclingHistory = () => {
         recyclingHistoryData?.map((recyclingHistory: any, index: number) => (
           <CompanyRecycleCard
             key={index}
-            recycleDate={formatDateFromTimestamp(recyclingHistory?.dateAdded)}
+            recycleDate={recyclingHistory?.dateAdded}
             username={recyclingHistory?.submittedBy}
             totalItemsRecycled={recyclingHistory?.totalItemsRecycled}
           />
         ))
       ) : (
-        <>
-          {!companyLoading && recyclingHistoryData.length === 0 ? (
+        <div className="w-full flex items-center justify-center">
+          {!companyLoading && recyclingHistoryData?.length === 0 ? (
             <p className="text-sm text-center">No recycling history 😥</p>
           ) : (
             <div className="loader h-7 w-7 border-1"></div>
           )}
-        </>
+        </div>
       )}
     </>
   );

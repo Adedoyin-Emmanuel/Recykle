@@ -43,7 +43,7 @@ const ClientRecyclingHistory = () => {
         ))
       ) : (
         <div className="w-full flex items-center justify-center">
-          {!appContextLoading && recyclingHistoryData.length === 0 ? (
+          {!appContextLoading && recyclingHistoryData?.length === 0 ? (
             <p className="text-sm text-center">No recycling history 😥</p>
           ) : (
             <div className="loader h-7 w-7 border-1"></div>

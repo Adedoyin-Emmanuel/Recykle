@@ -1,43 +1,46 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
-import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import RecycingCompanyCard from "../../components/RecycingCompanyCard/RecycingCompanyCard";
+import React, { useEffect, useState } from "react";
 import AddItem from "../../components/AddItem/AddItem";
 import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
-import { useAppContext, AppContextValuesProps } from "../../context/appContext";
+import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
+import RecycingCompanyCard from "../../components/RecycingCompanyCard/RecycingCompanyCard";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import { AppContextValuesProps, useAppContext } from "../../context/appContext";
+import {
+  UserAuthContextProps,
+  useUserAuth,
+} from "../../context/userAuthContext";
 
 const Recycle: React.FC = (): JSX.Element => {
   const [showAddItemContainer, setShowAddItemContainer] =
     useState<boolean>(false);
   const {
-    //   searchRecyclingCompanies,
     getAllRecyclingCompanies,
+    appContextLoading,
+    loading,
   }: AppContextValuesProps = useAppContext();
 
-  // const handleSearchRecyclingCompanies = async (
-  //   e: any | React.FormEvent<HTMLFormElement>
-  // ) => {
-  //  // const userPrompt = e.target.value;
-  //   //const result = searchRecyclingCompanies(userPrompt);
-  // };
+  const [recyclingCompanies, setRecyclingCompanies] = useState([]);
+
+  const { user }: UserAuthContextProps = useUserAuth();
+
+  // ogbon sodiq
+  const additionalClass = "md:4/4 lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 my-5";
+
+  useEffect(() => {
+    async function fetchCompanies() {
+      try {
+        const companies = await getAllRecyclingCompanies();
+        setRecyclingCompanies(companies);
+      } catch (error) {
+        console.error("Error fetching recycling companies:", error);
+      }
+    }
+
+    fetchCompanies();
+  }, [appContextLoading, loading]);
 
   const RecyclingCompanies = () => {
-    const [recyclingCompanies, setRecyclingCompanies] = useState([]);
-
-    useEffect(() => {
-      async function fetchCompanies() {
-        try {
-          const companies = await getAllRecyclingCompanies();
-          setRecyclingCompanies(companies);
-        } catch (error) {
-          console.error("Error fetching recycling companies:", error);
-        }
-      }
-
-      fetchCompanies();
-    }, []);
-
     return (
       <>
         {recyclingCompanies.map((company: any, index) => (
@@ -45,9 +48,9 @@ const Recycle: React.FC = (): JSX.Element => {
             key={index}
             name={company.fullname}
             address={company.address}
-            isVerified={!company.verified}
+            isVerified={company.verified}
             companyId={company.id}
-            rating={company?.rating || Math.random() * 4 + 1}
+            rating={company?.rating || Math.random() * 4 + 3}
           />
         ))}
       </>
@@ -76,8 +79,27 @@ const Recycle: React.FC = (): JSX.Element => {
         <p className="text-slate-500 capitalize text-sm">
           All recycling companies
         </p>
-        <section className="recycling-companies w-11/12 md:4/4 lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 gap-10">
-          <RecyclingCompanies />
+        <section
+          className={`recycling-companies w-11/12 mx-auto gap-10 ${
+            recyclingCompanies.length > 0 && additionalClass
+          }`}
+        >
+          {recyclingCompanies.length > 0 ? (
+            recyclingCompanies.map((company: any, index) => (
+              <RecycingCompanyCard
+                key={index}
+                name={company.fullname}
+                address={company.address}
+                isVerified={company.verified}
+                companyId={company.id}
+                rating={company?.rating || Math.random() * 4 + 3}
+              />
+            ))
+          ) : (
+            <div className="w-full flex items-center justify-center mt-10">
+              <div className="loader h-7 w-7 border-1"></div>{" "}
+            </div>
+          )}
         </section>
       </section>
       <AddItem onClick={handleScanItemPick} />
