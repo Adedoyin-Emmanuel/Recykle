@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TrashBin from "../../assets/recycle-icon.svg";
 import AllRecyclingHistory from "../../components/AllRecyclingHistory/AllRecyclingHistory";
@@ -15,7 +15,6 @@ import {
   CompanyAppContextValuesProps,
   useCompanyAppContext,
 } from "../../context/companyAppContext";
-import { navigateToRecycling } from "../../utils/navigate";
 import Submitted from "./../../assets/clipboard-tick-2.svg";
 import Feedback from "./../../assets/messages.svg";
 
@@ -37,7 +36,6 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
     };
 
     fetchData();
-    console.log(recyclingHistoryData);
   }, [companyData, recyclingHistoryData]);
 
   const recyclables = [
@@ -75,6 +73,7 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
   const itemsReceived = companyData.itemsReceived;
   const usersFeedback = companyData.usersFeedback;
   const [itemsRecycled, setItemsRecycled] = useState(totalItemsRecycled);
+  const submissionElementRef = useRef<HTMLDivElement>(null);
 
   const handleIconClick = () => {
     setToggler(!toggler);
@@ -88,7 +87,9 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
 
   const handleSubmission = () => {
-    navigateToRecycling(navigateTo);
+    if (submissionElementRef.current) {
+      submissionElementRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -274,7 +275,10 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
         </div>
 
         <div className="second-section w-full xl:w-4/12 mt-16 md:mt-0 grid grid-cols-1  items-center justify-center">
-          <section className="submission-cards md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
+          <section
+            className="submission-cards md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16"
+            ref={submissionElementRef}
+          >
             <section className="header w-full flex">
               <h4 className="capitalize font-bold text-[20px] md:p-3">
                 recent submission

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
-import { useUserAuth } from "../../context/userAuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/appContext";
+import { useUserAuth } from "../../context/userAuthContext";
 import Notification from "../../utils/toast";
 import { getFirstName } from "../../utils/utilis";
 import UserAvatar from "../UserAvatar/UserAvatar";
-import { useNavigate } from "react-router-dom";
 
 interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -105,21 +105,21 @@ const DashboardHeader: React.FC = ({
   const profileMenuItems = [
     {
       id: 1,
-      text: "items recycled",
+      text: "Recycling History",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
     },
     {
       id: 2,
-      text: "items submitted",
+      text: "recent submissions",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
     },
     {
       id: 3,
-      text: "edit profile",
+      text: "view profile",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
@@ -127,7 +127,7 @@ const DashboardHeader: React.FC = ({
 
     {
       id: 4,
-      text: "change password",
+      text: "your collection",
       onClick: (id: number) => {
         console.log(`Hello profile item  ${id}`);
       },
@@ -205,7 +205,7 @@ const DashboardHeader: React.FC = ({
               {profileMenuItems.map((item) => (
                 <p
                   key={item.id}
-                  className="text-[12px] md:text-sm p-2 hover:bg-green-10 rounded capitalize"
+                  className="text-[12px] md:text-sm p-3 hover:bg-green-10 rounded capitalize mt-2"
                   onClick={() => item.onClick(item.id)}
                 >
                   {item.text}

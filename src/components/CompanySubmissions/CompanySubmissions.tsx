@@ -23,7 +23,6 @@ const CompanySubmissions = () => {
       try {
         const submissions = await getUsersSubmission(company.uid);
         setUserSubmissions(submissions);
-        console.log(submissions);
       } catch (error) {
         console.error("Error fetching user submissions:", error);
       }
