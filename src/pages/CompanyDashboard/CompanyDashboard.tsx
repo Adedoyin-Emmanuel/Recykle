@@ -1,25 +1,44 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import TrashBin from "../../assets/recycle-icon.svg";
+import AllRecyclingHistory from "../../components/AllRecyclingHistory/AllRecyclingHistory";
+import Collection from "../../components/Collection/Collection";
+import CompanyChart from "../../components/CompanyChart/CompanyChart";
 import CompanyDashboardComponent from "../../components/CompanyDashboardComponent/CompanyDashboardComponent";
 import CompanyDashboardHeader from "../../components/CompanyDashboardHeader/CompanyDashboardHeader";
+import CompanySubmissions from "../../components/CompanySubmissions/CompanySubmissions";
 import UtilityBox from "../../components/UtilityBox/UtilityBox";
-import TrashBin from "../../assets/recycle-icon.svg";
+import {
+  CompanyAppContextValuesProps,
+  useCompanyAppContext,
+} from "../../context/companyAppContext";
+import { navigateToRecycling } from "../../utils/navigate";
 import Submitted from "./../../assets/clipboard-tick-2.svg";
 import Feedback from "./../../assets/messages.svg";
-import CompanyChart from "../../components/CompanyChart/CompanyChart";
-import RecycleCard from "../../components/RecycleCard/RecycleCard";
-import Collection from "../../components/Collection/Collection";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { navigateToRecycling } from "../../utils/navigate";
-import { useNavigate } from "react-router-dom";
-import {
-  useCompanyAppContext,
-  CompanyAppContextValuesProps,
-} from "../../context/companyAppContext";
-import CompanySubmissions from "../../components/CompanySubmissions/CompanySubmissions";
+
 const CompanyDashboard: React.FC = (): JSX.Element => {
-  const { companyData }: CompanyAppContextValuesProps = useCompanyAppContext();
+  const {
+    companyData,
+    getRecyclingHistory,
+    companyLoading,
+    companyContextLoading,
+    company,
+  }: CompanyAppContextValuesProps = useCompanyAppContext();
+
+  const [recyclingHistoryData, setRecyclingHistoryData] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      !companyLoading &&
+        setRecyclingHistoryData(await getRecyclingHistory(company.uid));
+    };
+
+    fetchData();
+    console.log(recyclingHistoryData);
+  }, [companyData, recyclingHistoryData]);
 
   const recyclables = [
     {
@@ -250,20 +269,7 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
           </section>
 
           <section className="recycling-transactions mt-5 w-full">
-            <RecycleCard
-              recycleDate="September 14th 2023, at 11:30pm"
-              recyclingPointsEarned={10}
-            />
-
-            <RecycleCard
-              recycleDate="November 30th 2023, at 4:30pm"
-              recyclingPointsEarned={14}
-            />
-
-            <RecycleCard
-              recycleDate="September 20th 2023, at 4:30pm"
-              recyclingPointsEarned={50}
-            />
+            <AllRecyclingHistory />
           </section>
         </div>
 

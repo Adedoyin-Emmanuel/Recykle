@@ -63,6 +63,7 @@ export interface CompanyAppContextValuesProps {
     userId: string,
     companyId: string
   ) => any;
+  getRecyclingHistory: (companyId: string) => any;
 }
 
 export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
@@ -81,6 +82,7 @@ export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
   deleteUserSubmission: async () => null,
   acceptUserSubmission: async () => null,
   cancelUserSubmission: async () => null,
+  getRecyclingHistory: async () => null,
 });
 
 export const CompanyAppContextProvider = ({
@@ -499,6 +501,32 @@ export const CompanyAppContextProvider = ({
     }
   };
 
+  const getRecyclingHistory = async (companyId: string) => {
+    if (!companyId) throw new Error("companyId is required");
+
+    const companyRef = doc(db, "companies", companyId);
+    const companyCollectionRef = collection(companyRef, "recyclingHistory");
+
+    const querySnapshot = await getDocs(companyCollectionRef);
+
+    if (querySnapshot.empty) return null;
+
+    const recyclingHistoryDataArray: any = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      recyclingHistoryDataArray.push({
+        submissionId: data.submissionId,
+        dateAdded: data.dateAdded,
+        totalItemsRecycled: data.totalItemsRecycled,
+        submittedBy: data.submittedBy,
+        itemsSubmitted: data.itemsSubmitted,
+      });
+    });
+
+    return recyclingHistoryDataArray;
+  };
+
   const value: CompanyAppContextValuesProps = {
     username: companyData.username,
     company: company,
@@ -515,6 +543,7 @@ export const CompanyAppContextProvider = ({
     deleteUserSubmission,
     acceptUserSubmission,
     cancelUserSubmission,
+    getRecyclingHistory,
   };
 
   return (

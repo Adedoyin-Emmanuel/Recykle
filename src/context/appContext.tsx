@@ -64,6 +64,7 @@ export interface AppContextValuesProps {
     submissionId: string,
     companyId: string
   ) => any;
+  getRecyclingHistory: (userId: string) => Promise<any>;
 }
 
 export const AppContext = createContext<AppContextValuesProps>({
@@ -83,6 +84,7 @@ export const AppContext = createContext<AppContextValuesProps>({
   submitRecyclingData: async () => null,
   getUserSubmissions: async () => null,
   deleteUserSubmission: async () => null,
+  getRecyclingHistory: async () => null,
 });
 
 export const AppContextProvider = ({ children }: AppContextProps) => {
@@ -289,7 +291,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       const userSubmissionData = {
         id: submissionId,
         companyId: companyId,
-        companyName,
+        companyName: companyName,
         dateSubmitted: serverTimestamp(),
         status: "pending",
         itemsSubmitted: itemsSubmitted,
@@ -411,6 +413,34 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     }
   };
 
+  const getRecyclingHistory = async (userId: string) => {
+    if (!userId) throw new Error("userId is required");
+
+    const recyclingHistoryRef = doc(db, "users", userId);
+    const recyclingHistoryCollectionRef = collection(
+      recyclingHistoryRef,
+      "recyclingHistory"
+    );
+    const querySnapshot = await getDocs(recyclingHistoryCollectionRef);
+
+    if (querySnapshot.empty) return null;
+
+    const recyclingHistoryDataArray: any = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      recyclingHistoryDataArray.push({
+        submissionId: data.submissionId,
+        dateAdded: data.dateAdded,
+        totalItemsRecycled: data.totalItemsRecycled,
+        submittedBy: data.submittedBy,
+        itemsSubmitted: data.itemsSubmitted,
+      });
+    });
+
+    return recyclingHistoryDataArray;
+  };
+
   const value = {
     username: userData.username,
     user: user,
@@ -428,6 +458,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     submitRecyclingData,
     getUserSubmissions,
     deleteUserSubmission,
+    getRecyclingHistory,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

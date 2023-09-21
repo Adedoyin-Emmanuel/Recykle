@@ -6,13 +6,13 @@ import { formatDateFromTimestamp } from "../../utils/utilis";
 
 interface RecycleCardProps extends React.HTMLAttributes<HTMLDivElement> {
   recycleDate: Timestamp | any;
-  companyName: string;
+  username: string;
   totalItemsRecycled: number | string;
 }
 
-const RecycleCard = ({
+const CompanyRecycleCard = ({
   recycleDate,
-  companyName,
+  username,
   totalItemsRecycled,
 }: RecycleCardProps) => {
   return (
@@ -30,7 +30,7 @@ const RecycleCard = ({
       </section>
 
       <section className="username-section">
-        <p className="username text-sm font-bold">{`@${companyName}`}</p>
+        <p className="username text-sm font-bold">{`@${username}`}</p>
       </section>
 
       <section className="second-section">
@@ -41,4 +41,4 @@ const RecycleCard = ({
     </section>
   );
 };
-export default RecycleCard;
+export default CompanyRecycleCard;
