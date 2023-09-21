@@ -2,7 +2,6 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import TrashBin from "../../assets/recycle-icon.svg";
 import AllRecyclingHistory from "../../components/AllRecyclingHistory/AllRecyclingHistory";
 import Collection from "../../components/Collection/Collection";
@@ -74,6 +73,8 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
   const usersFeedback = companyData.usersFeedback;
   const [itemsRecycled, setItemsRecycled] = useState(totalItemsRecycled);
   const submissionElementRef = useRef<HTMLDivElement>(null);
+  const recycleHistoryElementRef = useRef<HTMLDivElement>(null);
+  const recyclablesElementRef = useRef<HTMLDivElement>(null);
 
   const handleIconClick = () => {
     setToggler(!toggler);
@@ -84,8 +85,6 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
     setItemsRecycled(toggler ? totalItemsRecycled : "****");
   });
 
-  const navigateTo = useNavigate();
-
   const handleSubmission = () => {
     if (submissionElementRef.current) {
       submissionElementRef.current.scrollIntoView({ behavior: "smooth" });
@@ -94,7 +93,11 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
 
   return (
     <CompanyDashboardComponent onDashboardPage>
-      <CompanyDashboardHeader />
+      <CompanyDashboardHeader
+        submissionElementRef={submissionElementRef}
+        recycleHistoryRef={recycleHistoryElementRef}
+        recyclableElementRef={recyclablesElementRef}
+      />
 
       <div className="w-full flex flex-col xl:flex-row gap-x-5">
         <div className="first-section w-full xl:w-8/12 flex flex-col items-center justify-center">
@@ -232,7 +235,6 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
               <p className="font-bold">{usersFeedback}</p>
             </UtilityBox>
           </div>
-
           <section className="mobile-data-2 bg-slate-50 rounded-lg md:hidden p-4 flex items-center justify-between flex-row gap-x-5 my-5 w-full">
             <section className="my-2 bg-green-10 p-3 rounded-md flex items-center justify-between flex-row md:hidden gap-y-1 w-full">
               <img src={TrashBin} alt="dollar-bill" className="h-6 w-6 mx-2" />
@@ -254,7 +256,6 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
               <p className="font-bold text-sm">{usersFeedback}</p>
             </section>
           </section>
-
           <section className="growth-statistic mt-16 mb-2 w-full ">
             <h4 className="capitalize font-bold text-[20px]">
               growth statistic
@@ -262,13 +263,14 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
 
             <CompanyChart />
           </section>
-
-          <section className="recycle-history mt-20 w-full">
+          <section
+            className="recycle-history mt-20 w-full"
+            ref={recycleHistoryElementRef}
+          >
             <h4 className="capitalize font-bold text-[20px]">
               recycle history
             </h4>
           </section>
-
           <section className="recycling-transactions mt-5 w-full">
             <AllRecyclingHistory />
           </section>
@@ -289,7 +291,10 @@ const CompanyDashboard: React.FC = (): JSX.Element => {
 
           <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
             <section className="header w-full flex">
-              <h4 className="capitalize font-bold text-[20px] md:p-3">
+              <h4
+                className="capitalize font-bold text-[20px] md:p-3"
+                ref={recyclablesElementRef}
+              >
                 your recyclables
               </h4>
             </section>
