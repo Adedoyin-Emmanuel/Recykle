@@ -1,25 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { doc, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import TrashBin from "../../assets/recycle-icon.svg";
+import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
+import Chart from "../../components/Chart/Chart";
+import ClientRecyclingHistory from "../../components/ClientRecyclingHistory/ClientRecyclingHistory";
+import Collection from "../../components/Collection/Collection";
 import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
 import DashboardHeader from "../../components/DashboardHeader/DashboardHeader";
-import UtilityBox from "../../components/UtilityBox/UtilityBox";
-import Dollar from "./../../assets/dollar-circle.svg";
-import Submitted from "./../../assets/clipboard-tick-2.svg";
-import TrashBin from "../../assets/recycle-icon.svg";
-import RecycleCard from "../../components/RecycleCard/RecycleCard";
-import Chart from "../../components/Chart/Chart";
-import Collection from "../../components/Collection/Collection";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { navigateToRecycling } from "../../utils/navigate";
-import { useNavigate, Link } from "react-router-dom";
-import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
 import UserSubmissions from "../../components/UserSubmissions/UserSubmissions";
+import UtilityBox from "../../components/UtilityBox/UtilityBox";
+import { AppContextValuesProps, useAppContext } from "../../context/appContext";
 import { db } from "../../utils/firebase.config";
-import { doc, onSnapshot } from "firebase/firestore"; // Import Firestore functions for real-time listeners
-
-import { useAppContext, AppContextValuesProps } from "../../context/appContext";
+import { navigateToRecycling } from "../../utils/navigate";
+import Submitted from "./../../assets/clipboard-tick-2.svg";
+import Dollar from "./../../assets/dollar-circle.svg";
 
 const Dashboard = (): JSX.Element => {
   const {
@@ -294,21 +293,8 @@ const Dashboard = (): JSX.Element => {
             </h4>
           </section>
 
-          <section className="recycling-transactions mt-5 w-full">
-            <RecycleCard
-              recycleDate="September 14th 2023, at 11:30pm"
-              recyclingPointsEarned={10}
-            />
-
-            <RecycleCard
-              recycleDate="November 30th 2023, at 4:30pm"
-              recyclingPointsEarned={14}
-            />
-
-            <RecycleCard
-              recycleDate="September 20th 2023, at 4:30pm"
-              recyclingPointsEarned={50}
-            />
+          <section className="recycling-transactions mt-5 w-full ">
+            <ClientRecyclingHistory />
           </section>
         </div>
 
@@ -350,16 +336,16 @@ const Dashboard = (): JSX.Element => {
             ) : (
               <>
                 <div className="loader h-8 w-8 border-1"></div>
-                <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-10">
-                  <button
-                    onClick={handleAddItem}
-                    className="mt-3  px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
-                  >
-                    add item
-                  </button>
-                </section>
               </>
             )}
+            <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-10">
+              <button
+                onClick={handleAddItem}
+                className="mt-3  px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2  border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
+              >
+                add item
+              </button>
+            </section>
           </section>
         </div>
         <AddItemContainer

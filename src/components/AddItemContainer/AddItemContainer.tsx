@@ -1,26 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import Input from "../Input/Input";
-import {
-  faFileText,
-  faBolt,
-  faGlassMartiniAlt,
-  faBoxOpen,
-  faLaptop,
-  faTshirt,
-  faLeaf,
-  faBatteryFull,
-  faSkullCrossbones,
-  faCarSide,
-  faBlender,
-  faWineGlassAlt,
-} from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBatteryFull,
+  faBlender,
+  faBolt,
+  faBoxOpen,
+  faCarSide,
+  faFileText,
+  faGlassMartiniAlt,
+  faLaptop,
+  faLeaf,
+  faSkullCrossbones,
+  faTshirt,
+  faWineGlassAlt,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { AppContextValuesProps, useAppContext } from "../../context/appContext";
 import Notification from "../../utils/toast";
-import { useAppContext, AppContextValuesProps } from "../../context/appContext";
+import Input from "../Input/Input";
 
 //import { useNavigate } from "react-router-dom";
 
@@ -128,7 +128,7 @@ const AddItemContainer = ({
       variants={containerVariants}
       transition={{ duration: 0.3 }}
       className={`fixed top-0 left-0 w-screen h-screen flex items-center justify-center ${
-        blur ? "backdrop-blur-sm" : ""
+        blur ? "backdrop-blur" : ""
       } z-[100]`}
     >
       <motion.section

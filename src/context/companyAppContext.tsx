@@ -63,6 +63,7 @@ export interface CompanyAppContextValuesProps {
     userId: string,
     companyId: string
   ) => any;
+  getRecyclingHistory: (companyId: string) => any;
 }
 
 export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
@@ -81,6 +82,7 @@ export const CompanyAppContext = createContext<CompanyAppContextValuesProps>({
   deleteUserSubmission: async () => null,
   acceptUserSubmission: async () => null,
   cancelUserSubmission: async () => null,
+  getRecyclingHistory: async () => null,
 });
 
 export const CompanyAppContextProvider = ({
@@ -322,7 +324,7 @@ export const CompanyAppContextProvider = ({
     userId: string
   ) => {
     if (!submissionId || !userId || !companyId)
-      throw new Error("submissionId, userId or companyId must be provided");
+      throw new Error("submissionId, userId, or companyId must be provided");
 
     try {
       const userDocRef = doc(db, "users", userId);
@@ -372,13 +374,56 @@ export const CompanyAppContextProvider = ({
         });
       }
 
-      //dash the user some recycling points
+      // Update the user's recycling points and total items recycled
       batch.update(userDocRef, {
         totalRecyclePoints: increment(100),
         totalItemsRecycled: increment(1),
       });
 
-      //update the company total recycling transactions
+      // Update the company's total recycling transactions
+      batch.update(companySubmissionRef, {
+        itemsRecycled: increment(1),
+      });
+
+      // Query for the company submission document
+      const companyItemSubmittedRefQuery = query(
+        companySubmissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+      const getItemsSubmittedSnapshot = await getDocs(
+        companyItemSubmittedRefQuery
+      );
+
+      if (getItemsSubmittedSnapshot.empty) return null;
+
+      const submisionDoc = getItemsSubmittedSnapshot.docs[0];
+      const data = submisionDoc.data();
+
+      // Reference the recyclingHistory sub-collection within user's and company's documents
+      const recyclingHistoryUserRef = collection(
+        userDocRef,
+        "recyclingHistory"
+      );
+      const recyclingHistoryCompanyRef = collection(
+        companySubmissionRef,
+        "recyclingHistory"
+      );
+
+      // Create data for recycling history
+      const recyclingHistoryData = {
+        submissionId: submissionId,
+        dateAdded: serverTimestamp(),
+        totalItemsRecycled: data.totalQuantity || 0, // Use a default value if it's undefined
+        submittedBy: data.submittedBy || "",
+        itemsSubmitted: data.itemsSubmitted || "",
+      };
+
+      // Add data to recyclingHistory sub-collection in user's document
+      await addDoc(recyclingHistoryUserRef, recyclingHistoryData);
+
+      // Add data to recyclingHistory sub-collection in company's document
+      await addDoc(recyclingHistoryCompanyRef, recyclingHistoryData);
+
       batch.update(companySubmissionRef, {
         itemsRecycled: increment(1),
       });
@@ -456,6 +501,32 @@ export const CompanyAppContextProvider = ({
     }
   };
 
+  const getRecyclingHistory = async (companyId: string) => {
+    if (!companyId) throw new Error("companyId is required");
+
+    const companyRef = doc(db, "companies", companyId);
+    const companyCollectionRef = collection(companyRef, "recyclingHistory");
+
+    const querySnapshot = await getDocs(companyCollectionRef);
+
+    if (querySnapshot.empty) return null;
+
+    const recyclingHistoryDataArray: any = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      recyclingHistoryDataArray.push({
+        submissionId: data.submissionId,
+        dateAdded: data.dateAdded,
+        totalItemsRecycled: data.totalItemsRecycled,
+        submittedBy: data.submittedBy,
+        itemsSubmitted: data.itemsSubmitted,
+      });
+    });
+
+    return recyclingHistoryDataArray;
+  };
+
   const value: CompanyAppContextValuesProps = {
     username: companyData.username,
     company: company,
@@ -472,6 +543,7 @@ export const CompanyAppContextProvider = ({
     deleteUserSubmission,
     acceptUserSubmission,
     cancelUserSubmission,
+    getRecyclingHistory,
   };
 
   return (
