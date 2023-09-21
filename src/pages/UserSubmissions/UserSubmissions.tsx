@@ -1,19 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState, useRef } from "react";
-import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
 import Collection from "../../components/Collection/Collection";
-import { useParams, useNavigate } from "react-router-dom";
+import DashboardComponent from "../../components/DashboardComponent/DashboardComponent";
+import Input from "../../components/Input/Input";
 
-import { useAppContext, AppContextValuesProps } from "../../context/appContext";
 import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
+import { AppContextValuesProps, useAppContext } from "../../context/appContext";
+import { navigateToDashboard } from "../../utils/navigate";
 import Notification from "../../utils/toast";
-import {
-  navigateToDashboard,
-} from "../../utils/navigate";
 
 const UserSubmissions: React.FC = (): JSX.Element => {
   const {
@@ -124,30 +122,28 @@ const UserSubmissions: React.FC = (): JSX.Element => {
               />
             ))
           ) : (
-            <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-3">
-              <p className="font-medium capitalize block text-center w-full">
-                {" "}
-                No collection found 😔
-              </p>
-
-              <button
-                onClick={(e) => {
-                  handleAddItem(e);
-                }}
-                className="mt-3 px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2 border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
-              >
-                add item
-              </button>
-            </section>
+            <div className="w-full flex items-center justify-center mt-10">
+              <div className="loader h-7 w-7 border-1"></div>{" "}
+            </div>
           )}
+          <button
+            onClick={(e) => {
+              handleAddItem(e);
+            }}
+            className="mt-3 px-3 py-2 rounded-[30px] w-32 capitalize text-[13px] border-2 border-green-300 text-center hover:bg-green-200 hover:text-white hover:border-transparent transition-colors ease-linear duration-100"
+          >
+            add item
+          </button>
         </section>
-
+        <br />
+        <br />
         <Input
           placeholder="Enter item quantity"
           type="number"
           min={1}
           required
           inputRef={inputRef}
+          className="my-10"
         />
 
         <section className="button my-5 w-full flex items-center justify-end">
@@ -163,6 +159,9 @@ const UserSubmissions: React.FC = (): JSX.Element => {
           </Button>
         </section>
       </form>
+      <br />
+      <br />
+      <br />
     </DashboardComponent>
   );
 };

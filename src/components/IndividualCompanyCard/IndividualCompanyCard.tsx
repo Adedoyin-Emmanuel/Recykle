@@ -1,18 +1,18 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCalendar,
+  faEnvelope,
   faLocationDot,
   faRecycle,
-  faEnvelope,
   faStar,
-  faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 import Avatar from "react-avatar";
+import { useNavigate } from "react-router-dom";
 import CompanyBottle from "./../../assets/company-bottle.svg";
 import CompanyMetals from "./../../assets/company-metals.svg";
 import CompanyPaper from "./../../assets/company-paper.svg";
 import CompanyTrash from "./../../assets/company-plastic.svg";
-import { useNavigate } from "react-router-dom";
 
 interface IndividualCompanyCardProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -72,7 +72,7 @@ const IndividualCompanyCard = ({
 
   return (
     <section
-      className={`individual-card ${className} flex flex-col items-center mb-10`}
+      className={`individual-card ${className} flex flex-col items-center mb-10 p-1`}
     >
       <section className="company-profile-image">
         <Avatar
@@ -90,7 +90,7 @@ const IndividualCompanyCard = ({
             <h2 className="font-bold capitalize text-[23px] flex items-center w-full">
               {companyName}
 
-              {!isVerified && (
+              {isVerified && (
                 <p className="m-0 px-[5px]">
                   <svg
                     width="24"
@@ -125,13 +125,13 @@ const IndividualCompanyCard = ({
         </section>
 
         <section className="companyDetails2">
-          <section className="location flex items-center gap-x-2 mt-2 mb-1">
+          <section className="location flex items-center gap-x-2 mt-2 p-[2px] mb-1">
             <FontAwesomeIcon icon={faLocationDot} />
 
             <p className="text-sm block">{companyAddress}</p>
           </section>
 
-          <section className="items-recycled flex items-center gap-x-2 mt-2 mb-1">
+          <section className="items-recycled flex items-center gap-x-2 mt-2 p-[2px] mb-1">
             <FontAwesomeIcon icon={faRecycle} />
 
             <p className="text-sm block capitalize ">
@@ -139,19 +139,19 @@ const IndividualCompanyCard = ({
             </p>
           </section>
 
-          <section className="company-email flex items-center gap-x-2 mt-2 mb-1">
+          <section className="company-email flex items-center gap-x-2 mt-2 p-[2px] mb-1">
             <FontAwesomeIcon icon={faEnvelope} />
 
             <p className="text-sm block">{companyEmail}</p>
           </section>
 
-          <section className="date-joined flex items-center gap-x-2 mt-2 mb-1">
+          <section className="date-joined flex items-center gap-x-2 mt-2 p-[2px] mb-1">
             <FontAwesomeIcon icon={faCalendar} />
 
             <p className="text-sm block">{dateJoined}</p>
           </section>
 
-          <section className="star-rating flex items-center gap-x-2 mt-2 mb-1">
+          <section className="star-rating flex items-center gap-x-2 mt-2 p-[2px] mb-1">
             <StarRating />
             <p className="text-[13px] block capitalize"></p>
           </section>
@@ -195,6 +195,9 @@ const IndividualCompanyCard = ({
               </section>
             </section>
           </section>
+
+          <br />
+          <br />
         </section>
       </section>
     </section>

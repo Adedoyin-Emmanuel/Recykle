@@ -1,27 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  useCompanyAppContext,
   CompanyAppContextValuesProps,
+  useCompanyAppContext,
 } from "../../context/companyAppContext";
 import {
-  useCompanyAuth,
   CompanyAuthContextProps,
+  useCompanyAuth,
 } from "../../context/companyAuthContext";
 import Notification from "../../utils/toast";
-import { useNavigate } from "react-router-dom";
 import { getFirstName } from "../../utils/utilis";
 import CompanyAvatar from "../CompanyAvatar/CompanyAvatar";
 
 interface CompanyDashboardHeaderProps
   extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
+  submissionElementRef?: React.RefObject<HTMLDivElement>;
+  recyclableElementRef?: React.RefObject<HTMLDivElement>;
+  recycleHistoryRef?: React.RefObject<HTMLDivElement>;
 }
 
-const CompanyDashboardHeader: React.FC = ({
+const CompanyDashboardHeader = ({
   className,
+  submissionElementRef,
+  recyclableElementRef,
+  recycleHistoryRef,
   ...others
 }: CompanyDashboardHeaderProps): JSX.Element => {
   const [isNotificationDropdownVisible, setIsNotificationDropdownVisible] =
@@ -37,6 +43,7 @@ const CompanyDashboardHeader: React.FC = ({
 
   const notificationRef: any = useRef(null);
   const profileRef: any = useRef(null);
+
   const navigateTo = useNavigate();
 
   useEffect(() => {
@@ -87,22 +94,22 @@ const CompanyDashboardHeader: React.FC = ({
     {
       id: 1,
       text: "New message from henqsoft",
-      onClick: (id: number) => {
-        console.log(`Hello notification ${id}`);
+      onClick: () => {
+        console.log(`Hello notification`);
       },
     },
     {
       id: 2,
       text: "Reminder: Meeting at 3 PM",
-      onClick: (id: number) => {
-        console.log(`Hello notification ${id}`);
+      onClick: () => {
+        console.log(`Hello notification`);
       },
     },
     {
       id: 3,
       text: "Recycling successful",
-      onClick: (id: number) => {
-        console.log(`Hello notification ${id}`);
+      onClick: () => {
+        console.log(`Hello notification`);
       },
     },
   ];
@@ -111,39 +118,54 @@ const CompanyDashboardHeader: React.FC = ({
     {
       id: 1,
       text: "view submissions",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      onClick: () => {
+        if (submissionElementRef?.current) {
+          submissionElementRef.current.scrollIntoView({
+            behavior: "smooth",
+          });
+          setIsProfileDropdownVisible(false);
+        }
       },
     },
 
     {
       id: 2,
-      text: "users feedback",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      text: "recycle history",
+      onClick: () => {
+        if (recycleHistoryRef?.current) {
+          recycleHistoryRef.current.scrollIntoView({
+            behavior: "smooth",
+          });
+          setIsProfileDropdownVisible(false);
+        }
       },
     },
     {
       id: 3,
-      text: "items received",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      text: "your recyclables",
+      onClick: () => {
+        if (recyclableElementRef?.current) {
+          recyclableElementRef.current.scrollIntoView({
+            behavior: "smooth",
+          });
+          setIsProfileDropdownVisible(false);
+        }
       },
     },
 
     {
       id: 4,
-      text: "edit profile",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      text: "view profile",
+      onClick: () => {
+        navigateTo("/company/dashboard/profile/edit");
       },
     },
 
     {
       id: 5,
-      text: "change password",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      text: "settings ",
+      onClick: () => {
+        navigateTo("/company/dashboard/settings");
       },
     },
 
@@ -196,7 +218,7 @@ const CompanyDashboardHeader: React.FC = ({
                 <p
                   key={item.id}
                   className="text-sm p-2 hover:bg-green-10 rounded capitalize"
-                  onClick={() => item.onClick(item.id)}
+                  onClick={() => item.onClick()}
                 >
                   {item.text}
                 </p>
@@ -218,8 +240,8 @@ const CompanyDashboardHeader: React.FC = ({
               {profileMenuItems.map((item) => (
                 <p
                   key={item.id}
-                  className="text-sm p-2 hover:bg-green-10 rounded capitalize"
-                  onClick={() => item.onClick(item.id)}
+                  className="text-[12px] md:text-sm p-3 hover:bg-green-10 rounded capitalize mt-2 cursor-pointer"
+                  onClick={() => item.onClick()}
                 >
                   {item.text}
                 </p>

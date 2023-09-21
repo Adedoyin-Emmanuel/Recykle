@@ -9,9 +9,6 @@ import { useAppContext, AppContextValuesProps } from "../../context/appContext";
 import IndividualCompanyCard from "../../components/IndividualCompanyCard/IndividualCompanyCard";
 import { formatDateFromTimestamp } from "../../utils/utilis";
 
-// interface IndividualCompanyProps extends React.HTMLAttributes<HTMLDivElement> {
-//   className?: string;
-// }
 
 const IndividualCompany: React.FC = (): JSX.Element => {
   const navigateTo = useNavigate();
@@ -49,15 +46,15 @@ const IndividualCompany: React.FC = (): JSX.Element => {
 
       <section className="recycling-company">
         <IndividualCompanyCard
-          companyName={companiesData.fullname}
-          companyAddress={companiesData.address}
-          companyEmail={companiesData.email}
+          companyName={companiesData?.fullname}
+          companyAddress={companiesData?.address}
+          companyEmail={companiesData?.email}
           companyRating={4}
-          companyUsername={companiesData.username}
-          companyImage={companiesData.logo}
-          isVerified={companiesData.verified}
-          itemsRecycled={companiesData.itemsRecycled}
-          dateJoined={formatDateFromTimestamp(companiesData.dateCreated)}
+          companyUsername={companiesData?.username}
+          companyImage={companiesData?.logo}
+          isVerified={companiesData?.verified}
+          itemsRecycled={companiesData?.itemsRecycled}
+          dateJoined={formatDateFromTimestamp(companiesData?.dateCreated)}
         />
       </section>
       
