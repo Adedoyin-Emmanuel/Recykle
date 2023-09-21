@@ -11,10 +11,16 @@ import UserAvatar from "../UserAvatar/UserAvatar";
 
 interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
+  submissionElementRef?: React.RefObject<HTMLDivElement>;
+  recyclableElementRef?: React.RefObject<HTMLDivElement>;
+  recycleHistoryRef?: React.RefObject<HTMLDivElement>;
 }
 
-const DashboardHeader: React.FC = ({
+const DashboardHeader = ({
   className,
+  submissionElementRef,
+  recyclableElementRef,
+  recycleHistoryRef,
   ...others
 }: DashboardHeaderProps): JSX.Element => {
   const { logout }: any = useUserAuth();
@@ -29,10 +35,6 @@ const DashboardHeader: React.FC = ({
   const navigateTo = useNavigate();
 
   const { userData, appContextLoading }: any = useAppContext();
-
-  // if (appContextLoading) {
-  //   return <div>Loading...</div>; // Show a loading indicator while data is loading
-  // }
 
   useEffect(() => {
     const closeDropdowns = (event: MouseEvent) => {
@@ -82,22 +84,22 @@ const DashboardHeader: React.FC = ({
     {
       id: 1,
       text: "Scrapay accepted your submission",
-      onClick: (id: number) => {
-        console.log(`Hello notification ${id}`);
+      onClick: () => {
+        console.log(`Hello notification`);
       },
     },
     {
       id: 2,
       text: "Reminder: Meeting at 3 PM",
-      onClick: (id: number) => {
-        console.log(`Hello notification ${id}`);
+      onClick: () => {
+        console.log(`Hello notification`);
       },
     },
     {
       id: 3,
       text: "Recykle accepted your submission",
-      onClick: (id: number) => {
-        console.log(`Hello notification ${id}`);
+      onClick: () => {
+        console.log(`Hello notification`);
       },
     },
   ];
@@ -106,30 +108,45 @@ const DashboardHeader: React.FC = ({
     {
       id: 1,
       text: "Recycling History",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      onClick: () => {
+        if (recycleHistoryRef?.current) {
+          recycleHistoryRef.current.scrollIntoView({
+            behavior: "smooth",
+          });
+          setIsProfileDropdownVisible(false);
+        }
       },
     },
     {
       id: 2,
       text: "recent submissions",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      onClick: () => {
+        if (submissionElementRef?.current) {
+          submissionElementRef.current.scrollIntoView({
+            behavior: "smooth",
+          });
+          setIsProfileDropdownVisible(false);
+        }
       },
     },
     {
       id: 3,
-      text: "view profile",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      text: "view collection",
+      onClick: () => {
+        if (recyclableElementRef?.current) {
+          recyclableElementRef.current.scrollIntoView({
+            behavior: "smooth",
+          });
+          setIsProfileDropdownVisible(false);
+        }
       },
     },
 
     {
       id: 4,
-      text: "your collection",
-      onClick: (id: number) => {
-        console.log(`Hello profile item  ${id}`);
+      text: "your profile",
+      onClick: () => {
+        navigateTo("/dashboard/profile")
       },
     },
 
@@ -182,7 +199,7 @@ const DashboardHeader: React.FC = ({
                 <p
                   key={item.id}
                   className="text-[12px] md:text-sm p-2 hover:bg-green-10 rounded capitalize"
-                  onClick={() => item.onClick(item.id)}
+                  onClick={() => item.onClick()}
                 >
                   {item.text}
                 </p>
@@ -206,7 +223,7 @@ const DashboardHeader: React.FC = ({
                 <p
                   key={item.id}
                   className="text-[12px] md:text-sm p-3 hover:bg-green-10 rounded capitalize mt-2"
-                  onClick={() => item.onClick(item.id)}
+                  onClick={() => item.onClick()}
                 >
                   {item.text}
                 </p>

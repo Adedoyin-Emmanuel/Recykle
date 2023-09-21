@@ -3,7 +3,7 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { doc, onSnapshot } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TrashBin from "../../assets/recycle-icon.svg";
 import AddItemContainer from "../../components/AddItemContainer/AddItemContainer";
@@ -27,6 +27,9 @@ const Dashboard = (): JSX.Element => {
     getUserRecyclingCollection,
   }: AppContextValuesProps = useAppContext();
   const [recyclables, setRecyclables] = useState<any>({});
+  const submissionElementRef = useRef<HTMLDivElement>(null);
+  const recycleHistoryElementRef = useRef<HTMLDivElement>(null);
+  const recyclablesElementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const userDocRef = doc(db, "users", user.uid);
@@ -103,7 +106,11 @@ const Dashboard = (): JSX.Element => {
 
   return (
     <DashboardComponent onDashboardPage>
-      <DashboardHeader />
+      <DashboardHeader
+        submissionElementRef={submissionElementRef}
+        recyclableElementRef={recyclablesElementRef}
+        recycleHistoryRef={recycleHistoryElementRef}
+      />
 
       <div className="w-full flex flex-col xl:flex-row gap-x-5 ">
         <div className="first-section w-full xl:w-8/12 flex flex-col items-center justify-center">
@@ -287,7 +294,10 @@ const Dashboard = (): JSX.Element => {
             <Chart />
           </section>
 
-          <section className="recycle-history mt-20 w-full p-2">
+          <section
+            className="recycle-history mt-20 w-full p-2"
+            ref={recycleHistoryElementRef}
+          >
             <h4 className="capitalize font-bold text-[20px]">
               recycle history
             </h4>
@@ -300,7 +310,10 @@ const Dashboard = (): JSX.Element => {
 
         <div className="second-section w-full xl:w-4/12 mt-16 md:mt-0 grid grid-cols-1  items-center justify-center">
           <section className="submission-cards md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
-            <section className="header w-full flex p-2">
+            <section
+              className="header w-full flex p-2"
+              ref={submissionElementRef}
+            >
               <h4 className="capitalize font-bold text-[20px] md:p-3">
                 recent submission
               </h4>
@@ -318,7 +331,10 @@ const Dashboard = (): JSX.Element => {
           </section>
 
           <section className="submission-cards  md:w-11/12 flex flex-col items-center justify-center xl:mx-auto mb-16">
-            <section className="header w-full flex p-2">
+            <section
+              className="header w-full flex p-2"
+              ref={recyclablesElementRef}
+            >
               <h4 className="capitalize font-bold text-[20px] md:p-3">
                 your collections
               </h4>
@@ -335,7 +351,7 @@ const Dashboard = (): JSX.Element => {
               ))
             ) : (
               <>
-                <div className="loader h-8 w-8 border-1"></div>
+                <div className="loader h-7 w-7 border-1"></div>
               </>
             )}
             <section className="mt-3 flex items-end flex-col justify-end w-11/12 gap-y-10">

@@ -25,7 +25,8 @@ const Recycle: React.FC = (): JSX.Element => {
   const { user }: UserAuthContextProps = useUserAuth();
 
   // ogbon sodiq
-  const additionalClass = "md:4/4 lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 my-5";
+  const additionalClass =
+    "md:4/4 lg:w-3/4 grid sm:grid-cols-2 xl:grid-cols-3 my-5";
 
   useEffect(() => {
     async function fetchCompanies() {
@@ -67,13 +68,7 @@ const Recycle: React.FC = (): JSX.Element => {
 
   return (
     <DashboardComponent onRecyklePage className="flex flex-col items-center">
-      <SearchBar
-        className="my-5"
-        // onChange={(e) => {
-        //   handleSearchRecyclingCompanies(e);
-        // }}
-        // disabled
-      />
+      <SearchBar className="my-5" />
 
       <section className="companies-area w-full flex-col flex items-center my-5   ">
         <p className="text-slate-500 capitalize text-sm">

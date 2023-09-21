@@ -55,7 +55,7 @@ const Collection: React.FC<Recyclable> = ({
   ...others
 }) => {
   return (
-    <Link to={`collection/${id}`} className="w-full">
+    <Link to={`/dashboard/collection/${id}`} className="w-full">
       <section
         className={`collection-card rounded-md p-3 flex items-center justify-between w-full mb-1   cursor-pointer ${className} transition-color transform-gpu ease-in-out duration-100 hover:bg-slate-50`}
         {...others}
