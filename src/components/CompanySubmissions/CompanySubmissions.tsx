@@ -1,4 +1,4 @@
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   CompanyAppContextValuesProps,
@@ -21,8 +21,7 @@ const CompanySubmissions = () => {
   useEffect(() => {
     // Create a Firestore query for real-time updates
     const userSubmissionsQuery = query(
-      collection(db, "companies", company.uid, "submissions"),
-      where("status", "==", "success")
+      collection(db, "companies", company.uid, "submissions")
     );
 
     // Set up a listener for real-time updates
