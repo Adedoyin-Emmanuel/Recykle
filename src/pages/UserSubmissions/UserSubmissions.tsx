@@ -80,6 +80,7 @@ const UserSubmissions: React.FC = (): JSX.Element => {
     if (recyclables.length === 0) {
       return toast.error("You don't have any collections");
     }
+    console.log(companyData.fullname) ;
     if (companyData) {
       submitRecyclingData(
         companyId,

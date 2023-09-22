@@ -265,6 +265,15 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     totalQuantity: number,
     itemsSubmitted: any
   ) => {
+    if (
+      !companyId ||
+      !companyName ||
+      !username ||
+      !userId ||
+      !totalQuantity ||
+      !itemsSubmitted
+    )
+      throw new Error("All fields are required");
     try {
       const submissionId = generateRandomId();
       const submissionData = {
@@ -274,6 +283,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         status: "pending",
         submittedBy: username,
         userId: userId,
+        companyName: companyName,
         id: submissionId,
       };
 
@@ -433,7 +443,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         submissionId: data.submissionId,
         dateAdded: data.dateAdded,
         totalItemsRecycled: data.totalItemsRecycled,
-        submittedBy: data.submittedBy,
+        companyName: data.companyName,
         itemsSubmitted: data.itemsSubmitted,
       });
     });

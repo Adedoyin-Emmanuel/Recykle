@@ -390,14 +390,31 @@ export const CompanyAppContextProvider = ({
         companySubmissionCollectionRef,
         where("id", "==", submissionId)
       );
+      const clientItemsSubmittedRefQuery = query(
+        submissionCollectionRef,
+        where("id", "==", submissionId)
+      );
+
+      const getClientItemsSubmittedSnapshot = await getDocs(
+        clientItemsSubmittedRefQuery
+      );
+
       const getItemsSubmittedSnapshot = await getDocs(
         companyItemSubmittedRefQuery
       );
 
+
       if (getItemsSubmittedSnapshot.empty) return null;
+      if (getClientItemsSubmittedSnapshot.empty) return null;
+
 
       const submisionDoc = getItemsSubmittedSnapshot.docs[0];
+      const clientSubmissionDoc = getClientItemsSubmittedSnapshot.docs[0];
+      const clientData = clientSubmissionDoc.data();
       const data = submisionDoc.data();
+      console.log(data);
+      console.log(data);
+      return
 
       // Reference the recyclingHistory sub-collection within user's and company's documents
       const recyclingHistoryUserRef = collection(
@@ -416,7 +433,10 @@ export const CompanyAppContextProvider = ({
         totalItemsRecycled: data.totalQuantity || 0, // Use a default value if it's undefined
         submittedBy: data.submittedBy || "",
         itemsSubmitted: data.itemsSubmitted || "",
+        companyName: data.companyName,
       };
+
+      console.log(data);
 
       // Add data to recyclingHistory sub-collection in user's document
       await addDoc(recyclingHistoryUserRef, recyclingHistoryData);
