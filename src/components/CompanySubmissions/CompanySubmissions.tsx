@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/exhaustive-deps */
+import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   CompanyAppContextValuesProps,
@@ -9,6 +8,7 @@ import {
   CompanyAuthContextProps,
   useCompanyAuth,
 } from "../../context/companyAuthContext";
+import { db } from "../../utils/firebase.config";
 import { formatDateFromTimestamp } from "../../utils/utilis";
 import CompanyClientSubmission from "../CompanyClientSubmission/CompanyClientSubmission";
 
@@ -19,16 +19,20 @@ const CompanySubmissions = () => {
   const { company }: CompanyAuthContextProps = useCompanyAuth();
 
   useEffect(() => {
-    async function fetchUserSubmissions() {
-      try {
-        const submissions = await getUsersSubmission(company.uid);
-        setUserSubmissions(submissions);
-      } catch (error) {
-        console.error("Error fetching user submissions:", error);
-      }
-    }
+    // Create a Firestore query for real-time updates
+    const userSubmissionsQuery = query(
+      collection(db, "companies", company.uid, "submissions")
+    );
 
-    fetchUserSubmissions();
+    // Set up a listener for real-time updates
+    const unsubscribe = onSnapshot(userSubmissionsQuery, (querySnapshot) => {
+      const submissions: any = querySnapshot.docs.map((doc) => doc.data());
+      setUserSubmissions(submissions);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, [company]);
 
   return (

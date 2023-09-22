@@ -1,3 +1,4 @@
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   CompanyAppContextValuesProps,
@@ -7,7 +8,7 @@ import {
   CompanyAuthContextProps,
   useCompanyAuth,
 } from "../../context/companyAuthContext";
-import { formatDateFromTimestamp } from "../../utils/utilis";
+import { db } from "../../utils/firebase.config";
 import CompanyRecycleCard from "../CompanyRecycleCard/CompanyRecycleCard";
 
 const AllRecyclingHistory = () => {
@@ -18,17 +19,21 @@ const AllRecyclingHistory = () => {
   const { company }: CompanyAuthContextProps = useCompanyAuth();
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getRecyclingHistory(company.uid);
-        setRecyclingHistoryData(data);
-        console.log(data);
-      } catch (error) {
-        console.log(`Error fetching recycling history: ${error}`);
-      }
-    }
+    const recyclingHistoryQuery = query(
+      collection(db, "companies", company.uid, "recyclingHistory"),
+      orderBy("dateAdded")
+    );
 
-    fetchData();
+    // Set up a listener for real-time updates
+    const unsubscribe = onSnapshot(recyclingHistoryQuery, (querySnapshot) => {
+      const data: any = querySnapshot.docs.map((doc) => doc.data());
+      setRecyclingHistoryData(data);
+    });
+
+    return () => {
+      // Clean up the listener when the component unmounts
+      unsubscribe();
+    };
   }, [company]);
 
   return (
