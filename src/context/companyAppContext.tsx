@@ -105,7 +105,6 @@ export const CompanyAppContextProvider = ({
             setAppContextLoading(false);
             setAppContextError(null);
           } else {
-            console.log("Document not found");
             setAppContextLoading(false);
           }
         })
@@ -431,7 +430,6 @@ export const CompanyAppContextProvider = ({
         companyName: clientData.companyName,
       };
 
-      console.log(data);
 
       // Add data to recyclingHistory sub-collection in user's document
       await addDoc(recyclingHistoryUserRef, recyclingHistoryData);

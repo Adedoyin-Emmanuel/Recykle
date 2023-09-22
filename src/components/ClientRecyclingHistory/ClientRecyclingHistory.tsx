@@ -22,11 +22,9 @@ const ClientRecyclingHistory = () => {
 
     async function fetchData() {
       try {
-        console.log(user);
         const data = await getRecyclingHistory(user.uid);
         setRecyclingHistoryData(data);
         setIsLoading(false);
-        console.log(recyclingHistoryData);
       } catch (error) {
         console.log(`Error fetching recycling history: ${error}`);
       }
