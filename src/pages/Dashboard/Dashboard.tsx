@@ -39,7 +39,6 @@ const Dashboard = (): JSX.Element => {
         setSnapShotUserData(docSnapshot.data());
         getUserRecyclingCollection(user.uid).then((result: any) => {
           setRecyclables(result);
-          console.log(recyclables);
         });
       }
     });
