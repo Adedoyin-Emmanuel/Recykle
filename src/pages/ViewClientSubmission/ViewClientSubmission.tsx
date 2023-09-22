@@ -64,7 +64,7 @@ const ViewClientSubmission: React.FC = (): JSX.Element => {
         submissionData.userId
       ));
 
- //   navigateToCompanyDashboard(navigateTo);
+    navigateToCompanyDashboard(navigateTo);
   };
 
   const handleActionButtonClick = () => {
@@ -79,7 +79,7 @@ const ViewClientSubmission: React.FC = (): JSX.Element => {
         submissionData.userId
       ));
 
-   // navigateToCompanyDashboard(navigateTo);
+    navigateToCompanyDashboard(navigateTo);
   };
 
   const handleCancelButtonClick = async () => {
@@ -90,7 +90,7 @@ const ViewClientSubmission: React.FC = (): JSX.Element => {
         submissionData.userId
       ));
 
-   // navigateToCompanyDashboard(navigateTo);
+    navigateToCompanyDashboard(navigateTo);
   };
 
   return (
