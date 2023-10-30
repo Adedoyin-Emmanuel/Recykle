@@ -1,6 +1,6 @@
 # Recykle 🚀
 
-Recycle is an application bridging the gap between consumers and recycling companies. This application was built for the **Boot Hack Hackathon**.
+Recycle is an application bridging the gap between consumers and recycling companies. This application was built for the **Boost Hack Hackathon**.
 [View Live Application](https://recycle.vercel.app)
 
 ## Inspiration 🧠
