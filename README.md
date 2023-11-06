@@ -1,7 +1,7 @@
 # Recykle 🚀
 
 Recycle is an application bridging the gap between consumers and recycling companies. This application was built for the **Boost Hack Hackathon**.
-[View Live Application](https://recycle.vercel.app)
+[View Live Application](https://recykle.vercel.app)
 
 ## Inspiration 🧠
 The inspiration behind Recykle was to bridge the gap between recycling companies and consumers. I aimed to create a platform that seamlessly connects users and recycling hospitals, providing efficient healthcare solutions. This project was fueled by the desire to address real-time recycling challenges using cutting-edge technology.
@@ -28,4 +28,4 @@ Throughout the development of Recykle, we learned invaluable lessons. Our profic
 Incorporating React and Tailwindcss into our development stack also broadened my knowledge and empowered me to build a large-scale application with improved performance and SEO capabilities. I am proud of the expertise I gained and look forward to applying these skills in future projects.
 
 
-https://recycle.vercel.app
+https://recykle.vercel.app
