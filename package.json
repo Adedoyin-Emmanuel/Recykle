@@ -27,7 +27,7 @@
     "framer-motion": "^10.15.2",
     "leaflet": "^1.9.4",
     "notyf": "^3.10.0",
-    "postcss": "^8.4.27",
+    "postcss": "^8.4.31",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-avatar": "^5.0.3",
@@ -49,6 +49,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.5.3"
   }
 }
